@@ -8,7 +8,7 @@ export const accessTokenActionAsync = createAsyncAction(
   ACCESS_TOKEN_REQUEST,
   ACCESS_TOKEN_SUCCESS,
   ACCESS_TOKEN_FAIL
-)<boolean, ObjectType, Error>();
+)<void, any, Error>();
 
 export const accessTokenActionTypes = {
   ACCESS_TOKEN_REQUEST,

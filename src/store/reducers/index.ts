@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
-import user from "./user";
-import accessToken from "./accessToken";
+import user from "./userReducer";
+import accessToken from "./accessTokenReducer";
 
 const rootReducer = combineReducers({
   user,

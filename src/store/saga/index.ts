@@ -11,13 +11,16 @@ import {
   takeLatest,
 } from "redux-saga/effects";
 
-import { actionTypes } from "../actions";
-import userSaga from "./userSaga";
+import { actionTypes, actions } from "../actions";
+import logInSaga from "./logInSaga";
+import logOutSaga from "./logOutSaga";
 import accessTokenSaga from "./accessTokenSaga";
 
 function* watchClasses() {
   // type의 action이 실행되면 fetchBoardsSaga도 항상(Every) 실행한다
-  // yield takeEvery();
+  yield takeEvery(actionTypes.ACCESS_TOKEN_REQUEST, accessTokenSaga);
+  yield takeEvery(actionTypes.USER_LOGIN_REQUEST, logInSaga);
+  yield takeEvery(actionTypes.USER_LOGOUT_REQUEST, logOutSaga);
 }
 
 export default function* root(): Generator {

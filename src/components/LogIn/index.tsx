@@ -1,14 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+
+import useAccessToken from "../../hook/useAccessToken";
 
 export default function Login(): JSX.Element {
-  useEffect(() => {}, []);
+  const { requestAccessToken, url } = useAccessToken();
+
+  useEffect(() => {
+    requestAccessToken();
+  }, [requestAccessToken]);
+
   return (
     <div>
       <iframe
+        style={{ width: "100vw", height: "100vh" }}
         title="This is a unique title"
-        src={`${process.env.REACT_APP_HOST}/sso/oauth/auth-code?redirectUri=fnfhrapp://login`}
+        src={url}
+        onLoad={(e) => {
+          console.log("iframeE", e);
+        }}
       />
-      <text>{process.env.NODE_ENV}</text>
     </div>
   );
 }

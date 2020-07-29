@@ -9,7 +9,7 @@ const configureStore = (preloadedState?: any) => {
   const store: Store & ObjectType = createStore(
     rootReducer,
     preloadedState,
-    compose(applyMiddleware(saga, createLogger()))
+    compose<any>(applyMiddleware(saga, createLogger()))
   );
   store.runSaga = saga.run;
   store.close = () => store.dispatch(END);

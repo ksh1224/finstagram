@@ -6,8 +6,8 @@ import { Provider } from "react-redux";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-import configureStore from "./redux";
-import rootSaga from "./redux/saga";
+import configureStore from "./store";
+import rootSaga from "./store/saga";
 
 const store = configureStore();
 store.runSaga(rootSaga);
