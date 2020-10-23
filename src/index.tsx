@@ -2,21 +2,27 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import { Provider } from "react-redux";
+import { BrowserRouter as Router } from "react-router-dom";
+import App from "pages";
+import * as serviceWorker from "serviceWorker";
 
-import App from "./App";
-import * as serviceWorker from "./serviceWorker";
-
-import configureStore from "./store";
-import rootSaga from "./store/saga";
+import configureStore from "store";
+import rootSaga from "store/saga";
+import AzureAD from "react-aad-msal";
+import { authProvider } from "utils/AuthProvider";
 
 const store = configureStore();
 store.runSaga(rootSaga);
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <AzureAD provider={authProvider} forceLogin reduxStore={store}>
+      <Provider store={store}>
+        <Router>
+          <App />
+        </Router>
+      </Provider>
+    </AzureAD>
   </React.StrictMode>,
   document.getElementById("root")
 );

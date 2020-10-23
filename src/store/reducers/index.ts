@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 
-import user from "./userReducer";
-import accessToken from "./accessTokenReducer";
+import Auth from "./AuthReducer";
+import feedbackMain from "./feedbackMainReducer";
 
 const rootReducer = combineReducers({
-  user,
-  accessToken,
+  Auth,
+  feedbackMain,
 });
 
 export default rootReducer;

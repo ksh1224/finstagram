@@ -1,3 +1,4 @@
+import { AuthenticationActions } from "react-aad-msal";
 import { Action } from "redux";
 import {
   call,
@@ -11,16 +12,13 @@ import {
   takeLatest,
 } from "redux-saga/effects";
 
-import { actionTypes, actions } from "../actions";
-import logInSaga from "./logInSaga";
-import logOutSaga from "./logOutSaga";
-import accessTokenSaga from "./accessTokenSaga";
+import { feedbackMainActionTypes } from "store/actions";
+import AuthSaga from "./AuthSaga";
+// import accessTokenSaga from "./accessTokenSaga";
 
 function* watchClasses() {
   // type의 action이 실행되면 fetchBoardsSaga도 항상(Every) 실행한다
-  yield takeEvery(actionTypes.ACCESS_TOKEN_REQUEST, accessTokenSaga);
-  yield takeEvery(actionTypes.USER_LOGIN_REQUEST, logInSaga);
-  yield takeEvery(actionTypes.USER_LOGOUT_REQUEST, logOutSaga);
+  yield takeEvery(AuthenticationActions.LoginSuccess, AuthSaga);
 }
 
 export default function* root(): Generator {

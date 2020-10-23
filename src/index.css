@@ -1,13 +1,13 @@
+/* Global Theme Styles */
+@import "http://static.fnf.co.kr/_template/metronic_v7.0.8/theme/html/demo11/dist/assets/plugins/global/plugins.bundle.css";
+@import "http://static.fnf.co.kr/_template/metronic_v7.0.8/theme/html/demo11/dist/assets/css/style.bundle.css";
+/* 핀스타그램, 인트라넷 공통 추가 스타일(임시) */
+@import "http://i.gnpsi.fnf.kr/temp/_css/fnf.css";
+/* 핀스타그램 스타일 (임시) */
+@import "http://i.gnpsi.fnf.kr/temp/20_finsta/finsta.css";
+/* 폰트 */
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
