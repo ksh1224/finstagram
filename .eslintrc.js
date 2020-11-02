@@ -32,6 +32,9 @@ module.exports = {
     "linebreak-style": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "no-script-url": "off",
     "prettier/prettier": [
       "error",
       {
