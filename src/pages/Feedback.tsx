@@ -14,7 +14,9 @@ export default function Feedback() {
   }, []);
   return (
     <Container>
-      <></>
+      <>
+        <TopRanker />
+      </>
     </Container>
   );
 }
