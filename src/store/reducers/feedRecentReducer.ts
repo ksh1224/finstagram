@@ -17,17 +17,17 @@ const initialState = {
 export type Action = ActionType<typeof actions>;
 
 export default createReducer<State, Action>(initialState, {
-  FEEDBACK_MAIN_REQUEST: (state) => ({
+  FEED_RECENT_REQUEST: (state) => ({
     ...state,
     isFetching: true,
     error: null,
   }),
-  FEEDBACK_MAIN_SUCCESS: (state, action) => ({
+  FEED_RECENT_SUCCESS: (state, action) => ({
     data: action.payload,
     isFetching: false,
     error: null,
   }),
-  FEEDBACK_MAIN_FAIL: (state, action) => ({
+  FEED_RECENT_FAIL: (state, action) => ({
     ...state,
     error: action.payload,
     isFetching: false,

@@ -3,13 +3,13 @@ import { createReducer, ActionType } from "typesafe-actions";
 import * as actions from "store/actions";
 
 type State = {
-  data: any;
+  user: any;
   isFetching: boolean;
   error: any;
 };
 
 const initialState = {
-  data: null,
+  user: false,
   isFetching: false,
   error: null,
 };
@@ -17,18 +17,18 @@ const initialState = {
 export type Action = ActionType<typeof actions>;
 
 export default createReducer<State, Action>(initialState, {
-  FEEDBACK_MAIN_REQUEST: (state) => ({
+  API_LOGIN_REQUEST: (state) => ({
     ...state,
     isFetching: true,
     error: null,
   }),
-  FEEDBACK_MAIN_SUCCESS: (state, action) => ({
-    data: action.payload,
-    isFetching: false,
+  API_LOGIN_SUCCESS: (state, action) => ({
+    user: action.payload,
     error: null,
+    isFetching: false,
   }),
-  FEEDBACK_MAIN_FAIL: (state, action) => ({
-    ...state,
+  API_LOGIN_ERROR: (state, action) => ({
+    user: null,
     error: action.payload,
     isFetching: false,
   }),
