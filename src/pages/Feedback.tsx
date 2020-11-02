@@ -8,16 +8,17 @@ import MyFeedback from "components/feedback/MyFeedback";
 
 export default function Feedback() {
   const { request: feedbackMainRequest } = useFeedbackMain();
-  // const { request: feedRecentRequest } = useFeedRecent();
+  const { request: feedRecentRequest } = useFeedRecent();
   useEffect(() => {
     feedbackMainRequest();
-    // feedRecentRequest(1);
+    feedRecentRequest(1);
   }, []);
   return (
     <Container>
       <>
         <TopRanker />
         <MyFeedback />
+        <Feed />
       </>
     </Container>
   );

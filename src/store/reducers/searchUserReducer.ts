@@ -17,7 +17,7 @@ const initialState = {
 export type Action = ActionType<typeof actions>;
 
 export default createReducer<State, Action>(initialState, {
-  SEARCH_USER_REQUEST: (state, action) => ({
+  SEARCH_USER_REQUEST: (state) => ({
     ...state,
     isFetching: true,
     error: null,

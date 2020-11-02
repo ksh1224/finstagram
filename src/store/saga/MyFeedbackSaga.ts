@@ -4,13 +4,13 @@ import axios from "utils/axiosUtil";
 export default function* MyFeedbackSaga() {
   try {
     const { user } = yield select((state) => state.APIauth);
-    const data = yield call(
+    const { data } = yield call(
       axios,
       `/feedbacks/statistics/praise/${user.id}`,
       "GET"
     );
 
-    // yield put();
+    yield put();
   } catch (error) {
     console.log(error);
   }
