@@ -5,11 +5,15 @@ import { APILogInActionAsync, searchUserActionAsync } from "store/actions";
 
 export default function* APIAuthSaga(): Generator<any, void, ObjectType> {
   try {
-    const token = yield call(axios, "/sso/oauth/access-token", "POST");
+    const { data: token } = yield call(
+      axios,
+      "/sso/oauth/access-token",
+      "POST"
+    );
     if (!!token && typeof token === "string") {
       yield localStorage.setItem("accessToken", token);
-      const data = yield call(axios, "/user/login", "POST");
-      yield put(APILogInActionAsync.success(data));
+      const { data: user } = yield call(axios, "/user/login", "POST");
+      yield put(APILogInActionAsync.success(user));
       yield put(searchUserActionAsync.request());
     } else {
       if (token) CustomError(token);

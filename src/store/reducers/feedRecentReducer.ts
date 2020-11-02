@@ -4,12 +4,16 @@ import * as actions from "store/actions";
 
 type State = {
   data: any;
+  currentPage: number | null;
+  totalPages: number | null;
   isFetching: boolean;
   error: any;
 };
 
 const initialState = {
   data: null,
+  currentPage: null,
+  totalPages: null,
   isFetching: false,
   error: null,
 };
@@ -23,7 +27,10 @@ export default createReducer<State, Action>(initialState, {
     error: null,
   }),
   FEED_RECENT_SUCCESS: (state, action) => ({
-    data: action.payload,
+    ...state,
+    data: action.payload.data,
+    currentPage: action.payload.currentPage,
+    totalPages: action.payload.totalPages,
     isFetching: false,
     error: null,
   }),

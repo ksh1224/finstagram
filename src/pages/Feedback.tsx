@@ -10,12 +10,13 @@ export default function Feedback() {
   const { request: feedRecentRequest } = useFeedRecent();
   useEffect(() => {
     feedbackMainRequest();
-    // feedRecentRequest(1);
+    feedRecentRequest(1);
   }, []);
   return (
     <Container>
       <>
         <TopRanker />
+        <Feed />
       </>
     </Container>
   );
