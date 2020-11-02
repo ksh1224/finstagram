@@ -18,7 +18,7 @@ async function axiosUtil(
     const accessToken = await localStorage.getItem("accessToken");
     const token = await localStorage.getItem("token");
 
-    console.log("accessToken", !!accessToken);
+    console.log("accessToken", accessToken);
     console.log("token", !!token);
 
     if (token && !accessToken) headers["X-FNF-MSAUTH-TOKEN"] = token;

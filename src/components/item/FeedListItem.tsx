@@ -1,6 +1,6 @@
 import Profile from "components/Profile";
 import SVG from "utils/SVG";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export default function FeedListItem() {
   const [open, setOpen] = useState(false);
