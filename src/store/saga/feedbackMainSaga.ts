@@ -7,6 +7,7 @@ import { feedbackMainActionAsync } from "store/actions";
 export default function* feedbackMainSaga(): Generator<any, void, ObjectType> {
   try {
     const { data } = yield call(axios, "/feedbacks/main/", methods.GET);
+
     yield put(feedbackMainActionAsync.success(data));
   } catch (error) {
     yield put(feedbackMainActionAsync.failure(error));

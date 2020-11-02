@@ -1,17 +1,19 @@
+import * as methods from "constant/HTTPMethods";
 import { call, put, select } from "redux-saga/effects";
+import { myFeedbackActionAsync } from "store/actions";
 import axios from "utils/axiosUtil";
 
-export default function* MyFeedbackSaga() {
+export default function* myFeedbackSaga(): Generator<any, void, ObjectType> {
   try {
-    const { user } = yield select((state) => state.APIauth);
+    const { user } = yield select((state) => state.APIAuth);
     const { data } = yield call(
       axios,
       `/feedbacks/statistics/praise/${user.id}`,
-      "GET"
+      methods.GET
     );
 
-    yield put();
+    yield put(myFeedbackActionAsync.success(data));
   } catch (error) {
-    console.log(error);
+    yield put(myFeedbackActionAsync.failure(error));
   }
 }

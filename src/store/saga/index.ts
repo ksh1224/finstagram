@@ -17,14 +17,16 @@ import {
   APILogInActionTypes,
   searchUserActionTypes,
   feedRecentActionTypes,
+  myFeedbackActionTypes,
 } from "store/actions";
 import APIAuthSaga from "./APIAuthSaga";
 import AuthSaga from "./AuthSaga";
 import feedbackMainSaga from "./feedbackMainSaga";
-import feedRecentSaga from "./feedRecentSaga";
+// import feedRecentSaga from "./feedRecentSaga";
 // import feedRecentSaga from "./feedRecentSaga";
 import searchUserSaga from "./searchUserSaga";
 // import accessTokenSaga from "./accessTokenSaga";
+import myFeedbackSaga from "./myFeedbackSaga";
 
 function* watchClasses() {
   // type의 action이 실행되면 fetchBoardsSaga도 항상(Every) 실행한다
@@ -35,11 +37,12 @@ function* watchClasses() {
     feedbackMainSaga
   );
   yield takeEvery(searchUserActionTypes.SEARCH_USER_REQUEST, searchUserSaga);
-  yield takeEvery(
-    feedRecentActionTypes.FEED_RECENT_REQUEST,
-    ({ payload }: { type: typeof feedRecentActionTypes; payload: number }) =>
-      feedRecentSaga(payload)
-  );
+  // yield takeEvery(
+  //   feedRecentActionTypes.FEED_RECENT_REQUEST,
+  //   ({ payload }: { type: typeof feedRecentActionTypes; payload: number }) =>
+  //     feedRecentSaga(payload)
+  // );
+  yield takeEvery(myFeedbackActionTypes.MY_FEEDBACK_REQUEST, myFeedbackSaga);
 }
 
 export default function* root(): Generator {

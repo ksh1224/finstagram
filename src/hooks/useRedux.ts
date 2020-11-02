@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   feedbackMainActionAsync,
   feedRecentActionAsync,
+  myFeedbackActionAsync,
   searchUserActionAsync,
 } from "../store/actions";
 import { RootState } from "../store";
@@ -62,6 +63,23 @@ export function useFeedRecent() {
     (page) => dispatch(feedRecentActionAsync.request(page)),
     [dispatch]
   );
+  return {
+    request,
+    data,
+    isFetching,
+  };
+}
+
+export function useMyFeedback() {
+  const { isFetching, data } = useSelector(
+    (state: RootState) => state.myFeedback
+  );
+  const dispatch = useDispatch();
+
+  const request = useCallback(() => dispatch(myFeedbackActionAsync.request()), [
+    dispatch,
+  ]);
+
   return {
     request,
     data,

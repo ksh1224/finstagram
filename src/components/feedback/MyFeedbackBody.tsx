@@ -1,9 +1,43 @@
 import React from "react";
 import CustomSymbol from "components/symbol/CustomSymbol";
-import { select, call } from "redux-saga/effects";
 import MyFeedbackItem from "components/item/MyFeedbackItem";
+import { useAuth } from "hooks/useRedux";
 
+type ArrayType = [
+  {
+    data: [
+      {
+        feedbackReceived?: number;
+        feedbackSent?: number;
+        quarter?: number;
+        rank?: number;
+        total?: number;
+        user?: {
+          id: number;
+          username: string;
+          profileImageUrl: string;
+          name: string;
+          organization: {
+            name: string;
+          };
+        };
+        year?: number;
+      }
+    ];
+    orgGroup: {
+      id: number;
+      name: string;
+    };
+  }
+];
+
+type TopRankerType = {
+  bestCommunicatorAllByGroup?: ArrayType;
+  bestCommunicatorByGroup?: ArrayType;
+};
 export default function MyFeedbackBody() {
+  const { APIAuth } = useAuth();
+  const { fullDescription } = APIAuth.user;
   return (
     <div className="card-body pt-2 overflow-y-auto">
       <div className="d-flex flex-column flex-center">
@@ -12,7 +46,7 @@ export default function MyFeedbackBody() {
           href="#"
           className="card-title font-weight-bolder text-dark-75 text-hover-primary font-size-h4 m-0 pt-4 pb-7"
         >
-          경영정보팀 강혜원
+          {fullDescription}
         </a>
       </div>
 
@@ -66,7 +100,11 @@ export default function MyFeedbackBody() {
             <div className="d-flex w-150px">
               <div className="avatar symbol symbol-50 mr-3">
                 <span className="symbol-label position-relative bg-transparent">
-                  {/* <img class="rounded-circle object-fit-cover" src="http://storage.fnf.co.kr/emp_profile_images/2019070802265175.jpg/dims/resize/240x240/optimize/" alt=""> */}
+                  <img
+                    className="rounded-circle object-fit-cover"
+                    src="http://storage.fnf.co.kr/emp_profile_images/2019070802265175.jpg/dims/resize/240x240/optimize/"
+                    alt=""
+                  />
                   <svg
                     className="circle-chart position-absolute top-0 left-0 w-100 h-100"
                     viewBox="0 0 33.83098862 33.83098862"
@@ -112,7 +150,11 @@ export default function MyFeedbackBody() {
             <div className="d-flex w-150px">
               <div className="avatar symbol symbol-50 mr-3">
                 <span className="symbol-label position-relative bg-transparent">
-                  {/* <img class="rounded-circle object-fit-cover" src="http://storage.fnf.co.kr/emp_profile_images/2019070802265175.jpg/dims/resize/240x240/optimize/" alt=""> */}
+                  <img
+                    className="rounded-circle object-fit-cover"
+                    src="http://storage.fnf.co.kr/emp_profile_images/2019070802265175.jpg/dims/resize/240x240/optimize/"
+                    alt=""
+                  />
                   <svg
                     className="circle-chart position-absolute top-0 left-0 w-100 h-100"
                     viewBox="0 0 33.83098862 33.83098862"
@@ -157,7 +199,11 @@ export default function MyFeedbackBody() {
             <div className="d-flex w-150px">
               <div className="avatar symbol symbol-50 mr-3">
                 <span className="symbol-label position-relative bg-transparent">
-                  {/* <img class="rounded-circle object-fit-cover" src="http://pds.fnf.co.kr/hr_attach/2019083011150221.jpg/dims/resize/80x80/optimize/" alt=""> */}
+                  <img
+                    className="rounded-circle object-fit-cover"
+                    src="http://pds.fnf.co.kr/hr_attach/2019083011150221.jpg/dims/resize/80x80/optimize/"
+                    alt=""
+                  />
                   <svg
                     className="circle-chart position-absolute top-0 left-0 w-100 h-100"
                     viewBox="0 0 33.83098862 33.83098862"

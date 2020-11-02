@@ -1,11 +1,18 @@
+import { useAuth } from "hooks/useRedux";
 import React from "react";
 
 export default function CustomSymbol() {
+  const { APIAuth } = useAuth();
+  const { profileImageUrl } = APIAuth.user;
   // 재사용될 가능성이 있는 symbol
   return (
     <div className="avatar symbol symbol-120">
       <span className="symbol-label position-relative bg-transparent">
-        {/* <img class="rounded-circle object-fit-cover" src="http://storage.fnf.co.kr/emp_profile_images/2019070802265175.jpg/dims/resize/240x240/optimize/" alt="" /> */}
+        <img
+          className="rounded-circle object-fit-cover"
+          src={profileImageUrl}
+          alt=""
+        />
         <svg
           className="circle-chart position-absolute top-0 left-0 w-100 h-100"
           viewBox="0 0 33.83098862 33.83098862"
