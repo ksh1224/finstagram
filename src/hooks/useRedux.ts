@@ -3,7 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   feedbackMainActionAsync,
   feedRecentActionAsync,
+  feedRecivedActionAsync,
+  feedSentActionAsync,
+  commentActionAsync,
+  commentDeleteActionAsync,
+  commentLikeActionAsync,
+  commentNewActionAsync,
+  commentUpdateActionAsync,
   searchUserActionAsync,
+  badgeListActionAsync,
+  showFeedbackModalAction,
+  closeFeedbackModalAction,
 } from "../store/actions";
 import { RootState } from "../store";
 
@@ -35,6 +45,23 @@ export function useSearchUser() {
   };
 }
 
+export function useBadgeList() {
+  const { isFetching, data } = useSelector(
+    (state: RootState) => state.badgeList
+  );
+  const dispatch = useDispatch();
+
+  const request = useCallback(() => dispatch(badgeListActionAsync.request()), [
+    dispatch,
+  ]);
+
+  return {
+    request,
+    data,
+    isFetching,
+  };
+}
+
 export function useFeedbackMain() {
   const { isFetching, data } = useSelector(
     (state: RootState) => state.feedbackMain
@@ -53,18 +80,99 @@ export function useFeedbackMain() {
 }
 
 export function useFeedRecent() {
-  const { isFetching, data } = useSelector(
+  const { isFetching, data, currentPage, totalPages } = useSelector(
     (state: RootState) => state.feedRecent
   );
   const dispatch = useDispatch();
 
   const request = useCallback(
-    (page) => dispatch(feedRecentActionAsync.request(page)),
+    (page?) => dispatch(feedRecentActionAsync.request(page)),
+    [dispatch]
+  );
+  return {
+    request,
+    data,
+    currentPage,
+    totalPages,
+    isFetching,
+  };
+}
+
+export function useFeedReceived() {
+  const { isFetching, data } = useSelector(
+    (state: RootState) => state.feedReceived
+  );
+  const dispatch = useDispatch();
+
+  const request = useCallback(
+    (year?, querter?) =>
+      dispatch(feedRecivedActionAsync.request({ year, querter })),
     [dispatch]
   );
   return {
     request,
     data,
     isFetching,
+  };
+}
+
+export function useFeedSent() {
+  const { isFetching, data } = useSelector(
+    (state: RootState) => state.feedSent
+  );
+  const dispatch = useDispatch();
+
+  const request = useCallback(
+    (year?, querter?) =>
+      dispatch(feedSentActionAsync.request({ year, querter })),
+    [dispatch]
+  );
+  return {
+    request,
+    data,
+    isFetching,
+  };
+}
+
+export function useComment() {
+  const { comments } = useSelector((state: RootState) => state.comment);
+
+  const dispatch = useDispatch();
+
+  // commentActionAsync,
+  // commentDeleteActionAsync,
+  // commentLikeActionAsync,
+  // commentNewActionAsync,
+  // commentUpdateActionAsync,
+
+  const commentRequest = useCallback(
+    (feedId?) => dispatch(commentActionAsync.request(feedId)),
+    [dispatch]
+  );
+  return {
+    comments,
+    commentRequest,
+  };
+}
+
+export function useModal() {
+  const { feedbackUser, isShowFeedback } = useSelector(
+    (state: RootState) => state.modal
+  );
+  const dispatch = useDispatch();
+
+  const showFeedback = useCallback(
+    (user?: any) => dispatch(showFeedbackModalAction(user)),
+    [dispatch]
+  );
+  const closeFeedback = useCallback(
+    () => dispatch(closeFeedbackModalAction()),
+    [dispatch]
+  );
+  return {
+    showFeedback,
+    closeFeedback,
+    feedbackUser,
+    isShowFeedback,
   };
 }
