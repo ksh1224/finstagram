@@ -1,12 +1,4 @@
-import { createReducer, ActionType } from "typesafe-actions";
-
-import * as actions from "store/actions";
-
-type State = {
-  data: any;
-  isFetching: boolean;
-  error: any;
-};
+import { createReducer } from "typesafe-actions";
 
 const initialState = {
   data: null,
@@ -14,9 +6,7 @@ const initialState = {
   error: null,
 };
 
-export type Action = ActionType<typeof actions>;
-
-export default createReducer<State, Action>(initialState, {
+export default createReducer<DefaultState, Actions>(initialState, {
   SEARCH_USER_REQUEST: (state) => ({
     ...state,
     isFetching: true,

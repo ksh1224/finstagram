@@ -7,17 +7,17 @@ const initialState = {
 };
 
 export default createReducer<DefaultState, Actions>(initialState, {
-  FEEDBACK_MAIN_REQUEST: (state) => ({
+  BADGE_LIST_REQUEST: (state) => ({
     ...state,
     isFetching: true,
     error: null,
   }),
-  FEEDBACK_MAIN_SUCCESS: (state, action) => ({
+  BADGE_LIST_SUCCESS: (state, action) => ({
     data: action.payload,
     isFetching: false,
     error: null,
   }),
-  FEEDBACK_MAIN_FAIL: (state, action) => ({
+  BADGE_LIST_FAIL: (state, action) => ({
     ...state,
     error: action.payload,
     isFetching: false,

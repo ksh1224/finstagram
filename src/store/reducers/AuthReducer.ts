@@ -1,6 +1,3 @@
-import { createReducer, ActionType } from "typesafe-actions";
-
-import * as actions from "store/actions";
 import { AuthenticationActions } from "react-aad-msal";
 
 type State = {
@@ -9,6 +6,7 @@ type State = {
   initialized: boolean;
   initializing: boolean;
 };
+
 const initialState: State = {
   logInResponse: null,
   accessTokenResponse: null,
