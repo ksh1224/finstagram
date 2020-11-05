@@ -7,6 +7,8 @@ import OKR from "pages/OKR";
 import Review from "pages/Review";
 import { useAuth } from "hooks/useRedux";
 import Body from "layouts/main/Body";
+import FeedbackSendModal from "components/modal/FeedbackSendModal";
+import FeedbackRequestModal from "components/modal/FeedbackRequestModal";
 
 export default function App(): JSX.Element {
   const { APIAuth, Auth } = useAuth();
@@ -14,14 +16,18 @@ export default function App(): JSX.Element {
   const { isFetching, user } = APIAuth;
   if (initialized && user)
     return (
-      <Body>
-        <Header />
-        <Switch>
-          <Route exact path="/" component={Feedback} />
-          <Route path="/OKR" component={OKR} />
-          <Route exact path="/Review" component={Review} />
-        </Switch>
-      </Body>
+      <>
+        <Body>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Feedback} />
+            <Route path="/OKR" component={OKR} />
+            <Route exact path="/Review" component={Review} />
+          </Switch>
+        </Body>
+        <FeedbackSendModal />
+        <FeedbackRequestModal />
+      </>
     );
 
   if (isFetching || initializing) return <div>로딩중...</div>;
