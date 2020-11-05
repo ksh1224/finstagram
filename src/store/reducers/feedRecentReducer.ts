@@ -1,6 +1,4 @@
-import { createReducer, ActionType } from "typesafe-actions";
-
-import * as actions from "store/actions";
+import { createReducer } from "typesafe-actions";
 
 type State = {
   data: any;
@@ -18,9 +16,7 @@ const initialState = {
   error: null,
 };
 
-export type Action = ActionType<typeof actions>;
-
-export default createReducer<State, Action>(initialState, {
+export default createReducer<State, Actions>(initialState, {
   FEED_RECENT_REQUEST: (state) => ({
     ...state,
     isFetching: true,
