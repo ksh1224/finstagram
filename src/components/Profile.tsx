@@ -5,18 +5,50 @@ import React from "react";
 type ProfileType = {
   id?: number;
   src?: string;
+  user?: {
+    id?: number;
+    username?: string;
+    name?: string;
+    profileImageUrl?: string;
+    organization?: { name?: string };
+  };
+  width?: number;
+  type?: "default" | "item" | "feedbackModal";
+  onClick?: () => void;
 };
 
-export default function Profile({ id, src }: ProfileType) {
+export default function Profile({ width, type, user, onClick }: ProfileType) {
+  let wrapClassName = "avatar symbol symbol-40 cursor-pointer";
+  switch (type) {
+    case "item":
+      wrapClassName = "avatar symbol symbol-25 cursor-pointer";
+      break;
+
+    case "feedbackModal":
+      wrapClassName = "avatar symbol symbol-60 cursor-pointer";
+      break;
+
+    default:
+      break;
+  }
   return (
     <div
-      className="avatar symbol symbol-40 cursor-pointer"
+      className={
+        width ? `avatar symbol symbol-${width} cursor-pointer` : wrapClassName
+      }
       data-toggle="modal"
       data-target="#modal_userProfile"
-      onClick={() => console.log("userId", id)}
+      onClick={() => (onClick ? onClick() : console.log("userId", user?.id))}
     >
       <span className="symbol-label position-relative bg-transparent">
-        <img className="rounded-circle object-fit-cover" src={src} alt="" />
+        <img
+          className="rounded-circle object-fit-cover"
+          src={
+            user?.profileImageUrl ||
+            "https://pds.joins.com/news/component/htmlphoto_mmdata/202001/15/73d1ac33-95b5-4d41-9fe4-9f8c4490d2d7.jpg"
+          }
+          alt=""
+        />
         <svg
           className="circle-chart position-absolute top-0 left-0 w-100 h-100"
           viewBox="0 0 33.83098862 33.83098862"
@@ -51,6 +83,8 @@ export default function Profile({ id, src }: ProfileType) {
 }
 
 Profile.defaultProps = {
-  src:
-    "http://pds.fnf.co.kr/emp_profile_images/2020042706023132.jpg/dims/cropcenter/512x512/optimize//dims/resize/100x100/optimize/",
+  user: {
+    profileImageUrl:
+      "https://pds.joins.com/news/component/htmlphoto_mmdata/202001/15/73d1ac33-95b5-4d41-9fe4-9f8c4490d2d7.jpg",
+  },
 };

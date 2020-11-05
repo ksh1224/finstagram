@@ -44,7 +44,7 @@ export default function TopRankerItem({
         data-toggle="modal"
         data-target="#modal_userProfile"
       >
-        <Profile id={user?.id} src={user?.profileImageUrl} />
+        <Profile user={user} />
       </div>
       <div className="d-flex flex-column font-weight-bold w-100px flex-grow-1 ml-3">
         <span className="text-dark mb-1 font-size-lg">{user?.name}</span>
