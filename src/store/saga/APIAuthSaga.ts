@@ -1,7 +1,11 @@
 import { call, put } from "redux-saga/effects";
 import axios from "utils/axiosUtil";
 import CustomError from "utils/errorUtil";
-import { APILogInActionAsync, searchUserActionAsync } from "store/actions";
+import {
+  APILogInActionAsync,
+  badgeListActionAsync,
+  searchUserActionAsync,
+} from "store/actions";
 
 export default function* APIAuthSaga(): Generator<any, void, ObjectType> {
   try {
@@ -15,6 +19,7 @@ export default function* APIAuthSaga(): Generator<any, void, ObjectType> {
       const { data: user } = yield call(axios, "/user/login", "POST");
       yield put(APILogInActionAsync.success(user));
       yield put(searchUserActionAsync.request());
+      yield put(badgeListActionAsync.request());
     } else {
       if (token) CustomError(token);
       throw new Error("유저 토큰이 없습니다");
