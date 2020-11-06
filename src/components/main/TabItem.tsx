@@ -8,6 +8,7 @@ export default function TabItem({ path }: { path: string }) {
       <Link
         to={`/${path}`}
         className={`nav-link ${location.pathname === `/${path}` && "active"}`}
+        data-target="#content_tab_feedback"
       >
         <span className="nav-title text-uppercase">{path || "Feedback"}</span>
       </Link>

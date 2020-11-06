@@ -48,7 +48,9 @@ export default function TopRankerItem({
       </div>
       <div className="d-flex flex-column font-weight-bold w-100px flex-grow-1 ml-3">
         <span className="text-dark mb-1 font-size-lg">{user?.name}</span>
-        <span className="text-muted">{user?.organization?.name}</span>
+        <span className="text-muted text-truncate mr-3">
+          {user?.organization?.name}
+        </span>
       </div>
       <div className="border-bottom border-light-dark">{feedbackReceived}</div>
     </div>

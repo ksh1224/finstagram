@@ -80,7 +80,7 @@ export default function Feed() {
   }
 
   return (
-    <div className="col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column overflow-hidden">
+    <div className="col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column overflow-hidden section-2">
       <ul className="nav nav-tabs nav-tabs-line gutter-b border-light-dark">
         {tabName.map((name, i) => (
           <li className="nav-item">
@@ -102,6 +102,7 @@ export default function Feed() {
           </div>
         ))}
       </div>
+      {/* <div id="layer_myBadgeFeedback" className="layer right-to-left" /> */}
     </div>
   );
 }

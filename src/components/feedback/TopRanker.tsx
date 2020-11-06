@@ -51,7 +51,7 @@ export default function TopRanker() {
     }: TopRankerType = data;
 
     return (
-      <div className="col-auto h-sm-100 w-425px d-flex flex-column">
+      <div className="col-auto h-sm-100 w-400px d-flex flex-column section-1">
         <SearchInput value={searchText} onChange={setSearchText} />
         <div className="position-relative h-100px flex-grow-1 overflow-hidden mt-n7 pt-7 px-7 mx-n7">
           <div className="card card-custom h-100 rounded-bottom-0">
@@ -116,5 +116,9 @@ export default function TopRanker() {
     );
   }
   // if (isFetching) return <div>로딩중</div>;
-  return <div>데이터가 없습니다</div>;
+  return (
+    <div className="col-auto h-sm-100 w-400px d-flex flex-column section-1">
+      데이터가 없습니다
+    </div>
+  );
 }

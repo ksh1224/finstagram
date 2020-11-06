@@ -198,7 +198,7 @@ export default function FeedbackRequestModal() {
                 className="form-control resize-none"
                 id="exampleTextarea"
                 rows={5}
-                placeholder="비드백 받는 내용이 '칭찬'일 경우 전체 공개가 되며 '조언'일 경우 개인에게만 공개가 됩니다."
+                placeholder="피드백 받는 내용이 '칭찬'일 경우 전체 공개가 되며 '조언'일 경우 개인에게만 공개가 됩니다."
               />
 
               <ol
