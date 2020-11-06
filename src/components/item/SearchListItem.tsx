@@ -1,18 +1,29 @@
 import Profile from "components/Profile";
+import { useModal } from "hooks/useRedux";
 import React, { useEffect } from "react";
 
 type SearchListItemType = {
-  id?: number;
-  name?: string;
-  organizationName?: string;
-  profileImageUrl?: string;
+  user?: {
+    id?: number;
+    username?: string;
+    name?: string;
+    profileImageUrl?: string;
+    organization?: { name?: string };
+    organizationName?: string;
+    nickname?: string;
+    position?: string;
+  };
 };
-export default function SearchListItem({
-  id,
-  name,
-  organizationName,
-  profileImageUrl,
-}: SearchListItemType) {
+export default function SearchListItem({ user }: SearchListItemType) {
+  const {
+    id,
+    name,
+    nickname,
+    organizationName,
+    profileImageUrl,
+    position,
+  } = user!;
+  const { showFeedback } = useModal();
   return (
     <>
       <div className="d-flex align-items-center my-5">
@@ -21,11 +32,11 @@ export default function SearchListItem({
           data-toggle="modal"
           data-target="#modal_userProfile"
         >
-          <Profile id={id} src={profileImageUrl} />
+          <Profile user={user} />
         </div>
         <div className="w-100px flex-grow-1 ml-5">
           <div className="font-weight-bolder text-dark-75 font-size-lg">
-            {name}
+            {`${position} ${name}(${nickname})`}
           </div>
           <div className="text-dark-50 m-0 flex-grow-1 font-size-sm mt-1">
             {organizationName}
@@ -37,6 +48,7 @@ export default function SearchListItem({
             href="javascript:;"
             data-toggle="modal"
             data-target="#modal_sendFeedback"
+            onClick={() => showFeedback(user)}
           >
             <span className="svg-icon svg-icon-md mr-3">
               <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -63,6 +75,7 @@ export default function SearchListItem({
             href="javascript:;"
             data-toggle="modal"
             data-target="#modal_requestFeedback"
+            onClick={() => showFeedback(user)}
           >
             <span className="svg-icon svg-icon-md mr-3">
               <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
