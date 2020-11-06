@@ -25,6 +25,8 @@ import {
   commentUpdateActionTypes,
   commentLikeActionTypes,
   badgeListActionTypes,
+  feedbackSendActionTypes,
+  feedbackRequestActionTypes,
 } from "store/actions";
 import APIAuthSaga from "./APIAuthSaga";
 import AuthSaga from "./AuthSaga";
@@ -33,12 +35,9 @@ import feedRecentSaga from "./feedRecentSaga";
 import feedReceivedSaga from "./feedReceivedSaga";
 import feedSentSaga from "./feedSentSaga";
 import commentSaga from "./commentSaga";
-import commentLikeSaga from "./commentLikeSaga";
-import commentNewSaga from "./commentNewSaga";
-import commentDeleteSaga from "./commentDeleteSaga";
-import commentUpdateSaga from "./commentUpdateSaga";
 import searchUserSaga from "./searchUserSaga";
 import badgeListSaga from "./badgeListSaga";
+import { feedbackSendSaga } from "./feedbackSaga";
 
 function* watchClasses() {
   // type의 action이 실행되면 fetchBoardsSaga도 항상(Every) 실행한다
@@ -52,7 +51,7 @@ function* watchClasses() {
   yield takeEvery(badgeListActionTypes.BADGE_LIST_REQUEST, badgeListSaga);
   yield takeEvery(
     feedRecentActionTypes.FEED_RECENT_REQUEST,
-    ({ payload }: { type: typeof feedRecentActionTypes; payload: number }) =>
+    ({ payload }: { type: typeof feedRecentActionTypes; payload?: number }) =>
       feedRecentSaga(payload)
   );
   yield takeEvery(
@@ -62,18 +61,34 @@ function* watchClasses() {
     }: {
       type: typeof feedRecivedActionTypes;
       payload: ObjectType;
-    }) => feedReceivedSaga(payload.year, payload.querter)
+    }) => feedReceivedSaga(payload?.year, payload?.querter)
   );
   yield takeEvery(
     feedSentActionTypes.FEED_SENT_REQUEST,
-    ({ payload }: { type: typeof feedSentActionTypes; payload: ObjectType }) =>
-      feedSentSaga(payload.year, payload.querter)
+    ({ payload }: { type: typeof feedSentActionTypes; payload?: ObjectType }) =>
+      feedSentSaga(payload?.year, payload?.querter)
   );
   yield takeEvery(
-    feedSentActionTypes.FEED_SENT_REQUEST,
-    ({ payload }: { type: typeof feedSentActionTypes; payload: ObjectType }) =>
-      feedSentSaga(payload.year, payload.querter)
+    feedbackSendActionTypes.FEEDBACK_SEND_REQUEST,
+    ({
+      payload,
+    }: {
+      type: typeof feedSentActionTypes;
+      payload: FeedbackType;
+    }) =>
+      feedbackSendSaga(
+        payload.type,
+        payload.targetUser,
+        payload.selectBadge,
+        payload.contents,
+        payload.file
+      )
   );
+  // yield takeEvery(
+  //   feedbackRequestActionTypes.FEEDBACK_REQUEST_REQUEST,
+  //   ({ payload }: { type: typeof feedSentActionTypes; payload: number }) =>
+  //     commentSaga(payload)
+  // );
   yield takeEvery(
     commentActionTypes.COMMENT_REQUEST,
     ({ payload }: { type: typeof feedSentActionTypes; payload: number }) =>

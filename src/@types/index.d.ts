@@ -13,4 +13,12 @@ declare global {
     isFetching: boolean;
     error: any;
   }
+
+  type FeedbackType = {
+    targetUser: any;
+    type: "PRAISE" | "ADVICE";
+    contents: string;
+    file: any;
+    selectBadge: any;
+  };
 }

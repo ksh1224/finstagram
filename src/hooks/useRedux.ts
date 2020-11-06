@@ -14,6 +14,8 @@ import {
   badgeListActionAsync,
   showFeedbackModalAction,
   closeFeedbackModalAction,
+  feedbackRequestActionAsync,
+  feedbackSendActionAsync,
 } from "../store/actions";
 import { RootState } from "../store";
 
@@ -131,6 +133,30 @@ export function useFeedSent() {
     request,
     data,
     isFetching,
+  };
+}
+
+export function useFeedback() {
+  const { isFetching } = useSelector((state: RootState) => state.feedback);
+  const dispatch = useDispatch();
+
+  const feedbackSend = useCallback(
+    (type, targetUser, selectBadge?, contents?, file?) =>
+      dispatch(
+        feedbackSendActionAsync.request({
+          type,
+          targetUser,
+          selectBadge,
+          contents,
+          file,
+        })
+      ),
+    [dispatch]
+  );
+
+  return {
+    isFetching,
+    feedbackSend,
   };
 }
 
