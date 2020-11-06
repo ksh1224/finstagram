@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { useFeedbackMain, useFeedRecent } from "hooks/useRedux";
+import {
+  useFeedbackMain,
+  useFeedRecent,
+  useFeedReceived,
+  useFeedSent,
+} from "hooks/useRedux";
 import Container from "layouts/feedback/Container";
 import TopRanker from "components/feedback/TopRanker";
 import Feed from "components/feedback/Feed";
@@ -8,9 +13,13 @@ import Feed from "components/feedback/Feed";
 export default function Feedback() {
   const { request: feedbackMainRequest } = useFeedbackMain();
   const { request: feedRecentRequest } = useFeedRecent();
+  const { request: feedReceivedRequest } = useFeedReceived();
+  const { request: feedSentRequest } = useFeedSent();
   useEffect(() => {
     feedbackMainRequest();
-    feedRecentRequest(1);
+    feedReceivedRequest();
+    feedRecentRequest();
+    feedSentRequest();
   }, []);
   return (
     <Container>
