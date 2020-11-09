@@ -3,8 +3,6 @@
 import React from "react";
 
 type ProfileType = {
-  id?: number;
-  src?: string;
   user?: {
     id?: number;
     username?: string;
@@ -87,4 +85,7 @@ Profile.defaultProps = {
     profileImageUrl:
       "https://pds.joins.com/news/component/htmlphoto_mmdata/202001/15/73d1ac33-95b5-4d41-9fe4-9f8c4490d2d7.jpg",
   },
+  type: "default",
+  width: null,
+  onClick: () => {},
 };
