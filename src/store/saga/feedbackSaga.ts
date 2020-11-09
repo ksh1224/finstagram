@@ -10,6 +10,7 @@ import {
   feedRecivedActionAsync,
   feedSentActionAsync,
   feedbackSendActionAsync,
+  feedbackRequestActionAsync,
 } from "store/actions";
 
 export function* feedbackSendSaga(
@@ -57,13 +58,12 @@ export function* feedbackRequestSaga(
   file: any
 ): Generator<any, void, ObjectType> {
   try {
-    const { comments } = yield select((state) => state.comment);
     const { user } = yield select((state) => state.APIAuth);
 
     const formData = new FormData();
     formData.append("sendUser_id", user.id);
     targetUsers.forEach((userObj, i) => {
-      formData.append(`receiveUser_id[${i + 1}]`, userObj.id);
+      formData.append(`receiveUser_id[${i}]`, userObj.id);
     });
     formData.append("contents", contents);
     formData.append("category", "CONTRIBUTION");
@@ -77,27 +77,10 @@ export function* feedbackRequestSaga(
       "POST",
       formData
     );
-    feedSentActionAsync.request(null);
+    yield put(feedSentActionAsync.request(null));
+    yield put(feedbackRequestActionAsync.success(null));
   } catch (error) {
     yield put(commentActionAsync.failure(error));
-  }
-}
-
-export function* feedbackNewSaga(
-  year?: number,
-  querter?: number
-): Generator<any, void, ObjectType> {
-  try {
-    const data = yield call(
-      axios,
-      `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        querter ? `${year ? "&" : "?"}querter=${querter}` : ""
-      }`,
-      "GET"
-    );
-    yield put(commentNewActionAsync.success(data));
-  } catch (error) {
-    yield put(commentNewActionAsync.failure(error));
   }
 }
 

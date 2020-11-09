@@ -15,7 +15,6 @@ export default function* feedSentSaga(
       }`,
       "GET"
     );
-    console.log("feedSentSaga", data);
     yield put(feedSentActionAsync.success(data));
   } catch (error) {
     yield put(feedSentActionAsync.failure(error));

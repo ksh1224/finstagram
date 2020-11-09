@@ -14,11 +14,16 @@ declare global {
     error: any;
   }
 
-  type FeedbackType = {
+  type FeedbackSendType = {
     targetUser: any;
     type: "PRAISE" | "ADVICE";
     contents: string;
     file: any;
     selectBadge: any;
+  };
+  type FeedbackRequestType = {
+    targetUsers: any[];
+    contents: string;
+    file: any;
   };
 }

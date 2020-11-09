@@ -37,7 +37,7 @@ import feedSentSaga from "./feedSentSaga";
 import commentSaga from "./commentSaga";
 import searchUserSaga from "./searchUserSaga";
 import badgeListSaga from "./badgeListSaga";
-import { feedbackSendSaga } from "./feedbackSaga";
+import { feedbackSendSaga, feedbackRequestSaga } from "./feedbackSaga";
 
 function* watchClasses() {
   // type의 action이 실행되면 fetchBoardsSaga도 항상(Every) 실행한다
@@ -74,7 +74,7 @@ function* watchClasses() {
       payload,
     }: {
       type: typeof feedSentActionTypes;
-      payload: FeedbackType;
+      payload: FeedbackSendType;
     }) =>
       feedbackSendSaga(
         payload.type,
@@ -84,11 +84,16 @@ function* watchClasses() {
         payload.file
       )
   );
-  // yield takeEvery(
-  //   feedbackRequestActionTypes.FEEDBACK_REQUEST_REQUEST,
-  //   ({ payload }: { type: typeof feedSentActionTypes; payload: number }) =>
-  //     commentSaga(payload)
-  // );
+  yield takeEvery(
+    feedbackRequestActionTypes.FEEDBACK_REQUEST_REQUEST,
+    ({
+      payload,
+    }: {
+      type: typeof feedSentActionTypes;
+      payload: FeedbackRequestType;
+    }) =>
+      feedbackRequestSaga(payload.targetUsers, payload.contents, payload.file)
+  );
   yield takeEvery(
     commentActionTypes.COMMENT_REQUEST,
     ({ payload }: { type: typeof feedSentActionTypes; payload: number }) =>

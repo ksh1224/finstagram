@@ -12,7 +12,7 @@ export const feedbackSendActionAsync = createAsyncAction(
   FEEDBACK_SEND_REQUEST,
   FEEDBACK_SEND_SUCCESS,
   FEEDBACK_SEND_FAIL
-)<FeedbackType, any, Error>();
+)<FeedbackSendType, any, Error>();
 
 export const feedbackSendActionTypes = {
   FEEDBACK_SEND_REQUEST,
@@ -24,7 +24,7 @@ export const feedbackRequestActionAsync = createAsyncAction(
   FEEDBACK_REQUEST_REQUEST,
   FEEDBACK_REQUEST_SUCCESS,
   FEEDBACK_REQUEST_FAIL
-)<any, any, Error>();
+)<FeedbackRequestType, any, Error>();
 
 export const feedbackRequestActionTypes = {
   FEEDBACK_REQUEST_REQUEST,
