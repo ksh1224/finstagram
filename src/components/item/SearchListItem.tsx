@@ -23,7 +23,7 @@ export default function SearchListItem({ user }: SearchListItemType) {
     profileImageUrl,
     position,
   } = user!;
-  const { showFeedback } = useModal();
+  const { showModal } = useModal();
   return (
     <>
       <div className="d-flex align-items-center my-5">
@@ -48,7 +48,7 @@ export default function SearchListItem({ user }: SearchListItemType) {
             href="javascript:;"
             data-toggle="modal"
             data-target="#modal_sendFeedback"
-            onClick={() => showFeedback(user)}
+            onClick={() => showModal("sendFeedback", user)}
           >
             <span className="svg-icon svg-icon-md mr-3">
               <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -75,7 +75,7 @@ export default function SearchListItem({ user }: SearchListItemType) {
             href="javascript:;"
             data-toggle="modal"
             data-target="#modal_requestFeedback"
-            onClick={() => showFeedback(user)}
+            onClick={() => showModal("requestFeedback", user)}
           >
             <span className="svg-icon svg-icon-md mr-3">
               <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1">

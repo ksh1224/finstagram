@@ -1,8 +1,13 @@
 import { createAction } from "typesafe-actions";
 
-export const showFeedbackModalAction = createAction(
-  "SHOW_FEEDBACK_MODAL",
-  (user?: any) => user
+export type ModalNameType = "requestFeedback" | "sendFeedback";
+
+export const showModalAction = createAction(
+  "SHOW_MODAL",
+  (name: ModalNameType, param?: any) => ({ name, param })
 )();
 
-export const closeFeedbackModalAction = createAction("CLOSED_FEEDBACK_MODAL")();
+export const closeModalAction = createAction(
+  "CLOSED_MODAL",
+  (name: ModalNameType) => name
+)();

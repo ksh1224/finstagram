@@ -12,10 +12,11 @@ import {
   commentUpdateActionAsync,
   searchUserActionAsync,
   badgeListActionAsync,
-  showFeedbackModalAction,
-  closeFeedbackModalAction,
+  showModalAction,
+  closeModalAction,
   feedbackRequestActionAsync,
   feedbackSendActionAsync,
+  ModalNameType,
 } from "../store/actions";
 import { RootState } from "../store";
 
@@ -154,9 +155,22 @@ export function useFeedback() {
     [dispatch]
   );
 
+  const feedbackRequest = useCallback(
+    (targetUsers, contents?, file?) =>
+      dispatch(
+        feedbackRequestActionAsync.request({
+          targetUsers,
+          contents,
+          file,
+        })
+      ),
+    [dispatch]
+  );
+
   return {
     isFetching,
     feedbackSend,
+    feedbackRequest,
   };
 }
 
@@ -182,23 +196,21 @@ export function useComment() {
 }
 
 export function useModal() {
-  const { feedbackUser, isShowFeedback } = useSelector(
-    (state: RootState) => state.modal
-  );
+  const modals = useSelector((state: RootState) => state.modal);
   const dispatch = useDispatch();
 
-  const showFeedback = useCallback(
-    (user?: any) => dispatch(showFeedbackModalAction(user)),
+  const showModal = useCallback(
+    (name: ModalNameType, param?: any) =>
+      dispatch(showModalAction(name, param)),
     [dispatch]
   );
-  const closeFeedback = useCallback(
-    () => dispatch(closeFeedbackModalAction()),
+  const closeModal = useCallback(
+    (name: ModalNameType) => dispatch(closeModalAction(name)),
     [dispatch]
   );
   return {
-    showFeedback,
-    closeFeedback,
-    feedbackUser,
-    isShowFeedback,
+    showModal,
+    closeModal,
+    modals,
   };
 }
