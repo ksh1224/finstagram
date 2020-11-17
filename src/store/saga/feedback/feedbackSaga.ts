@@ -21,8 +21,8 @@ export function* feedbackSendSaga(
   file?: any
 ): Generator<any, void, ObjectType> {
   try {
-    const { comments } = yield select((state) => state.comment);
-    const { user } = yield select((state) => state.APIAuth);
+    const { comments } = yield select((state: RootState) => state.comment);
+    const { user } = yield select((state: RootState) => state.APIAuth);
 
     const formData = new FormData();
     if (type === "PRAISE") formData.append("feedbackBadge_id", badge.id);
@@ -58,7 +58,7 @@ export function* feedbackRequestSaga(
   file: any
 ): Generator<any, void, ObjectType> {
   try {
-    const { user } = yield select((state) => state.APIAuth);
+    const { user } = yield select((state: RootState) => state.APIAuth);
 
     const formData = new FormData();
     formData.append("sendUser_id", user.id);
@@ -86,13 +86,13 @@ export function* feedbackRequestSaga(
 
 export function* feedbackLikeSaga(
   year?: number,
-  querter?: number
+  quarter?: number
 ): Generator<any, void, ObjectType> {
   try {
     const data = yield call(
       axios,
       `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        querter ? `${year ? "&" : "?"}querter=${querter}` : ""
+        quarter ? `${year ? "&" : "?"}quarter=${quarter}` : ""
       }`,
       "GET"
     );
@@ -104,13 +104,13 @@ export function* feedbackLikeSaga(
 
 export function* feedbackDeleteSaga(
   year?: number,
-  querter?: number
+  quarter?: number
 ): Generator<any, void, ObjectType> {
   try {
     const data = yield call(
       axios,
       `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        querter ? `${year ? "&" : "?"}querter=${querter}` : ""
+        quarter ? `${year ? "&" : "?"}quarter=${quarter}` : ""
       }`,
       "GET"
     );

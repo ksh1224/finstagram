@@ -1,6 +1,10 @@
 import { createAction } from "typesafe-actions";
 
-export type ModalNameType = "requestFeedback" | "sendFeedback";
+export type ModalNameType =
+  | "requestFeedback"
+  | "sendFeedback"
+  | "topRanker"
+  | "okrHistory";
 
 export const showModalAction = createAction(
   "SHOW_MODAL",

@@ -13,8 +13,8 @@ export default function* commentSaga(
   feedId: number
 ): Generator<any, void, ObjectType> {
   try {
-    const { comments } = yield select((state) => state.comment);
-    const { user } = yield select((state) => state.APIAuth);
+    const { comments } = yield select((state: RootState) => state.comment);
+    const { user } = yield select((state: RootState) => state.APIAuth);
     const { data } = yield call(
       axios,
       `/feedbacks/comment/${feedId}?user_id=${user?.id}`,
@@ -43,13 +43,13 @@ export default function* commentSaga(
 
 export function* commentNewSaga(
   year?: number,
-  querter?: number
+  quarter?: number
 ): Generator<any, void, ObjectType> {
   try {
     const data = yield call(
       axios,
-      `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        querter ? `${year ? "&" : "?"}querter=${querter}` : ""
+      `/feedbacks/sent${
+        year && quarter ? `?year=${year}&quarter=${quarter}` : ""
       }`,
       "GET"
     );
@@ -61,13 +61,13 @@ export function* commentNewSaga(
 
 export function* commentLikeSaga(
   year?: number,
-  querter?: number
+  quarter?: number
 ): Generator<any, void, ObjectType> {
   try {
     const data = yield call(
       axios,
-      `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        querter ? `${year ? "&" : "?"}querter=${querter}` : ""
+      `/feedbacks/sent${
+        year && quarter ? `?year=${year}&quarter=${quarter}` : ""
       }`,
       "GET"
     );
@@ -79,13 +79,13 @@ export function* commentLikeSaga(
 
 export function* commentUpdateSaga(
   year?: number,
-  querter?: number
+  quarter?: number
 ): Generator<any, void, ObjectType> {
   try {
     const data = yield call(
       axios,
-      `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        querter ? `${year ? "&" : "?"}querter=${querter}` : ""
+      `/feedbacks/sent${
+        year && quarter ? `?year=${year}&quarter=${quarter}` : ""
       }`,
       "GET"
     );
@@ -97,13 +97,13 @@ export function* commentUpdateSaga(
 
 export function* commentDeleteSaga(
   year?: number,
-  querter?: number
+  quarter?: number
 ): Generator<any, void, ObjectType> {
   try {
     const data = yield call(
       axios,
-      `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        querter ? `${year ? "&" : "?"}querter=${querter}` : ""
+      `/feedbacks/sent${
+        year && quarter ? `?year=${year}&quarter=${quarter}` : ""
       }`,
       "GET"
     );

@@ -12,6 +12,10 @@ const FEED_SENT_REQUEST = "FEED_SENT_REQUEST";
 const FEED_SENT_SUCCESS = "FEED_SENT_SUCCESS";
 const FEED_SENT_FAIL = "FEED_SENT_FAIL";
 
+const FEED_BADGE_REQUEST = "FEED_BADGE_REQUEST";
+const FEED_BADGE_SUCCESS = "FEED_BADGE_SUCCESS";
+const FEED_BADGE_FAIL = "FEED_BADGE_FAIL";
+
 export const feedRecentActionAsync = createAsyncAction(
   FEED_RECENT_REQUEST,
   FEED_RECENT_SUCCESS,
@@ -43,4 +47,15 @@ export const feedSentActionTypes = {
   FEED_SENT_REQUEST,
   FEED_SENT_SUCCESS,
   FEED_SENT_FAIL,
+};
+
+export const feedBadgeActionAsync = createAsyncAction(
+  FEED_BADGE_REQUEST,
+  FEED_BADGE_SUCCESS,
+  FEED_BADGE_FAIL
+)<any, any, Error>();
+export const feedBadgeActionTypes = {
+  FEED_BADGE_REQUEST,
+  FEED_BADGE_SUCCESS,
+  FEED_BADGE_FAIL,
 };

@@ -1,25 +1,29 @@
 import { createReducer } from "typesafe-actions";
 
 const initialState = {
-  data: null,
+  data: false,
   isFetching: false,
   error: null,
 };
 
 export default createReducer<DefaultState, Actions>(initialState, {
-  FEEDBACK_MAIN_REQUEST: (state) => ({
+  USER_OKR_REQUEST: (state) => ({
     ...state,
     isFetching: true,
     error: null,
   }),
-  FEEDBACK_MAIN_SUCCESS: (state, action) => ({
+  USER_OKR_SUCCESS: (state, action) => ({
     data: action.payload,
-    isFetching: false,
     error: null,
+    isFetching: false,
   }),
-  FEEDBACK_MAIN_FAIL: (state, action) => ({
-    ...state,
+  USER_OKR_FAIL: (state, action) => ({
+    data: null,
     error: action.payload,
     isFetching: false,
+  }),
+  USER_OKR_CANCEL: (state, action) => ({
+    ...state,
+    data: null,
   }),
 });
