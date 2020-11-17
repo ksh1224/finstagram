@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import FeedListItem, { DataType } from "components/item/FeedListItem";
-import { useFeedReceived, useFeedRecent, useFeedSent } from "hooks/useRedux";
+import {
+  useFeedBadge,
+  useFeedReceived,
+  useFeedRecent,
+  useFeedSent,
+  useSelectBadge,
+} from "hooks/useRedux";
+import SVG from "utils/SVG";
+import DataValidationContainer from "layouts/DataValidationContainer";
 
 const tabName = ["최신 피드백", "내가 받은 피드백", "내가 보낸 피드백"];
 
-export default function Feed() {
+export default function FeedList() {
   const {
     request: feedRecentRequest,
     data: feedRecentList,
@@ -22,6 +30,12 @@ export default function Feed() {
     data: feedSentList,
     isFetching: feedSentFetching,
   } = useFeedSent();
+  const {
+    request: feedBadgeRequest,
+    data: feedBadgeList,
+    isFetching: feedBadgeFetching,
+  } = useFeedBadge();
+  const { cancelBadge, selectBadgeData } = useSelectBadge();
   const [tab, setTab] = useState(0);
 
   useEffect(() => {
@@ -85,6 +99,7 @@ export default function Feed() {
         {tabName.map((name, i) => (
           <li className="nav-item">
             <a
+              href="javascript:;"
               className={`nav-link pt-1 pb-5 font-weight-bolder ${
                 i === tab && "active"
               }`}
@@ -96,13 +111,73 @@ export default function Feed() {
         ))}
       </ul>
       <div className="tab-content h-100px flex-grow-1 overflow-y-auto m-n7 p-7">
-        {tabName?.map((name, i) => (
-          <div className={`tab-pane fade ${i === tab && "show active"}`}>
-            {feedList(name)}
-          </div>
-        ))}
+        <DataValidationContainer
+          isFetching={
+            feedRecentFetching || feedReceivedFetching || feedSentFetching
+          }
+        >
+          {tabName?.map((name, i) => (
+            <div className={`tab-pane fade ${i === tab && "show active"}`}>
+              {feedList(name)}
+            </div>
+          ))}
+        </DataValidationContainer>
       </div>
-      {/* <div id="layer_myBadgeFeedback" className="layer right-to-left" /> */}
+      <div className={`layer right-to-left ${selectBadgeData ? "show" : ""}`}>
+        <div className="modal-content col-auto">
+          <div className="modal-header px-0 pt-0">
+            <h5 className="modal-title">
+              <span className="font-weight-bolder">배지 Feedback</span>
+              <span className="feedback-icon-group">
+                <span className="feedback-icon on">
+                  {selectBadgeData?.badge.total ? (
+                    <SVG
+                      className="w-50px h-50px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 90 90"
+                      name="total"
+                    />
+                  ) : (
+                    !!selectBadgeData?.badge?.selectedFileUrl && (
+                      <img
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "25px",
+                          border: `1.5px solid #5555`,
+                        }}
+                        src={selectBadgeData?.badge?.selectedFileUrl}
+                        alt=""
+                      />
+                    )
+                  )}
+                  <span className="badge label label-md">
+                    {selectBadgeData?.received}
+                  </span>
+                </span>
+              </span>
+            </h5>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="layer"
+              aria-label="닫기"
+              onClick={() => cancelBadge()}
+            >
+              <i aria-hidden="true" className="ki ki-close" />
+            </button>
+          </div>
+          <div className="modal-body px-7 mx-n7 mb-n7">
+            {!!feedBadgeList && feedBadgeList.length !== 0 ? (
+              feedBadgeList.map((data: any) => (
+                <FeedListItem key={data.id} {...data} feedType="sent" />
+              ))
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

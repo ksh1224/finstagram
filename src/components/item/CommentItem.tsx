@@ -27,8 +27,7 @@ export default function CommentItem({
   likeCount,
   liked,
 }: CommentDataType) {
-  const { APIAuth } = useAuth();
-  const { user: my } = APIAuth;
+  const { user: my } = useAuth();
   return (
     <div className="py-5">
       <div className="d-flex align-items-center">
