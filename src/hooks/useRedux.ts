@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  feedbackMainActionAsync,
+  topRankerActionAsync,
   feedRecentActionAsync,
   feedRecivedActionAsync,
   feedSentActionAsync,
@@ -12,22 +12,33 @@ import {
   commentUpdateActionAsync,
   searchUserActionAsync,
   badgeListActionAsync,
-  showModalAction,
-  closeModalAction,
   feedbackRequestActionAsync,
   feedbackSendActionAsync,
+  showModalAction,
+  closeModalAction,
   ModalNameType,
+  feedbackBadgeActionTypes,
+  feedbackBadgeActionAsync,
+  feedbackStatisticsActionAsync,
+  cancelSelectBadgeAction,
+  selectBadgeAction,
+  feedBadgeActionTypes,
+  feedBadgeActionAsync,
+  topRankerDetailActionAsync,
+  teamOKRActionAsync,
+  myOKRActionAsync,
+  userOKRActionAsync,
 } from "../store/actions";
-import { RootState } from "../store";
 
 export function useAuth() {
   const Auth = useSelector((state: RootState) => state.Auth);
 
-  const APIAuth = useSelector((state: RootState) => state.APIAuth);
+  const { user, error } = useSelector((state: RootState) => state.APIAuth);
 
   return {
     Auth,
-    APIAuth,
+    user,
+    error,
   };
 }
 
@@ -65,19 +76,45 @@ export function useBadgeList() {
   };
 }
 
-export function useFeedbackMain() {
+export function useTopRanker() {
   const { isFetching, data } = useSelector(
-    (state: RootState) => state.feedbackMain
+    (state: RootState) => state.topRanker
   );
   const dispatch = useDispatch();
 
+  const request = useCallback(() => dispatch(topRankerActionAsync.request()), [
+    dispatch,
+  ]);
+  return {
+    request,
+    data,
+    isFetching,
+  };
+}
+
+export function useTopRankerDetail() {
+  const {
+    isFetching,
+    data,
+    extraData,
+    availableDates,
+    availableOptions,
+  } = useSelector((state: RootState) => state.topRankerDetail);
+  const dispatch = useDispatch();
+
   const request = useCallback(
-    () => dispatch(feedbackMainActionAsync.request()),
+    (orgGroupId, year?, quarter?) =>
+      dispatch(
+        topRankerDetailActionAsync.request({ orgGroupId, year, quarter })
+      ),
     [dispatch]
   );
   return {
     request,
     data,
+    extraData,
+    availableDates,
+    availableOptions,
     isFetching,
   };
 }
@@ -108,8 +145,8 @@ export function useFeedReceived() {
   const dispatch = useDispatch();
 
   const request = useCallback(
-    (year?, querter?) =>
-      dispatch(feedRecivedActionAsync.request({ year, querter })),
+    (year?, quarter?) =>
+      dispatch(feedRecivedActionAsync.request({ year, quarter })),
     [dispatch]
   );
   return {
@@ -126,8 +163,26 @@ export function useFeedSent() {
   const dispatch = useDispatch();
 
   const request = useCallback(
-    (year?, querter?) =>
-      dispatch(feedSentActionAsync.request({ year, querter })),
+    (year?, quarter?) =>
+      dispatch(feedSentActionAsync.request({ year, quarter })),
+    [dispatch]
+  );
+  return {
+    request,
+    data,
+    isFetching,
+  };
+}
+
+export function useFeedBadge() {
+  const { isFetching, data } = useSelector(
+    (state: RootState) => state.feedBadge
+  );
+  const dispatch = useDispatch();
+
+  const request = useCallback(
+    (year, quarter, badgeId?) =>
+      dispatch(feedBadgeActionAsync.request({ year, quarter, badgeId })),
     [dispatch]
   );
   return {
@@ -195,6 +250,85 @@ export function useComment() {
   };
 }
 
+export function useMyFeedback() {
+  const {
+    data: feedbackStatisticsData,
+    isFetching: feedbackStatisticsFetching,
+  } = useSelector((state: RootState) => state.feedbackStatistics);
+  const {
+    data: feedbackBadgeData,
+    isFetching: feedbackBadgeFetching,
+  } = useSelector((state: RootState) => state.feedbackBadge);
+  const dispatch = useDispatch();
+  const feedbackStatisticsRequset = useCallback(
+    (year?, quarter?) =>
+      dispatch(feedbackStatisticsActionAsync.request({ year, quarter })),
+    [dispatch]
+  );
+  const feedbackBadgeRequset = useCallback(
+    (year?, quarter?) =>
+      dispatch(feedbackBadgeActionAsync.request({ year, quarter })),
+    [dispatch]
+  );
+  return {
+    feedbackStatisticsData,
+    feedbackStatisticsFetching,
+    feedbackBadgeData,
+    feedbackBadgeFetching,
+    feedbackStatisticsRequset,
+    feedbackBadgeRequset,
+  };
+}
+
+export function useMyOKR() {
+  const { data, isFetching } = useSelector((state: RootState) => state.myOKR);
+
+  const dispatch = useDispatch();
+  const requset = useCallback(
+    (year?, quarter?) => dispatch(myOKRActionAsync.request({ year, quarter })),
+    [dispatch]
+  );
+  return {
+    data,
+    isFetching,
+    requset,
+  };
+}
+export function useUserOKR() {
+  const { data, isFetching } = useSelector((state: RootState) => state.userOKR);
+
+  const dispatch = useDispatch();
+  const requset = useCallback(
+    (year?, quarter?, userId?) =>
+      dispatch(userOKRActionAsync.request({ year, quarter, userId })),
+    [dispatch]
+  );
+  const cancel = useCallback(() => dispatch(userOKRActionAsync.cancel()), [
+    dispatch,
+  ]);
+  return {
+    data,
+    isFetching,
+    requset,
+    cancel,
+  };
+}
+export function useTeamOKR() {
+  const { data, isFetching } = useSelector((state: RootState) => state.teamOKR);
+
+  const dispatch = useDispatch();
+  const requset = useCallback(
+    (year?, quarter?, organizationId?) =>
+      dispatch(teamOKRActionAsync.request({ year, quarter, organizationId })),
+    [dispatch]
+  );
+  return {
+    data,
+    isFetching,
+    requset,
+  };
+}
+
 export function useModal() {
   const modals = useSelector((state: RootState) => state.modal);
   const dispatch = useDispatch();
@@ -212,5 +346,24 @@ export function useModal() {
     showModal,
     closeModal,
     modals,
+  };
+}
+
+export function useSelectBadge() {
+  const { badgeData: selectBadgeData } = useSelector(
+    (state: RootState) => state.selectBadge
+  );
+  const dispatch = useDispatch();
+  const selectBadge = useCallback(
+    (badgeData: any) => dispatch(selectBadgeAction(badgeData)),
+    [dispatch]
+  );
+  const cancelBadge = useCallback(() => dispatch(cancelSelectBadgeAction()), [
+    dispatch,
+  ]);
+  return {
+    selectBadge,
+    cancelBadge,
+    selectBadgeData,
   };
 }
