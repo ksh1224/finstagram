@@ -38,6 +38,7 @@ module.exports = {
     "jsx-a11y/click-events-have-key-events": "off",
     "no-script-url": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
     "prettier/prettier": [
       "error",
       {
