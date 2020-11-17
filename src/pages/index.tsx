@@ -9,27 +9,38 @@ import { useAuth } from "hooks/useRedux";
 import Body from "layouts/main/Body";
 import FeedbackSendModal from "components/modal/FeedbackSendModal";
 import FeedbackRequestModal from "components/modal/FeedbackRequestModal";
+import TopRankerDetailModal from "components/modal/TopRankerDetailModal";
+import SwitchContainer from "layouts/main/SwitchContainer";
+import OKRHistoryModal from "components/modal/OKRHistoryModal";
 
 export default function App(): JSX.Element {
-  const { APIAuth, Auth } = useAuth();
+  const { user, error, Auth } = useAuth();
   const { initialized, initializing } = Auth;
-  const { isFetching, user } = APIAuth;
   if (initialized && user)
     return (
       <>
         <Body>
           <Header />
-          <Switch>
-            <Route exact path="/" component={Feedback} />
-            <Route path="/OKR" component={OKR} />
-            <Route exact path="/Review" component={Review} />
-          </Switch>
+          <SwitchContainer>
+            <Switch>
+              <Route exact path="/" component={Feedback} />
+              <Route path="/OKR" component={OKR} />
+              <Route exact path="/Review" component={Review} />
+            </Switch>
+          </SwitchContainer>
         </Body>
         <FeedbackSendModal />
         <FeedbackRequestModal />
+        <TopRankerDetailModal />
+        <OKRHistoryModal />
       </>
     );
-
-  if (isFetching || initializing) return <div>로딩중...</div>;
-  return <div>에러</div>;
+  if (error) return <div>에러</div>;
+  return (
+    <div className="d-flex flex-row flex-column-fluid page">
+      <div className="d-flex w-100 align-items-center justify-content-center">
+        <div className="spinner spinner-primary spinner-lg spinner-center w-100 h-50px" />
+      </div>
+    </div>
+  );
 }
