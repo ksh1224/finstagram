@@ -17,14 +17,14 @@ export function search(keyword: string, text: string) {
 }
 
 export function searchList(
-  data: { id: number; name: string; organizationName: string }[],
+  data: SearchItemType[],
   searchText: string,
   filterUser?: { id: number }[]
 ) {
   if (!searchText || searchText.trim() === "" || searchText.trim().length < 2)
     return [];
-  const nameList: { name: string; organizationName: string }[] = [];
-  const organizationNameList: { name: string; organizationName: string }[] = [];
+  const nameList: SearchItemType[] = [];
+  const organizationNameList: SearchItemType[] = [];
   for (const obj of data) {
     let include = false;
     if (filterUser && filterUser.length !== 0) {
