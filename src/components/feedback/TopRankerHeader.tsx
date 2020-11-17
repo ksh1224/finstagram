@@ -1,25 +1,23 @@
+import { useModal } from "hooks/useRedux";
 import React, { useEffect, useState } from "react";
 
 type TopRankerHeaderType = {
   isQuerter?: boolean;
+  orgGroupId?: number;
   setIsQuerter?: React.Dispatch<React.SetStateAction<boolean>>;
   setOrgGroupId?: React.Dispatch<React.SetStateAction<number | undefined>>;
-  AllGroup?: [
-    {
-      orgGroup: {
-        id: number;
-        name: string;
-      };
-    }
-  ];
-  QuerterGroup?: [
-    {
-      orgGroup: {
-        id: number;
-        name: string;
-      };
-    }
-  ];
+  AllGroup?: {
+    orgGroup: {
+      id: number;
+      name: string;
+    };
+  }[];
+  QuerterGroup?: {
+    orgGroup: {
+      id: number;
+      name: string;
+    };
+  }[];
 };
 
 export default function TopRankerHeader({
@@ -27,8 +25,11 @@ export default function TopRankerHeader({
   setIsQuerter,
   AllGroup,
   QuerterGroup,
+  orgGroupId,
   setOrgGroupId,
 }: TopRankerHeaderType) {
+  const { showModal } = useModal();
+
   return (
     <div className="card-header border-0 pt-3 min-h-auto">
       <h3 className="card-title font-weight-bolder">Top Ranker</h3>
@@ -66,9 +67,10 @@ export default function TopRankerHeader({
             ? AllGroup?.map(({ orgGroup }) => (
                 <li className="nav-item">
                   <a
-                    className="nav-link border-0"
-                    data-toggle="tab"
-                    href={`#ranking_tab_${orgGroup.id}`}
+                    href="javascript:;"
+                    className={`nav-link border-0 ${
+                      orgGroup.id === orgGroupId ? "active" : ""
+                    }`}
                     onClick={() => setOrgGroupId && setOrgGroupId(orgGroup.id)}
                   >
                     {orgGroup.name}
@@ -78,9 +80,11 @@ export default function TopRankerHeader({
             : QuerterGroup?.map(({ orgGroup }) => (
                 <li className="nav-item">
                   <a
-                    className="nav-link border-0"
-                    data-toggle="tab"
-                    href={`#ranking_tab_${orgGroup.id}`}
+                    href="javascript:;"
+                    className={`nav-link border-0 ${
+                      orgGroup.id === orgGroupId ? "active" : ""
+                    }`}
+                    onClick={() => setOrgGroupId && setOrgGroupId(orgGroup.id)}
                   >
                     {orgGroup.name}
                   </a>
@@ -88,10 +92,9 @@ export default function TopRankerHeader({
               ))}
         </ul>
         <a
-          className="text-dark-75 font-weight-bold"
           href="javascript:;"
-          data-toggle="modal"
-          data-target="#modal_topRanker"
+          className="text-dark-75 font-weight-bold"
+          onClick={() => showModal("topRanker", { orgGroupId })}
         >
           더보기
         </a>
@@ -102,5 +105,9 @@ export default function TopRankerHeader({
 
 TopRankerHeader.defaultProps = {
   isQuerter: false,
+  orgGroupId: -1,
   setIsQuerter: () => {},
+  setOrgGroupId: () => {},
+  AllGroup: [],
+  QuerterGroup: [],
 };

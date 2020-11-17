@@ -1,26 +1,16 @@
 import "scrollbar.css";
 import React, { useEffect, useState } from "react";
 import { useSearchUser } from "hooks/useRedux";
-import SearchListItem from "components/item/SearchListItem";
+import SearchListItem from "components/item/FeedbackSearchListItem";
 import { searchList } from "utils/searchUtil";
 
-type LayoutType = {
-  children?: JSX.Element[] | JSX.Element;
+type SearchListType = {
   text?: string;
 };
-type ListType = {
-  id?: number;
-  name?: string;
-  nickname?: string;
-  organizationId?: number;
-  organizationName?: string;
-  position?: string;
-  profileImageUrl?: string;
-}[];
 
-export default function SearchList({ text }: LayoutType) {
+export default function SearchList({ text }: SearchListType) {
   const [show, setShow] = useState(false);
-  const [list, setList] = useState<ListType>([{}]);
+  const [list, setList] = useState<SearchItemType[]>([]);
   const { data } = useSearchUser();
 
   useEffect(() => {
@@ -56,3 +46,7 @@ export default function SearchList({ text }: LayoutType) {
     </div>
   );
 }
+
+SearchList.defaultProps = {
+  text: "",
+};

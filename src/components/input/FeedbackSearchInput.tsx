@@ -6,9 +6,7 @@ type InputType = {
   onChange?: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function Input({ value, onChange }: InputType) {
-  // const [text, setText] = useState("");
-
+export default function FeedbackSearchInput({ value, onChange }: InputType) {
   return (
     <div className="quick-search quick-search-inline quick-search-has-result gutter-b bg-white rounded">
       <div className="quick-search-form">
@@ -41,3 +39,8 @@ export default function Input({ value, onChange }: InputType) {
     </div>
   );
 }
+
+FeedbackSearchInput.defaultProps = {
+  value: "",
+  onChange: undefined,
+};

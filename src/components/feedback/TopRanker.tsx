@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import SearchListItem from "components/item/SearchListItem";
+import React, { useEffect, useState } from "react";
 import TopRankerItem from "components/item/TopRankerItem";
-import SearchInput from "components/input/SearchInput";
+import SearchInput from "components/input/FeedbackSearchInput";
 import SearchList from "components/feedback/SearchList";
 import TopRankerHeader from "components/feedback/TopRankerHeader";
-import { useFeedbackMain } from "hooks/useRedux";
+import { useTopRanker } from "hooks/useRedux";
+import DataValidationContainer from "layouts/DataValidationContainer";
 
 type ArrayType = [
   {
@@ -40,85 +40,103 @@ type TopRankerType = {
 };
 
 export default function TopRanker() {
-  const { isFetching, data, request } = useFeedbackMain();
+  const { isFetching, data, request } = useTopRanker();
   const [isQuerter, setIsQuerter] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [orgGroupId, setOrgGroupId] = useState<number>();
-  if (data) {
-    const {
-      bestCommunicatorAllByGroup: AllGroup,
-      bestCommunicatorByGroup: QuerterGroup,
-    }: TopRankerType = data;
 
-    return (
-      <div className="col-auto h-sm-100 w-400px d-flex flex-column section-1">
-        <SearchInput value={searchText} onChange={setSearchText} />
-        <div className="position-relative h-100px flex-grow-1 overflow-hidden mt-n7 pt-7 px-7 mx-n7">
-          <div className="card card-custom h-100 rounded-bottom-0">
-            <TopRankerHeader
-              isQuerter={isQuerter}
-              setIsQuerter={setIsQuerter}
-              AllGroup={AllGroup}
-              QuerterGroup={QuerterGroup}
-              setOrgGroupId={setOrgGroupId}
-            />
-            <div className="card-body overflow-hidden overflow-y-auto">
-              <div className="tab-content">
+  useEffect(() => {
+    if (!orgGroupId && data?.bestCommunicatorByGroup) {
+      data?.bestCommunicatorByGroup.forEach((obj: any) => {
+        if (obj.userIsMember) setOrgGroupId(obj.orgGroup.id);
+      });
+    }
+  }, [data]);
+
+  const AllGroup: ArrayType = data?.bestCommunicatorAllByGroup;
+  const QuerterGroup: ArrayType = data?.bestCommunicatorByGroup;
+
+  return (
+    <div className="col-auto h-sm-100 w-400px d-flex flex-column section-1">
+      <SearchInput value={searchText} onChange={setSearchText} />
+      <div className="position-relative h-100px flex-grow-1 overflow-hidden mt-n7 pt-7 px-7 mx-n7">
+        <div className="card card-custom h-100 rounded-bottom-0">
+          <TopRankerHeader
+            isQuerter={isQuerter}
+            setIsQuerter={setIsQuerter}
+            AllGroup={AllGroup}
+            QuerterGroup={QuerterGroup}
+            orgGroupId={orgGroupId}
+            setOrgGroupId={setOrgGroupId}
+          />
+          <div className="card-body overflow-hidden overflow-y-auto">
+            <div className="tab-content">
+              <DataValidationContainer isFetching={isFetching}>
                 {!isQuerter
                   ? AllGroup?.map(({ data: rankerData, orgGroup }) => {
                       return (
                         <div
                           className={`tab-pane fade show ${
-                            orgGroupId === orgGroup.id && "active"
+                            orgGroupId === orgGroup.id ? "active" : ""
                           }`}
-                          id={`ranking_tab_${orgGroup.id}`}
-                          role="tabpanel"
                           aria-labelledby={`ranking_tab_${orgGroup.id}`}
                         >
-                          {rankerData?.map(
-                            ({ feedbackReceived, user, rank }) => (
-                              <TopRankerItem
-                                rank={rank}
-                                feedbackReceived={feedbackReceived}
-                                user={user}
-                              />
-                            )
-                          )}
+                          <DataValidationContainer
+                            noDataView={
+                              <span className="d-block w-100 mt-4 mb-4 text-dark-75 font-size-lg font-weight-normal text-center">
+                                데이터가 없습니다.
+                              </span>
+                            }
+                          >
+                            {rankerData?.map(
+                              ({ feedbackReceived, user, rank }) => (
+                                <TopRankerItem
+                                  rank={rank}
+                                  feedbackReceived={feedbackReceived}
+                                  user={user}
+                                />
+                              )
+                            )}
+                          </DataValidationContainer>
                         </div>
                       );
                     })
                   : QuerterGroup?.map(({ data: rankerData, orgGroup }) => {
                       return (
                         <div
-                          className="tab-pane fade show active"
+                          className={`tab-pane fade show ${
+                            orgGroupId === orgGroup.id ? " active" : ""
+                          }`}
                           id={`ranking_tab_${orgGroup.id}`}
                           role="tabpanel"
                           aria-labelledby={`ranking_tab_${orgGroup.id}`}
                         >
-                          {rankerData?.map(
-                            ({ feedbackReceived, user, rank }) => (
-                              <TopRankerItem
-                                rank={rank}
-                                feedbackReceived={feedbackReceived}
-                                user={user}
-                              />
-                            )
-                          )}
+                          <DataValidationContainer
+                            noDataView={
+                              <span className="d-block w-100 mt-4 mb-4 text-dark-75 font-size-lg font-weight-normal text-center">
+                                데이터가 없습니다.
+                              </span>
+                            }
+                          >
+                            {rankerData?.map(
+                              ({ feedbackReceived, user, rank }) => (
+                                <TopRankerItem
+                                  rank={rank}
+                                  feedbackReceived={feedbackReceived}
+                                  user={user}
+                                />
+                              )
+                            )}
+                          </DataValidationContainer>
                         </div>
                       );
                     })}
-              </div>
+              </DataValidationContainer>
             </div>
           </div>
-          <SearchList text={searchText} />
         </div>
+        <SearchList text={searchText} />
       </div>
-    );
-  }
-  // if (isFetching) return <div>로딩중</div>;
-  return (
-    <div className="col-auto h-sm-100 w-400px d-flex flex-column section-1">
-      데이터가 없습니다
     </div>
   );
 }

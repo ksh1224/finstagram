@@ -1,7 +1,7 @@
 import Profile from "components/Profile";
 import React, { useEffect } from "react";
 
-type TopRankerItemType = {
+export type TopRankerItemType = {
   feedbackReceived?: number;
   feedbackSent?: number;
   quarter?: number;
@@ -37,7 +37,7 @@ export default function TopRankerItem({
   }
   return (
     <div className="d-flex align-items-center mb-10">
-      <span className={`label label-inline label-lg${rankColor}`}>{rank}</span>
+      <span className={`label label-inline label-lg ${rankColor}`}>{rank}</span>
 
       <div
         className="avatar symbol symbol-40 cursor-pointer"
@@ -56,3 +56,12 @@ export default function TopRankerItem({
     </div>
   );
 }
+
+TopRankerItem.defaultProps = {
+  feedbackReceived: undefined,
+  rank: undefined,
+  user: undefined,
+  // quarter: undefined,
+  // total: undefined,
+  // feedbackSent: undefined,
+};
