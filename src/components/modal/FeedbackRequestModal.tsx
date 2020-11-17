@@ -22,8 +22,7 @@ type UserType = {
 export default function FeedbackRequestModal() {
   const fileRef = createRef<HTMLInputElement>();
   const textLimit = 100;
-  const { APIAuth } = useAuth();
-  const { user } = APIAuth;
+  const { user } = useAuth();
   const { modals, closeModal } = useModal();
   const [users, setUsers] = useState<UserType[]>();
   const [searchText, setSearchText] = useState("");
@@ -35,7 +34,7 @@ export default function FeedbackRequestModal() {
   const { feedbackRequest } = useFeedback();
 
   const requestFeedbackModal = modals.find(
-    (modal) => modal.name === "requestFeedback"
+    (modal: any) => modal.name === "requestFeedback"
   );
 
   const feedbackUser = requestFeedbackModal?.param;

@@ -17,7 +17,7 @@ export default function FeedbackModal() {
   const { modals, closeModal } = useModal();
   const { data: dadgeList } = useBadgeList();
   const sendFeedbackModal = modals.find(
-    (modal) => modal.name === "sendFeedback"
+    (modal: any) => modal.name === "sendFeedback"
   );
 
   function sendFeedback() {
