@@ -12,10 +12,17 @@ type ProfileType = {
   };
   width?: number;
   type?: "default" | "item" | "feedbackModal";
+  className?: string;
   onClick?: () => void;
 };
 
-export default function Profile({ width, type, user, onClick }: ProfileType) {
+export default function Profile({
+  width,
+  type,
+  user,
+  onClick,
+  className,
+}: ProfileType) {
   let wrapClassName = "avatar symbol symbol-40 cursor-pointer";
   switch (type) {
     case "item":
@@ -31,9 +38,9 @@ export default function Profile({ width, type, user, onClick }: ProfileType) {
   }
   return (
     <div
-      className={
+      className={`${
         width ? `avatar symbol symbol-${width} cursor-pointer` : wrapClassName
-      }
+      } ${className || ""}`}
       data-toggle="modal"
       data-target="#modal_userProfile"
       onClick={() => (onClick ? onClick() : console.log("userId", user?.id))}
@@ -88,4 +95,5 @@ Profile.defaultProps = {
   type: "default",
   width: null,
   onClick: () => {},
+  className: "",
 };
