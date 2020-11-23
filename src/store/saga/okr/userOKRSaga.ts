@@ -16,8 +16,14 @@ export default function* userOKRSaga(
       }`,
       "GET"
     );
-    console.log("userOKRSaga", data);
-    yield put(userOKRActionAsync.success(data));
+    const { data: searchUser } = yield select(
+      (state: RootState) => state.searchUser
+    );
+    const user = searchUser?.user?.find(
+      (findUser: any) => findUser.id === userId
+    );
+
+    yield put(userOKRActionAsync.success({ ...data, user }));
   } catch (error) {
     yield put(userOKRActionAsync.failure(error));
   }
