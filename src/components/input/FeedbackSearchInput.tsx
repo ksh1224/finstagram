@@ -30,7 +30,10 @@ export default function FeedbackSearchInput({ value, onChange }: InputType) {
             <span className="input-group-text">
               <i
                 className="quick-search-close ki ki-close icon-sm text-muted"
-                style={{ display: "none" }}
+                style={{
+                  display: value && value.length !== 0 ? "block" : "none",
+                }}
+                onClick={() => onChange && onChange("")}
               />
             </span>
           </div>
