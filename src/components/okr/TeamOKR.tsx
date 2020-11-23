@@ -1,15 +1,9 @@
-import OKRSearchInput from "components/input/OKRSearchInput";
-import SearchListItem from "components/item/SearchListItem";
 import Profile from "components/Profile";
-import { useAuth, useSearchUser, useTeamOKR } from "hooks/useRedux";
 import { useAuth } from "hooks/useRedux";
 import { useTeamOKR } from "hooks/useOKRRedux";
 import React, { useEffect, useState } from "react";
-import { searchList } from "utils/searchUtil";
-import SVG from "utils/SVG";
-import ObjectiveItem from "./ObjectiveItem";
+import OKRAccordion from "./OKRAccordion";
 import OKRGraph from "./OKRGraph";
-import TeamList from "./TeamList";
 
 export default function TeamOKR() {
   const { data: responseData = {}, isFetching, requset } = useTeamOKR();
@@ -80,21 +74,10 @@ export default function TeamOKR() {
                     </span>
                   )}
                 </div>
-                <div
-                  className="accordion accordion-toggle-arrow mb-10"
-                  id={`okr_ac_${member?.id}`}
-                >
-                  {member?.objective &&
-                    member?.objective.map(
-                      (objective: any, objectIndex: number) => (
-                        <ObjectiveItem
-                          objective={objective}
-                          objectIndex={objectIndex}
-                          animationIndex={member?.id}
-                        />
-                      )
-                    )}
-                </div>
+                <OKRAccordion
+                  objectives={member?.objective}
+                  user={member?.user}
+                />
               </>
             ))}
         </div>

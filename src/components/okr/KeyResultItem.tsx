@@ -2,17 +2,16 @@ import { statusToKo } from "constant/progress";
 import { useModal } from "hooks/useRedux";
 import React, { useEffect, useState } from "react";
 import SVG from "utils/SVG";
+import { Accordion } from "react-bootstrap";
 
 type KeyResultItemType = {
   objectIndex?: number;
-  animationIndex?: number;
   keyResult?: any;
   lastIndex: boolean;
 };
 
 export default function KeyResultItem({
   objectIndex,
-  animationIndex,
   keyResult = {},
   lastIndex,
 }: KeyResultItemType) {
@@ -26,11 +25,7 @@ export default function KeyResultItem({
     commentCount,
   } = keyResult;
   return (
-    <div
-      id={`okr_ac_${animationIndex}_body_${objectIndex}`}
-      className="collapse"
-      data-parent={`#okr_ac_${animationIndex}`}
-    >
+    <Accordion.Collapse eventKey={`${objectIndex}`}>
       <div className="card-body">
         <div className="font-size-base font-weight-bold mb-3 mt-1">
           Key Results
@@ -65,6 +60,6 @@ export default function KeyResultItem({
         </div>
         {!lastIndex && <div className="separator separator-solid my-3" />}
       </div>
-    </div>
+    </Accordion.Collapse>
   );
 }

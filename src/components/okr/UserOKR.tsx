@@ -1,32 +1,57 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import OKRSearchInput from "components/input/OKRSearchInput";
-import SearchListItem from "components/item/SearchListItem";
-import Profile from "components/Profile";
-import { useAuth, useMyOKR, useUserOKR } from "hooks/useRedux";
 import { useAuth, useModal } from "hooks/useRedux";
 import { useMyOKR, useUserOKR } from "hooks/useOKRRedux";
 import React, { useEffect, useState } from "react";
-import { Accordion } from "react-bootstrap";
-import { searchList } from "utils/searchUtil";
 import SVG from "utils/SVG";
-import ObjectiveItem from "./ObjectiveItem";
+import OKRAccordion from "./OKRAccordion";
 import OKRGraph from "./OKRGraph";
-import TeamList from "./TeamList";
 
 type UserOKRType = {
   isMy?: boolean;
 };
 
 export default function UserOKR({ isMy }: UserOKRType) {
-  let responseData;
+  let responseData: {
+    data?: any;
+    availableDates?: any;
+    year?: any;
+    quarter?: any;
+    user?: any;
+    extraData?: any;
+  };
   let isFetching;
   let requset: (arg0: number, arg1: number, arg2?: number) => void;
   if (isMy) ({ data: responseData, isFetching, requset } = useMyOKR());
   else ({ data: responseData, isFetching, requset } = useUserOKR());
-  const { data, availableDates, year, quarter } = responseData;
-  console.log("responseData", responseData);
-  console.log("data", data);
+  const { showModal } = useModal();
+  const { data, availableDates, year, quarter, user } = responseData;
   const [show, setShow] = useState(false);
+  const [isWrite, setIsWrite] = useState(false);
+  const [isModifiable, setIsModifiable] = useState(false);
+
+  useEffect(() => {
+    if (responseData?.extraData) {
+      const {
+        writeStartAt,
+        writeEndAt,
+        modifiableStartAt,
+        modifiableEndAt,
+      } = responseData.extraData;
+      const now = new Date();
+      const [writeStart, writeEnd, modifiableStart, modifiableEnd] = [
+        new Date(writeStartAt),
+        new Date(writeEndAt),
+        new Date(modifiableStartAt),
+        new Date(modifiableEndAt),
+      ];
+      writeStart.setHours(0, 0, 0, 0);
+      writeEnd.setHours(23, 59, 59, 999);
+      modifiableStart.setHours(0, 0, 0, 0);
+      modifiableEnd.setHours(23, 59, 59, 999);
+      setIsWrite(writeStart <= now && now <= writeEnd);
+      setIsModifiable(modifiableStart <= now && now <= modifiableEnd);
+    }
+  }, [responseData]);
 
   useEffect(() => {
     setShow(true);
@@ -76,38 +101,47 @@ export default function UserOKR({ isMy }: UserOKRType) {
               />
             </div>
           </div>
-          {!data && (
-            <div className="text-center my-10">
-              <p className="font-size-h5 mb-6">
-                {`${year}년 ${quarter}분기 OKR을 작성해 주세요.`}
-              </p>
-              <button
-                type="button"
-                className="btn btn-primary btn-sm"
-                data-toggle="layer"
-                data-target="#layer_createOKR"
-              >
-                <span className="svg-icon">
-                  <SVG name="write" />
-                </span>
-                OKR 작성
-              </button>
-            </div>
-          )}
+          {!data &&
+            (isWrite && isMy ? (
+              <div className="text-center my-10">
+                <p className="font-size-h5 mb-6">
+                  {`${year}년 ${quarter}분기 OKR을 작성해 주세요.`}
+                </p>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  data-toggle="layer"
+                  data-target="#layer_createOKR"
+                >
+                  <span className="svg-icon">
+                    <SVG name="write" />
+                  </span>
+                  OKR 작성
+                </button>
+              </div>
+            ) : (
+              <div className="text-center my-10">
+                <p className="font-size-h5 mb-6">
+                  {`${year}년 ${quarter}분기 OKR Data가 없습니다.`}
+                </p>
+              </div>
+            ))}
           {data && (
-            <div
-              className="accordion accordion-toggle-arrow mb-10"
-              id={`okr_ac_${data?.id}`}
-            >
-              {data?.objective &&
-                data?.objective.map((objective: any, objectIndex: number) => (
-                  <ObjectiveItem
-                    objective={objective}
-                    objectIndex={objectIndex}
-                    animationIndex={data?.id}
-                  />
-                ))}
-            </div>
+            <>
+              <OKRAccordion objectives={data?.objective} user={user} />
+              {isMy && (isWrite || isModifiable) && (
+                <div className="text-center mt-n4">
+                  <a
+                    href="javascript:;"
+                    className="svg-icon svg-icon-primary svg-icon-xxl"
+                    data-toggle="layer"
+                    data-target="#layer_createOKR"
+                  >
+                    <SVG name="plus" />
+                  </a>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

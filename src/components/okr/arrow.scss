@@ -1,0 +1,26 @@
+.accordion .card.data .card-header .card-title:after {
+  position: absolute;
+  font-family: Ki;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  content: "";
+  color: #3699FF;
+  font-size: 0.7rem;
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+ .accordion .card.data.off .card-header .card-title:after {
+  color: #3F4254;
+  -webkit-transition: all 0.15s ease;
+  transition: all 0.15s ease;
+  transform: rotate(-90deg);
+}
