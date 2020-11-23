@@ -1,7 +1,7 @@
 import UserOKR from "components/okr/UserOKR";
 import TeamList from "components/okr/TeamList";
 import TeamOKR from "components/okr/TeamOKR";
-import { useMyOKR, useTeamOKR } from "hooks/useRedux";
+import { useMyOKR, useTeamOKR, useUserOKR } from "hooks/useOKRRedux";
 import React, { useEffect } from "react";
 
 export default function OKR() {

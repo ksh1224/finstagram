@@ -10,13 +10,8 @@ import {
   commentLikeActionAsync,
   commentNewActionAsync,
   commentUpdateActionAsync,
-  searchUserActionAsync,
-  badgeListActionAsync,
   feedbackRequestActionAsync,
   feedbackSendActionAsync,
-  showModalAction,
-  closeModalAction,
-  ModalNameType,
   feedbackBadgeActionTypes,
   feedbackBadgeActionAsync,
   feedbackStatisticsActionAsync,
@@ -26,51 +21,6 @@ import {
   feedBadgeActionAsync,
   topRankerDetailActionAsync,
 } from "../store/actions";
-
-export function useAuth() {
-  const Auth = useSelector((state: RootState) => state.Auth);
-
-  const APIAuth = useSelector((state: RootState) => state.APIAuth);
-
-  return {
-    Auth,
-    APIAuth,
-  };
-}
-
-export function useSearchUser() {
-  const { isFetching, data } = useSelector(
-    (state: RootState) => state.searchUser
-  );
-  const dispatch = useDispatch();
-
-  const request = useCallback(() => dispatch(searchUserActionAsync.request()), [
-    dispatch,
-  ]);
-
-  return {
-    request,
-    data,
-    isFetching,
-  };
-}
-
-export function useBadgeList() {
-  const { isFetching, data } = useSelector(
-    (state: RootState) => state.badgeList
-  );
-  const dispatch = useDispatch();
-
-  const request = useCallback(() => dispatch(badgeListActionAsync.request()), [
-    dispatch,
-  ]);
-
-  return {
-    request,
-    data,
-    isFetching,
-  };
-}
 
 export function useTopRanker() {
   const { isFetching, data } = useSelector(
@@ -273,26 +223,6 @@ export function useMyFeedback() {
     feedbackBadgeFetching,
     feedbackStatisticsRequset,
     feedbackBadgeRequset,
-  };
-}
-
-export function useModal() {
-  const modals = useSelector((state: RootState) => state.modal);
-  const dispatch = useDispatch();
-
-  const showModal = useCallback(
-    (name: ModalNameType, param?: any) =>
-      dispatch(showModalAction(name, param)),
-    [dispatch]
-  );
-  const closeModal = useCallback(
-    (name: ModalNameType) => dispatch(closeModalAction(name)),
-    [dispatch]
-  );
-  return {
-    showModal,
-    closeModal,
-    modals,
   };
 }
 

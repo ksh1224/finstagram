@@ -3,7 +3,7 @@ import TopRankerItem from "components/item/TopRankerItem";
 import SearchInput from "components/input/FeedbackSearchInput";
 import SearchList from "components/feedback/SearchList";
 import TopRankerHeader from "components/feedback/TopRankerHeader";
-import { useTopRanker } from "hooks/useRedux";
+import { useTopRanker } from "hooks/useFeedBackRedux";
 import DataValidationContainer from "layouts/DataValidationContainer";
 
 type ArrayType = [

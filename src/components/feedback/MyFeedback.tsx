@@ -1,11 +1,13 @@
 import "scrollbar.css";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "hooks/useRedux";
+
 import {
-  useAuth,
   useSelectBadge,
   useMyFeedback,
   useFeedBadge,
-} from "hooks/useRedux";
+} from "hooks/useFeedBackRedux";
+
 import Profile from "components/Profile";
 import KTAppSettings from "constant/KTAppSettings";
 import SVG from "utils/SVG";

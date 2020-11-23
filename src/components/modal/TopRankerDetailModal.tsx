@@ -3,7 +3,8 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import Profile from "components/Profile";
 import { Modal } from "react-bootstrap";
-import { useModal, useTopRankerDetail } from "hooks/useRedux";
+import { useModal } from "hooks/useRedux";
+import { useTopRankerDetail } from "hooks/useFeedBackRedux";
 import React, { useEffect, useState, createRef } from "react";
 import SVG from "utils/SVG";
 import TopRankerItem, {

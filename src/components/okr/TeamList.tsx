@@ -2,6 +2,7 @@ import OKRSearchInput from "components/input/OKRSearchInput";
 import SearchListItem from "components/item/SearchListItem";
 import Profile from "components/Profile";
 import { useSearchUser } from "hooks/useRedux";
+import { useTeamOKR, useUserOKR } from "hooks/useOKRRedux";
 import React, { useEffect, useState } from "react";
 import { searchList } from "utils/searchUtil";
 import SVG from "utils/SVG";

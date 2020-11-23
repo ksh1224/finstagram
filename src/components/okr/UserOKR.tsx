@@ -3,6 +3,8 @@ import OKRSearchInput from "components/input/OKRSearchInput";
 import SearchListItem from "components/item/SearchListItem";
 import Profile from "components/Profile";
 import { useAuth, useMyOKR, useUserOKR } from "hooks/useRedux";
+import { useAuth, useModal } from "hooks/useRedux";
+import { useMyOKR, useUserOKR } from "hooks/useOKRRedux";
 import React, { useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { searchList } from "utils/searchUtil";

@@ -3,7 +3,8 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import "scrollbar.css";
 import Profile from "components/Profile";
-import { useModal, useSearchUser, useAuth, useFeedback } from "hooks/useRedux";
+import { useModal, useSearchUser, useAuth } from "hooks/useRedux";
+import { useFeedback } from "hooks/useFeedBackRedux";
 import React, { useEffect, useState, createRef } from "react";
 import { searchList } from "utils/searchUtil";
 import SVG from "utils/SVG";

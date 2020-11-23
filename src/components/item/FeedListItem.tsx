@@ -1,7 +1,7 @@
 import Profile from "components/Profile";
 import SVG from "utils/SVG";
 import React, { useEffect, useState } from "react";
-import { useComment } from "hooks/useRedux";
+import { useComment } from "hooks/useFeedBackRedux";
 import CommentItem, { CommentDataType } from "./CommentItem";
 
 export type DataType = {

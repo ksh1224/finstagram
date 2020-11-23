@@ -4,7 +4,7 @@ import {
   useFeedRecent,
   useFeedReceived,
   useFeedSent,
-} from "hooks/useRedux";
+} from "hooks/useFeedBackRedux";
 import TopRanker from "components/feedback/TopRanker";
 import FeedList from "components/feedback/FeedList";
 import MyFeedback from "components/feedback/MyFeedback";

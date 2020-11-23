@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import FeedListItem, { DataType } from "components/item/FeedListItem";
+import { useSelectBadge } from "hooks/useRedux";
+
 import {
   useFeedBadge,
   useFeedReceived,
   useFeedRecent,
   useFeedSent,
-  useSelectBadge,
-} from "hooks/useRedux";
+} from "hooks/useFeedBackRedux";
+
 import SVG from "utils/SVG";
 import DataValidationContainer from "layouts/DataValidationContainer";
 
