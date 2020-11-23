@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { createAsyncAction } from "typesafe-actions";
 
 const COMMENT_REQUEST = "COMMENT_REQUEST";
@@ -24,7 +25,7 @@ export const commentActionAsync = createAsyncAction(
   COMMENT_REQUEST,
   COMMENT_SUCCESS,
   COMMENT_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const commentActionTypes = {
   COMMENT_REQUEST,
@@ -36,7 +37,7 @@ export const commentNewActionAsync = createAsyncAction(
   COMMENT_NEW_REQUEST,
   COMMENT_NEW_SUCCESS,
   COMMENT_NEW_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const commentNewActionTypes = {
   COMMENT_NEW_REQUEST,
@@ -48,7 +49,7 @@ export const commentLikeActionAsync = createAsyncAction(
   COMMENT_LIKE_REQUEST,
   COMMENT_LIKE_SUCCESS,
   COMMENT_LIKE_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const commentLikeActionTypes = {
   COMMENT_LIKE_REQUEST,
@@ -60,7 +61,7 @@ export const commentDeleteActionAsync = createAsyncAction(
   COMMENT_DELETE_REQUEST,
   COMMENT_DELETE_SUCCESS,
   COMMENT_DELETE_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const commentDeleteActionTypes = {
   COMMENT_DELETE_REQUEST,
@@ -72,7 +73,7 @@ export const commentUpdateActionAsync = createAsyncAction(
   COMMENT_UPDATE_REQUEST,
   COMMENT_UPDATE_SUCCESS,
   COMMENT_UPDATE_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const commentUpdateActionTypes = {
   COMMENT_UPDATE_REQUEST,

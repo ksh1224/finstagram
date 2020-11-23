@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import * as actions from "store/actions";
 import rootReducer from "store/reducers";
 import { ActionType } from "typesafe-actions";
@@ -14,7 +15,7 @@ declare global {
   interface DefaultState {
     data: any;
     isFetching: boolean;
-    error: any;
+    error: AxiosError | null;
   }
 
   type FeedbackSendType = {

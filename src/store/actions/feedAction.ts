@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { createAsyncAction } from "typesafe-actions";
 
 const FEED_RECENT_REQUEST = "FEED_RECENT_REQUEST";
@@ -20,7 +21,7 @@ export const feedRecentActionAsync = createAsyncAction(
   FEED_RECENT_REQUEST,
   FEED_RECENT_SUCCESS,
   FEED_RECENT_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 export const feedRecentActionTypes = {
   FEED_RECENT_REQUEST,
   FEED_RECENT_SUCCESS,
@@ -31,7 +32,7 @@ export const feedRecivedActionAsync = createAsyncAction(
   FEED_RECEIVED_REQUEST,
   FEED_RECEIVED_SUCCESS,
   FEED_RECEIVED_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 export const feedRecivedActionTypes = {
   FEED_RECEIVED_REQUEST,
   FEED_RECEIVED_SUCCESS,
@@ -42,7 +43,7 @@ export const feedSentActionAsync = createAsyncAction(
   FEED_SENT_REQUEST,
   FEED_SENT_SUCCESS,
   FEED_SENT_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 export const feedSentActionTypes = {
   FEED_SENT_REQUEST,
   FEED_SENT_SUCCESS,
@@ -53,7 +54,7 @@ export const feedBadgeActionAsync = createAsyncAction(
   FEED_BADGE_REQUEST,
   FEED_BADGE_SUCCESS,
   FEED_BADGE_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 export const feedBadgeActionTypes = {
   FEED_BADGE_REQUEST,
   FEED_BADGE_SUCCESS,

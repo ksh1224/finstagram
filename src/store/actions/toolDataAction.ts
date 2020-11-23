@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { createAction, createAsyncAction } from "typesafe-actions";
 
 const SEARCH_USER_REQUEST = "SEARCH_USER_REQUEST";
@@ -15,7 +16,7 @@ export const searchUserActionAsync = createAsyncAction(
   SEARCH_USER_REQUEST,
   SEARCH_USER_SUCCESS,
   SEARCH_USER_FAIL
-)<void, any, Error>();
+)<void, any, AxiosError>();
 export const searchUserActionTypes = {
   SEARCH_USER_REQUEST,
   SEARCH_USER_SUCCESS,
@@ -26,7 +27,7 @@ export const badgeListActionAsync = createAsyncAction(
   BADGE_LIST_REQUEST,
   BADGE_LIST_SUCCESS,
   BADGE_LIST_FAIL
-)<void, any, Error>();
+)<void, any, AxiosError>();
 export const badgeListActionTypes = {
   BADGE_LIST_REQUEST,
   BADGE_LIST_SUCCESS,

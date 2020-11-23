@@ -1,9 +1,10 @@
+import { AxiosError } from "axios";
 import { createReducer } from "typesafe-actions";
 
 type State = {
   user: any;
   isFetching: boolean;
-  error: any;
+  error: AxiosError | null;
 };
 
 const initialState = {
@@ -23,7 +24,7 @@ export default createReducer<State, Actions>(initialState, {
     error: null,
     isFetching: false,
   }),
-  API_LOGIN_ERROR: (state, action) => ({
+  API_LOGIN_FAIL: (state, action) => ({
     user: null,
     error: action.payload,
     isFetching: false,

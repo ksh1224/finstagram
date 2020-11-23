@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { createReducer } from "typesafe-actions";
 
 const initialState = {
@@ -9,7 +10,7 @@ const initialState = {
 type State = {
   success: boolean;
   isFetching: boolean;
-  error: any;
+  error: AxiosError | null;
 };
 
 export default createReducer<State, Actions>(initialState, {

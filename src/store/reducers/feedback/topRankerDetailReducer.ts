@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { createReducer } from "typesafe-actions";
 
 type State = {
@@ -6,7 +7,7 @@ type State = {
   availableDates: any;
   availableOptions: any;
   isFetching: boolean;
-  error: any;
+  error: AxiosError | null;
 };
 const initialState = {
   data: null,

@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { createAsyncAction } from "typesafe-actions";
 
 const OKR_MAIN_REQUEST = "OKR_MAIN_REQUEST";
@@ -21,7 +22,7 @@ export const okrMainActionAsync = createAsyncAction(
   OKR_MAIN_REQUEST,
   OKR_MAIN_SUCCESS,
   OKR_MAIN_FAIL
-)<FeedbackRequestType, any, Error>();
+)<FeedbackRequestType, any, AxiosError>();
 
 export const okrMainActionTypes = {
   OKR_MAIN_REQUEST,
@@ -33,7 +34,7 @@ export const teamOKRActionAsync = createAsyncAction(
   TEAM_OKR_REQUEST,
   TEAM_OKR_SUCCESS,
   TEAM_OKR_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const teamOKRActionTypes = {
   TEAM_OKR_REQUEST,
@@ -45,7 +46,7 @@ export const myOKRActionAsync = createAsyncAction(
   MY_OKR_REQUEST,
   MY_OKR_SUCCESS,
   MY_OKR_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const myOKRActionTypes = {
   MY_OKR_REQUEST,
@@ -58,7 +59,7 @@ export const userOKRActionAsync = createAsyncAction(
   USER_OKR_SUCCESS,
   USER_OKR_FAIL,
   USER_OKR_CANCEL
-)<any, any, Error, void>();
+)<any, any, AxiosError, void>();
 
 export const userOKRActionTypes = {
   USER_OKR_REQUEST,

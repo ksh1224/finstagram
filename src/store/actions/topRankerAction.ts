@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { createAsyncAction } from "typesafe-actions";
 
 const TOP_RANKER_REQUEST = "TOP_RANKER_REQUEST";
@@ -12,7 +13,7 @@ export const topRankerActionAsync = createAsyncAction(
   TOP_RANKER_REQUEST,
   TOP_RANKER_SUCCESS,
   TOP_RANKER_FAIL
-)<void, any, Error>();
+)<void, any, AxiosError>();
 
 export const topRankerActionTypes = {
   TOP_RANKER_REQUEST,
@@ -24,7 +25,7 @@ export const topRankerDetailActionAsync = createAsyncAction(
   TOP_RANKER_DETAIL_REQUEST,
   TOP_RANKER_DETAIL_SUCCESS,
   TOP_RANKER_DETAIL_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const topRankerDetailActionTypes = {
   TOP_RANKER_DETAIL_REQUEST,

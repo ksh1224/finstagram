@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { createAsyncAction } from "typesafe-actions";
 
 const FEEDBACK_STATISTICS_REQUEST = "FEEDBACK_STATISTICS_REQUEST";
@@ -12,7 +13,7 @@ export const feedbackBadgeActionAsync = createAsyncAction(
   FEEDBACK_BADGE_REQUEST,
   FEEDBACK_BADGE_SUCCESS,
   FEEDBACK_BADGE_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const feedbackBadgeActionTypes = {
   FEEDBACK_BADGE_REQUEST,
@@ -24,7 +25,7 @@ export const feedbackStatisticsActionAsync = createAsyncAction(
   FEEDBACK_STATISTICS_REQUEST,
   FEEDBACK_STATISTICS_SUCCESS,
   FEEDBACK_STATISTICS_FAIL
-)<any, any, Error>();
+)<any, any, AxiosError>();
 
 export const feedbackStatisticsActionTypes = {
   FEEDBACK_STATISTICS_REQUEST,
