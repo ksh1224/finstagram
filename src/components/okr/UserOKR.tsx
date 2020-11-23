@@ -59,15 +59,85 @@ export default function UserOKR({ isMy }: UserOKRType) {
 
   function changeDate(changeYear: number, changeQuarter: number) {
     setShow(false);
-    requset(changeYear, changeQuarter);
+    requset(changeYear, changeQuarter, user?.id);
     setTimeout(() => setShow(true), 200);
   }
 
   return (
-    <div className="section-group-2 col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column">
+    <div
+      className={
+        isMy
+          ? "section-group-2 col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column"
+          : "section-2 col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column px-0"
+      }
+    >
       <div className="card card-custom card-stretch rounded-bottom-0">
         <div className="card-header border-0">
-          <h3 className="card-title font-weight-bolder">My OKR</h3>
+          <h3 className="card-title font-weight-bolder">
+            {isMy ? "My OKR" : `${user?.name} OKR`}
+          </h3>
+
+          {!isMy && (
+            <div className="fb-btn-group d-flex w-100px flex-grow-1 align-items-center">
+              <a
+                className="btn btn-text-dark-50 btn-icon-gray btn-hover-icon-primary text-hover-primary font-weight-bold btn-sm text-left p-0 align-items-center mx-5 d-none"
+                href="javascript:;"
+                data-toggle="modal"
+                data-target="#modal_sendFeedback"
+                onClick={() => showModal("sendFeedback", user)}
+              >
+                <span className="svg-icon svg-icon-md mr-3">
+                  <SVG name="sendMessage" />
+                </span>
+                피드백 보내기
+              </a>
+              <a
+                className="btn btn-text-dark-50 btn-icon-gray btn-hover-icon-primary text-hover-primary font-weight-bold btn-sm text-left p-0 align-items-center mx-5 d-none"
+                href="javascript:;"
+                data-toggle="modal"
+                data-target="#modal_requestFeedback"
+                onClick={() => showModal("requestFeedback", user)}
+              >
+                <span className="svg-icon svg-icon-md mr-3">
+                  <SVG name="requestMessage" />
+                </span>
+                피드백 요청하기
+              </a>
+              <div className="dropdown dropdown-inline">
+                <button
+                  type="button"
+                  className="btn btn-lg btn-hover-icon-primary bg-hover-light font-weight-bolder rounded font-size-sm p-2 ml-2"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span className="svg-icon m-0">
+                    <SVG name="message" />
+                  </span>
+                </button>
+                <div className="dropdown-menu">
+                  <a
+                    className="dropdown-item"
+                    href="javascript:;"
+                    data-toggle="modal"
+                    data-target="#modal_sendFeedback"
+                    onClick={() => showModal("sendFeedback", user)}
+                  >
+                    피드백 보내기
+                  </a>
+                  <a
+                    className="dropdown-item"
+                    href="javascript:;"
+                    data-toggle="modal"
+                    data-target="#modal_requestFeedback"
+                    onClick={() => showModal("requestFeedback", user)}
+                  >
+                    피드백 요청하기
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="card-toolbar">
             <select
               onChange={({ target }) => {
