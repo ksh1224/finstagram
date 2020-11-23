@@ -26,7 +26,7 @@ export default function TeamOKR() {
     <div className="section-2 col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column px-0">
       <div className="card card-custom card-stretch rounded-bottom-0 shadow-none">
         <div className="card-header border-0">
-          <h3 className="card-title font-weight-bolder">My OKR</h3>
+          <h3 className="card-title font-weight-bolder">Team OKR</h3>
           <div className="card-toolbar">
             <select
               onChange={({ target }) => {
@@ -60,6 +60,13 @@ export default function TeamOKR() {
               />
             </div>
           </div>
+          {(!memberData || memberData.length === 0) && (
+            <div className="text-center my-10">
+              <p className="font-size-h5 mb-6">
+                {`${year}년 ${quarter}분기 OKR Data가 없습니다.`}
+              </p>
+            </div>
+          )}
           {memberData &&
             memberData.map((member: any) => (
               <>
