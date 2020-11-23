@@ -12,6 +12,15 @@ export default function TeamList() {
   const [text, setText] = useState("");
   const [list, setList] = useState<SearchItemType[]>([]);
   const { data } = useSearchUser();
+  const {
+    data: userOKRData,
+    cancel,
+    requset,
+    isFetching,
+    error,
+  } = useUserOKR();
+  const { data: teamOKRData = {} } = useTeamOKR();
+  const { year, quarter } = teamOKRData;
 
   useEffect(() => {
     if (text && text.trim() !== "") {
@@ -20,8 +29,17 @@ export default function TeamList() {
       if (!data) return;
       const searchData = searchList(data.user, search);
       setList(searchData);
-    } else setShow(false);
+    } else {
+      setShow(false);
+      cancel();
+    }
   }, [text]);
+
+  useEffect(() => {
+    if (error) {
+      alert(error.response?.data?.message);
+    }
+  }, [error]);
 
   return (
     <div className="section-1 col-auto h-sm-100 w-250px d-flex flex-column border-right px-0">
@@ -122,7 +140,11 @@ export default function TeamList() {
             }`}
           >
             {list.map((user) => (
-              <SearchListItem key={user.id} user={user} />
+              <SearchListItem
+                key={user.id}
+                user={user}
+                onClick={() => requset(year, quarter, user.id)}
+              />
             ))}
           </div>
         </div>

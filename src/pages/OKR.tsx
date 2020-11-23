@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 export default function OKR() {
   const { requset: teamOKRRequset } = useTeamOKR();
   const { requset: myOKRRequset } = useMyOKR();
+  const { data } = useUserOKR();
   useEffect(() => {
     teamOKRRequset();
     myOKRRequset();
@@ -20,7 +21,7 @@ export default function OKR() {
         <div className="section-group-1 col-auto flex-grow-1 w-100px h-100">
           <div className="card card-custom flex-row h-100">
             <TeamList />
-            <TeamOKR />
+            {data ? <UserOKR /> : <TeamOKR />}
           </div>
         </div>
         <UserOKR isMy />
