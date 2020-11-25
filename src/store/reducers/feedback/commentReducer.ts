@@ -4,25 +4,25 @@ import { createReducer } from "typesafe-actions";
 type State = {
   comments: any;
   isFetching: boolean;
-  error: AxiosError | null;
+  error: AxiosError | undefined;
 };
 
 const initialState = {
   comments: [],
   isFetching: false,
-  error: null,
+  error: undefined,
 };
 
 export default createReducer<State, Actions>(initialState, {
   COMMENT_REQUEST: (state) => ({
     ...state,
     isFetching: true,
-    error: null,
+    error: undefined,
   }),
   COMMENT_SUCCESS: (state, action) => ({
     comments: action.payload,
     isFetching: false,
-    error: null,
+    error: undefined,
   }),
   COMMENT_FAIL: (state, action) => ({
     ...state,
@@ -32,13 +32,13 @@ export default createReducer<State, Actions>(initialState, {
   // FEED_SENT_REQUEST: (state) => ({
   //   ...state,
   //   isFetching: true,
-  //   error: null,
+  //   error: undefined,
   // }),
   // FEED_SENT_SUCCESS: (state, action) => ({
   //   ...state,
   //   data: action.payload,
   //   isFetching: false,
-  //   error: null,
+  //   error: undefined,
   // }),
   // FEED_SENT_FAIL: (state, action) => ({
   //   ...state,

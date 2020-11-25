@@ -4,7 +4,7 @@ import { createReducer } from "typesafe-actions";
 type SelcetBadge = { badgeData?: any | null };
 
 const initialState: SelcetBadge = {
-  badgeData: null,
+  badgedata: undefined,
 };
 
 export default createReducer<SelcetBadge, Actions>(initialState, {

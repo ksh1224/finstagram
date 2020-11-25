@@ -7,22 +7,22 @@ type State = {
   availableDates: any;
   availableOptions: any;
   isFetching: boolean;
-  error: AxiosError | null;
+  error: AxiosError | undefined;
 };
 const initialState = {
-  data: null,
-  extraData: null,
+  data: undefined,
+  extradata: undefined,
   availableDates: null,
   availableOptions: null,
   isFetching: false,
-  error: null,
+  error: undefined,
 };
 
 export default createReducer<State, Actions>(initialState, {
   TOP_RANKER_DETAIL_REQUEST: (state) => ({
     ...state,
     isFetching: true,
-    error: null,
+    error: undefined,
   }),
   TOP_RANKER_DETAIL_SUCCESS: (state, action) => ({
     data: action.payload.data,
@@ -30,7 +30,7 @@ export default createReducer<State, Actions>(initialState, {
     availableDates: action.payload.availableDates,
     availableOptions: action.payload.availableOptions,
     isFetching: false,
-    error: null,
+    error: undefined,
   }),
   TOP_RANKER_DETAIL_FAIL: (state, action) => ({
     ...state,

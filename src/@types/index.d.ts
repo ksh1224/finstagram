@@ -15,7 +15,7 @@ declare global {
   interface DefaultState {
     data: any;
     isFetching: boolean;
-    error: AxiosError | null;
+    error: AxiosError | undefined;
   }
 
   type FeedbackSendType = {

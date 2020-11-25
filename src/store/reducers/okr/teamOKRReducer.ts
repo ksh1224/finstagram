@@ -1,24 +1,24 @@
 import { createReducer } from "typesafe-actions";
 
 const initialState = {
-  data: false,
+  data: undefined,
   isFetching: false,
-  error: null,
+  error: undefined,
 };
 
 export default createReducer<DefaultState, Actions>(initialState, {
   TEAM_OKR_REQUEST: (state) => ({
     ...state,
     isFetching: true,
-    error: null,
+    error: undefined,
   }),
   TEAM_OKR_SUCCESS: (state, action) => ({
     data: action.payload,
-    error: null,
+    error: undefined,
     isFetching: false,
   }),
   TEAM_OKR_FAIL: (state, action) => ({
-    data: null,
+    data: undefined,
     error: action.payload,
     isFetching: false,
   }),

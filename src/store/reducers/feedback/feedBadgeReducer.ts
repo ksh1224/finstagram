@@ -6,29 +6,29 @@ type State = {
   currentPage: number | null;
   totalPages: number | null;
   isFetching: boolean;
-  error: AxiosError | null;
+  error: AxiosError | undefined;
 };
 
 const initialState = {
-  data: null,
+  data: undefined,
   currentPage: null,
   totalPages: null,
   isFetching: false,
-  error: null,
+  error: undefined,
 };
 
 export default createReducer<DefaultState, Actions>(initialState, {
   FEED_BADGE_REQUEST: (state) => ({
     ...state,
     isFetching: true,
-    error: null,
+    error: undefined,
   }),
   FEED_BADGE_SUCCESS: (state, action) => ({
     data: action.payload.data,
     currentPage: action.payload.currentPage,
     totalPages: action.payload.totalPages,
     isFetching: false,
-    error: null,
+    error: undefined,
   }),
   FEED_BADGE_FAIL: (state, action) => ({
     ...state,

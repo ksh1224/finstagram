@@ -1,21 +1,21 @@
 import { createReducer } from "typesafe-actions";
 
 const initialState = {
-  data: null,
+  data: undefined,
   isFetching: false,
-  error: null,
+  error: undefined,
 };
 
 export default createReducer<DefaultState, Actions>(initialState, {
   BADGE_LIST_REQUEST: (state) => ({
     ...state,
     isFetching: true,
-    error: null,
+    error: undefined,
   }),
   BADGE_LIST_SUCCESS: (state, action) => ({
     data: action.payload,
     isFetching: false,
-    error: null,
+    error: undefined,
   }),
   BADGE_LIST_FAIL: (state, action) => ({
     ...state,
