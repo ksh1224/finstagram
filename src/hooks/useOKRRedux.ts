@@ -10,14 +10,14 @@ export function useMyOKR() {
   const { data, isFetching } = useSelector((state: RootState) => state.myOKR);
 
   const dispatch = useDispatch();
-  const requset = useCallback(
+  const request = useCallback(
     (year?, quarter?) => dispatch(myOKRActionAsync.request({ year, quarter })),
     [dispatch]
   );
   return {
     data,
     isFetching,
-    requset,
+    request,
   };
 }
 export function useUserOKR() {
@@ -26,7 +26,7 @@ export function useUserOKR() {
   );
 
   const dispatch = useDispatch();
-  const requset = useCallback(
+  const request = useCallback(
     (year?, quarter?, userId?) =>
       dispatch(userOKRActionAsync.request({ year, quarter, userId })),
     [dispatch]
@@ -37,7 +37,7 @@ export function useUserOKR() {
   return {
     data,
     isFetching,
-    requset,
+    request,
     cancel,
     error,
   };
@@ -46,14 +46,46 @@ export function useTeamOKR() {
   const { data, isFetching } = useSelector((state: RootState) => state.teamOKR);
 
   const dispatch = useDispatch();
-  const requset = useCallback(
-    (year?, quarter?, organizationId?) =>
-      dispatch(teamOKRActionAsync.request({ year, quarter, organizationId })),
+  const request = useCallback(
+    (year?, quarter?, organizationId?, organizationName?) =>
+      dispatch(
+        teamOKRActionAsync.request({
+          year,
+          quarter,
+          organizationId,
+          organizationName,
+        })
+      ),
     [dispatch]
   );
   return {
     data,
     isFetching,
-    requset,
+    request,
+  };
+}
+
+export function useRefreshOKRData() {
+  const { request: teamOKRRequest, data: teamOKRData = {} } = useTeamOKR();
+  const { request: myOKRRequest, data: myOKRData = {} } = useMyOKR();
+  const { request: userOKRRequest, data: userOKRData = {} } = useUserOKR();
+  const refreshOKRData = () => {
+    if (teamOKRData)
+      teamOKRRequest(
+        teamOKRData.year,
+        teamOKRData.quarter,
+        teamOKRData.organizationId
+      );
+    if (myOKRData) myOKRRequest(myOKRData.year, myOKRData.quarter);
+    if (userOKRData.user?.id)
+      userOKRRequest(
+        userOKRData.year,
+        userOKRData.quarter,
+        userOKRData.user?.id
+      );
+  };
+
+  return {
+    refreshOKRData,
   };
 }

@@ -5,9 +5,12 @@ import {
   badgeListActionAsync,
   showModalAction,
   closeModalAction,
+  setActiveHelp,
+  setActivePush,
   ModalNameType,
   cancelSelectBadgeAction,
   selectBadgeAction,
+  notificationActionAsync,
 } from "../store/actions";
 
 export function useAuth() {
@@ -92,5 +95,23 @@ export function useSelectBadge() {
     selectBadge,
     cancelBadge,
     selectBadgeData,
+  };
+}
+
+export function useNotification() {
+  const { data, currentPage, isFetching, totalPages } = useSelector(
+    (state: RootState) => state.notification
+  );
+  const dispatch = useDispatch();
+  const request = useCallback(
+    (page: number) => dispatch(notificationActionAsync.request(page)),
+    [dispatch]
+  );
+  return {
+    request,
+    data,
+    currentPage,
+    isFetching,
+    totalPages,
   };
 }
