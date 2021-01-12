@@ -4,6 +4,7 @@ import CustomError from "utils/errorUtil";
 import {
   APILogInActionAsync,
   badgeListActionAsync,
+  notificationActionAsync,
   searchUserActionAsync,
 } from "store/actions";
 
@@ -19,12 +20,14 @@ export default function* APIAuthSaga(): Generator<any, void, ObjectType> {
       const { data: user } = yield call(axios, "/user/login", "POST");
       yield put(APILogInActionAsync.success(user));
       yield put(searchUserActionAsync.request());
+      yield put(notificationActionAsync.request(null));
       yield put(badgeListActionAsync.request());
     } else {
       if (token) CustomError(token);
       throw new Error("유저 토큰이 없습니다");
     }
   } catch (error) {
+    console.log("error", error);
     yield put(APILogInActionAsync.failure(error));
   }
 }
