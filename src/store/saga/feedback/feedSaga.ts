@@ -13,50 +13,93 @@ export function* feedRecentSaga(
 ): Generator<any, void, ObjectType> {
   try {
     const { user } = yield select((state: RootState) => state.APIAuth);
-    const data = yield call(
-      axios,
-      `/feedbacks/main/recent?user_id=${user?.id}${
-        page ? `&page=${page}` : ""
-      }`,
-      "GET"
+    const { data: prevData = [] } = yield select(
+      (state: RootState) => state.feedRecent
     );
-    yield put(feedRecentActionAsync.success(data));
+    if (page) {
+      const data = yield call(
+        axios,
+        `/feedbacks/main/recent?user_id=${user?.id}${`&page=${page}`}`,
+        "GET"
+      );
+      yield put(
+        feedRecentActionAsync.success({
+          ...data,
+          data: [...prevData, ...data?.data],
+        })
+      );
+    } else {
+      const data = yield call(
+        axios,
+        `/feedbacks/main/recent?user_id=${user?.id}`,
+        "GET"
+      );
+      yield put(feedRecentActionAsync.success(data));
+    }
   } catch (error) {
     yield put(feedRecentActionAsync.failure(error));
   }
 }
 
 export function* feedReceivedSaga(
-  year?: number,
-  quarter?: number
+  page?: number
 ): Generator<any, void, ObjectType> {
   try {
-    const data = yield call(
-      axios,
-      `/feedbacks/received${
-        year && quarter ? `?year=${year}&quarter=${quarter}` : ""
-      }`,
-      "GET"
+    const { user } = yield select((state: RootState) => state.APIAuth);
+    const { data: prevData = [] } = yield select(
+      (state: RootState) => state.feedReceived
     );
-    yield put(feedRecivedActionAsync.success(data));
+    if (page) {
+      const data = yield call(
+        axios,
+        `/feedbacks/received/list?user_id=${user?.id}${`&page=${page}`}`,
+        "GET"
+      );
+      yield put(
+        feedRecivedActionAsync.success({
+          ...data,
+          data: [...prevData, ...data?.data],
+        })
+      );
+    } else {
+      const data = yield call(
+        axios,
+        `/feedbacks/received/list?user_id=${user?.id}`,
+        "GET"
+      );
+      yield put(feedRecivedActionAsync.success(data));
+    }
   } catch (error) {
     yield put(feedRecivedActionAsync.failure(error));
   }
 }
 
-export function* feedSentSaga(
-  year?: number,
-  quarter?: number
-): Generator<any, void, ObjectType> {
+export function* feedSentSaga(page?: number): Generator<any, void, ObjectType> {
   try {
-    const data = yield call(
-      axios,
-      `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        quarter ? `${year ? "&" : "?"}quarter=${quarter}` : ""
-      }`,
-      "GET"
+    const { user } = yield select((state: RootState) => state.APIAuth);
+    const { data: prevData = [] } = yield select(
+      (state: RootState) => state.feedSent
     );
-    yield put(feedSentActionAsync.success(data));
+    if (page) {
+      const data = yield call(
+        axios,
+        `/feedbacks/sent/list?user_id=${user?.id}${`&page=${page}`}`,
+        "GET"
+      );
+      yield put(
+        feedSentActionAsync.success({
+          ...data,
+          data: [...prevData, ...data?.data],
+        })
+      );
+    } else {
+      const data = yield call(
+        axios,
+        `/feedbacks/sent/list?user_id=${user?.id}`,
+        "GET"
+      );
+      yield put(feedSentActionAsync.success(data));
+    }
   } catch (error) {
     yield put(feedSentActionAsync.failure(error));
   }

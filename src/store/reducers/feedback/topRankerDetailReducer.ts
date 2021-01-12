@@ -11,7 +11,7 @@ type State = {
 };
 const initialState = {
   data: undefined,
-  extradata: undefined,
+  extraData: undefined,
   availableDates: null,
   availableOptions: null,
   isFetching: false,

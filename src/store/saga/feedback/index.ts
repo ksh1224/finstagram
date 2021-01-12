@@ -4,7 +4,8 @@ import {
   feedRecentActionTypes,
   feedRecivedActionTypes,
   feedSentActionTypes,
-  commentActionTypes,
+  feedOneUpdateActionTypes,
+  feedOneDeleteActionTypes,
   badgeListActionTypes,
   feedbackSendActionTypes,
   feedbackRequestActionTypes,
@@ -19,7 +20,7 @@ import {
   feedSentSaga,
   feedBadgeSaga,
 } from "./feedSaga";
-import commentSaga from "./commentSaga";
+import { feedOneDeleteSaga, feedOneUpdateSaga } from "./feedOneSaga";
 import badgeListSaga from "./badgeListSaga";
 import { feedbackSendSaga, feedbackRequestSaga } from "./feedbackSaga";
 import feedbackStatisticsSaga from "./feedbackStatisticsSaga";
@@ -40,13 +41,12 @@ export default function* watchFeedback() {
   );
   yield takeEvery(
     feedRecivedActionTypes.FEED_RECEIVED_REQUEST,
-    ({ payload }: { type: string; payload: ObjectType }) =>
-      feedReceivedSaga(payload?.year, payload?.quarter)
+    ({ payload }: { type: string; payload?: number }) =>
+      feedReceivedSaga(payload)
   );
   yield takeEvery(
     feedSentActionTypes.FEED_SENT_REQUEST,
-    ({ payload }: { type: string; payload?: ObjectType }) =>
-      feedSentSaga(payload?.year, payload?.quarter)
+    ({ payload }: { type: string; payload?: number }) => feedSentSaga(payload)
   );
   yield takeEvery(
     feedBadgeActionTypes.FEED_BADGE_REQUEST,
@@ -61,17 +61,29 @@ export default function* watchFeedback() {
         payload.targetUser,
         payload.selectBadge,
         payload.contents,
-        payload.file
+        payload.file,
+        payload.id
       )
   );
   yield takeEvery(
     feedbackRequestActionTypes.FEEDBACK_REQUEST_REQUEST,
     ({ payload }: { type: string; payload: FeedbackRequestType }) =>
-      feedbackRequestSaga(payload.targetUsers, payload.contents, payload.file)
+      feedbackRequestSaga(
+        payload.targetUsers,
+        payload.contents,
+        payload.file,
+        payload.id
+      )
   );
   yield takeEvery(
-    commentActionTypes.COMMENT_REQUEST,
-    ({ payload }: { type: string; payload: number }) => commentSaga(payload)
+    feedOneUpdateActionTypes.FEED_ONE_UPATE_REQUEST,
+    ({ payload }: { type: string; payload: number }) =>
+      feedOneUpdateSaga(payload)
+  );
+  yield takeEvery(
+    feedOneDeleteActionTypes.FEED_ONE_DELETE_REQUEST,
+    ({ payload }: { type: string; payload: number }) =>
+      feedOneDeleteSaga(payload)
   );
   yield takeEvery(
     feedbackStatisticsActionTypes.FEEDBACK_STATISTICS_REQUEST,

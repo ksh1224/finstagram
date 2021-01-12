@@ -2,15 +2,12 @@ import { call, put, select, take } from "redux-saga/effects";
 
 import axios from "utils/axiosUtil";
 import {
-  commentActionAsync,
-  commentDeleteActionAsync,
-  commentLikeActionAsync,
-  commentNewActionAsync,
   feedRecentActionAsync,
   feedRecivedActionAsync,
   feedSentActionAsync,
   feedbackSendActionAsync,
   feedbackRequestActionAsync,
+  topRankerActionAsync,
 } from "store/actions";
 
 export function* feedbackSendSaga(
@@ -18,17 +15,21 @@ export function* feedbackSendSaga(
   targetUser: any,
   badge?: any,
   contents?: string,
-  file?: any
+  file?: any,
+  id?: number
 ): Generator<any, void, ObjectType> {
   try {
-    const { comments } = yield select((state: RootState) => state.comment);
     const { user } = yield select((state: RootState) => state.APIAuth);
 
     const formData = new FormData();
     if (type === "PRAISE") formData.append("feedbackBadge_id", badge.id);
     formData.append("type", type);
-    formData.append("sendUser_id", user.id);
-    formData.append("receiveUser_id", targetUser.id);
+    if (id) {
+      formData.append("id", `${id}`);
+    } else {
+      formData.append("sendUser_id", user.id);
+      formData.append("receiveUser_id", targetUser.id);
+    }
     if (contents) formData.append("contents", contents);
     formData.append("category", "CONTRIBUTION");
     formData.append("peerBonus_amount", "0");
@@ -37,15 +38,17 @@ export function* feedbackSendSaga(
       formData.append("file", file);
       formData.append("fileName", file.name);
     }
-    const { data } = yield call(
+    const data = yield call(
       axios,
-      `/feedbacks/new/basic`,
+      id ? "/feedbacks/update/basic" : "/feedbacks/new/basic",
       "POST",
       formData
     );
+    console.log("data123", data);
     yield put(feedRecentActionAsync.request(null));
     yield put(feedRecivedActionAsync.request(null));
     yield put(feedSentActionAsync.request(null));
+    yield put(topRankerActionAsync.request());
     yield put(feedbackSendActionAsync.success(null));
   } catch (error) {
     yield put(feedbackSendActionAsync.failure(error));
@@ -55,16 +58,22 @@ export function* feedbackSendSaga(
 export function* feedbackRequestSaga(
   targetUsers: any[],
   contents: string,
-  file: any
+  file: any,
+  id?: number
 ): Generator<any, void, ObjectType> {
   try {
     const { user } = yield select((state: RootState) => state.APIAuth);
 
     const formData = new FormData();
-    formData.append("sendUser_id", user.id);
-    targetUsers.forEach((userObj, i) => {
-      formData.append(`receiveUser_id[${i}]`, userObj.id);
-    });
+    if (id) {
+      formData.append("id", `${id}`);
+    } else {
+      formData.append("sendUser_id", user.id);
+      targetUsers.forEach((userObj, i) => {
+        formData.append(`receiveUser_id[${i}]`, userObj.id);
+      });
+    }
+
     formData.append("contents", contents);
     formData.append("category", "CONTRIBUTION");
     if (file) {
@@ -73,49 +82,17 @@ export function* feedbackRequestSaga(
     }
     const { data } = yield call(
       axios,
-      `/feedbacks/new/request`,
+      id ? "/feedbacks/update/request" : `/feedbacks/new/request`,
       "POST",
       formData
     );
+    console.log("data", data);
+    yield put(feedRecentActionAsync.request(null));
+    yield put(feedRecivedActionAsync.request(null));
     yield put(feedSentActionAsync.request(null));
+    yield put(topRankerActionAsync.request());
     yield put(feedbackRequestActionAsync.success(null));
   } catch (error) {
-    yield put(commentActionAsync.failure(error));
-  }
-}
-
-export function* feedbackLikeSaga(
-  year?: number,
-  quarter?: number
-): Generator<any, void, ObjectType> {
-  try {
-    const data = yield call(
-      axios,
-      `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        quarter ? `${year ? "&" : "?"}quarter=${quarter}` : ""
-      }`,
-      "GET"
-    );
-    yield put(commentLikeActionAsync.success(data));
-  } catch (error) {
-    yield put(commentLikeActionAsync.failure(error));
-  }
-}
-
-export function* feedbackDeleteSaga(
-  year?: number,
-  quarter?: number
-): Generator<any, void, ObjectType> {
-  try {
-    const data = yield call(
-      axios,
-      `/feedbacks/sent${year ? `?year=${year}` : ""}${
-        quarter ? `${year ? "&" : "?"}quarter=${quarter}` : ""
-      }`,
-      "GET"
-    );
-    yield put(commentDeleteActionAsync.success(data));
-  } catch (error) {
-    yield put(commentDeleteActionAsync.failure(error));
+    console.log("feedbackRequestSaga", error);
   }
 }
