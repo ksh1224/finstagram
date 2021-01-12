@@ -5,12 +5,12 @@ import { useMyOKR, useTeamOKR, useUserOKR } from "hooks/useOKRRedux";
 import React, { useEffect } from "react";
 
 export default function OKR() {
-  const { requset: teamOKRRequset } = useTeamOKR();
-  const { requset: myOKRRequset } = useMyOKR();
+  const { request: teamOKRRequest } = useTeamOKR();
+  const { request: myOKRRequest } = useMyOKR();
   const { data } = useUserOKR();
   useEffect(() => {
-    teamOKRRequset();
-    myOKRRequset();
+    teamOKRRequest();
+    myOKRRequest();
   }, []);
   return (
     <div
