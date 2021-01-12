@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+import { useAuth, useModal } from "hooks/useRedux";
 import React from "react";
 
 type ProfileType = {
@@ -36,14 +37,19 @@ export default function Profile({
     default:
       break;
   }
+  const { showModal } = useModal();
+  const { user: my } = useAuth();
   return (
     <div
       className={`${
         width ? `avatar symbol symbol-${width} cursor-pointer` : wrapClassName
       } ${className || ""}`}
-      data-toggle="modal"
-      data-target="#modal_userProfile"
-      onClick={() => (onClick ? onClick() : console.log("userId", user?.id))}
+      onClick={
+        onClick
+          ? () => onClick()
+          : () =>
+              user && user.id !== my.id && showModal("userProfile", { user })
+      }
     >
       <span className="symbol-label position-relative bg-transparent">
         <img
@@ -70,7 +76,7 @@ export default function Profile({
             cy="16.91549431"
             r="15.91549431"
           />
-          <circle
+          {/* <circle
             className="circle-chart__bar animate"
             stroke="#00acc1"
             strokeWidth="2"
@@ -80,7 +86,7 @@ export default function Profile({
             cx="16.91549431"
             cy="16.91549431"
             r="15.91549431"
-          />
+          /> */}
         </svg>
       </span>
     </div>
@@ -94,6 +100,6 @@ Profile.defaultProps = {
   },
   type: "default",
   width: null,
-  onClick: () => {},
+  onClick: null,
   className: "",
 };
