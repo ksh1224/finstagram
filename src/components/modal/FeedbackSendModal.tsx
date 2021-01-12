@@ -7,19 +7,37 @@ import { useModal, useBadgeList } from "hooks/useRedux";
 import { useFeedback } from "hooks/useFeedBackRedux";
 import React, { useEffect, useState, createRef } from "react";
 
-export default function FeedbackModal() {
+export default function FeedbackSendModal() {
   const fileRef = createRef<HTMLInputElement>();
   const textLimit = 100;
   const [type, setType] = useState<"PRAISE" | "ADVICE">("PRAISE");
   const [select, setSelect] = useState(0);
   const [contents, setContents] = useState("");
   const [file, setFile] = useState<any>(null);
+  const [prevFileName, setPrevFileName] = useState<string>();
   const { feedbackSend } = useFeedback();
   const { modals, closeModal } = useModal();
   const { data: dadgeList } = useBadgeList();
   const sendFeedbackModal = modals.find(
     (modal: any) => modal.name === "sendFeedback"
   );
+  const updateFeedbackModal = modals.find(
+    (modal: any) => modal.name === "updateSendFeedback"
+  );
+  const feed = updateFeedbackModal?.param;
+
+  const close = () => {
+    if (sendFeedbackModal || updateFeedbackModal) {
+      if (sendFeedbackModal) closeModal("sendFeedback");
+      else {
+        closeModal("updateSendFeedback");
+        setPrevFileName(undefined);
+      }
+      setSelect(0);
+      setContents("");
+      setFile(null);
+    }
+  };
 
   function sendFeedback() {
     if (sendFeedbackModal) {
@@ -30,16 +48,45 @@ export default function FeedbackModal() {
         contents,
         file && file[0]
       );
-      closeModal("sendFeedback");
+      close();
     }
   }
 
+  function updateFeedback() {
+    if (updateFeedbackModal) {
+      feedbackSend(
+        type,
+        sendFeedbackModal?.param,
+        dadgeList?.CONTRIBUTION[select],
+        contents,
+        file && file[0],
+        feed?.id
+      );
+      close();
+    }
+  }
+
+  useEffect(() => {
+    if (updateFeedbackModal) {
+      console.log("feed123", feed);
+      if (feed?.feedbackBadge) {
+        const findIndex = dadgeList?.CONTRIBUTION.findIndex(
+          (badge: any) => badge.id === feed?.feedbackBadge.id
+        );
+        if (findIndex >= 0) setSelect(findIndex);
+      }
+      setType(feed?.type);
+      setContents(feed?.contents);
+      setPrevFileName(feed?.fileName);
+    }
+  }, [updateFeedbackModal]);
+
   return (
     <Modal
-      show={!!sendFeedbackModal}
+      show={!!sendFeedbackModal || !!updateFeedbackModal}
       animation
       centered
-      onHide={() => closeModal("sendFeedback")}
+      onHide={() => close()}
     >
       <div className="modal-content">
         <div className="modal-header border-0 mb-n12 justify-content-end">
@@ -48,7 +95,7 @@ export default function FeedbackModal() {
             className="close position-relative zindex-1"
             data-dismiss="modal"
             aria-label="닫기"
-            onClick={() => closeModal("sendFeedback")}
+            onClick={() => close()}
           >
             <i aria-hidden="true" className="ki ki-close" />
           </button>
@@ -56,10 +103,17 @@ export default function FeedbackModal() {
 
         <div className="modal-body">
           <div className="d-flex flex-column align-items-center">
-            <Profile user={sendFeedbackModal?.param} type="feedbackModal" />
+            <Profile
+              user={
+                sendFeedbackModal ? sendFeedbackModal?.param : feed?.sendUser
+              }
+              type="feedbackModal"
+            />
 
             <div className="font-weight-bolder text-dark-75 font-size-lg m-0 pt-2">
-              강혜원
+              {sendFeedbackModal
+                ? sendFeedbackModal?.param.name
+                : feed?.sendUser.name}
             </div>
 
             <div
@@ -220,14 +274,16 @@ export default function FeedbackModal() {
                     </a>
                   </div>
                   <div className="dropzone-items">
-                    {!!file && !!file[0] && (
+                    {!!file && !!file[0] ? (
                       <div className="dropzone-item">
                         <div className="dropzone-file">
                           <div
                             className="dropzone-filename"
-                            title={file[0].name}
+                            title={file[0].name || prevFileName}
                           >
-                            <span data-dz-name="">{file[0].name}</span>
+                            <span data-dz-name="">
+                              {file[0].name || prevFileName}
+                            </span>
                             <strong>
                               (
                               <span data-dz-size={file[0].size}>
@@ -262,6 +318,39 @@ export default function FeedbackModal() {
                           </span>
                         </div>
                       </div>
+                    ) : (
+                      prevFileName && (
+                        <div className="dropzone-item">
+                          <div className="dropzone-file">
+                            <div
+                              className="dropzone-filename"
+                              title={prevFileName}
+                            >
+                              <span data-dz-name="">{prevFileName}</span>
+                            </div>
+                          </div>
+                          <div className="dropzone-progress">
+                            <div className="progress">
+                              <div
+                                className="progress-bar bg-primary"
+                                role="progressbar"
+                                aria-valuemin={0}
+                                aria-valuemax={100}
+                                aria-valuenow={0}
+                                data-dz-uploadprogress=""
+                              />
+                            </div>
+                          </div>
+                          <div className="dropzone-toolbar">
+                            <span className="dropzone-delete" data-dz-remove="">
+                              <i
+                                className="flaticon2-cross"
+                                onClick={() => setFile(null)}
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      )
                     )}
                   </div>
                 </div>
@@ -269,15 +358,24 @@ export default function FeedbackModal() {
             )}
           </div>
         </div>
-
         <div className="modal-footer border-0 p-0 mt-5">
-          <button
-            type="button"
-            className="btn btn-lg btn-primary w-100 m-0 rounded-0"
-            onClick={() => sendFeedback()}
-          >
-            보내기
-          </button>
+          {updateFeedbackModal ? (
+            <button
+              type="button"
+              className="btn btn-lg btn-primary w-100 m-0 rounded-0"
+              onClick={() => updateFeedback()}
+            >
+              수정하기
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-lg btn-primary w-100 m-0 rounded-0"
+              onClick={() => sendFeedback()}
+            >
+              보내기
+            </button>
+          )}
         </div>
       </div>
     </Modal>

@@ -6,7 +6,7 @@ import Profile from "components/Profile";
 import { useModal, useSearchUser, useAuth } from "hooks/useRedux";
 import { useFeedback } from "hooks/useFeedBackRedux";
 import React, { useEffect, useState, createRef } from "react";
-import { searchList } from "utils/searchUtil";
+import { searchListUser } from "utils/searchUtil";
 import SVG from "utils/SVG";
 import { Modal } from "react-bootstrap";
 
@@ -31,6 +31,7 @@ export default function FeedbackRequestModal() {
   const [show, setShow] = useState(false);
   const [contents, setContents] = useState("");
   const [file, setFile] = useState<any>(null);
+  const [prevFileName, setPrevFileName] = useState<string>();
   const { data } = useSearchUser();
   const { feedbackRequest } = useFeedback();
 
@@ -38,14 +39,40 @@ export default function FeedbackRequestModal() {
     (modal: any) => modal.name === "requestFeedback"
   );
 
+  const updateRequestFeedbackModal = modals.find(
+    (modal: any) => modal.name === "updateRequestFeedback"
+  );
+
+  const close = () => {
+    if (requestFeedbackModal) closeModal("requestFeedback");
+    if (updateRequestFeedbackModal) {
+      closeModal("updateRequestFeedback");
+      setPrevFileName(undefined);
+    }
+    setContents("");
+    setFile(null);
+  };
+
   const feedbackUser = requestFeedbackModal?.param;
+
+  const feed = updateRequestFeedbackModal?.param;
+
+  useEffect(() => {
+    if (updateRequestFeedbackModal) {
+      setContents(feed?.contents);
+      setPrevFileName(feed?.fileName);
+    }
+  }, [updateRequestFeedbackModal]);
 
   useEffect(() => {
     if (searchText && searchText.trim() !== "") {
       setShow(true);
       const search = searchText.trim();
       if (!data) return;
-      const searchData = searchList(data.user, search, [user, feedbackUser]);
+      const searchData = searchListUser(data.user, search, [
+        user,
+        feedbackUser,
+      ]);
       setList(searchData);
     } else setShow(false);
   }, [searchText]);
@@ -69,16 +96,28 @@ export default function FeedbackRequestModal() {
         contents,
         file && file[0]
       );
-      closeModal("requestFeedback");
+      close();
+    }
+  }
+
+  function updateFeedback() {
+    if (updateRequestFeedbackModal) {
+      feedbackRequest(
+        users ? [feedbackUser, ...users] : [feedbackUser],
+        contents,
+        file && file[0],
+        feed?.id
+      );
+      close();
     }
   }
 
   return (
     <Modal
-      show={!!requestFeedbackModal}
+      show={!!requestFeedbackModal || !!updateRequestFeedbackModal}
       animation
       centered
-      onHide={() => closeModal("requestFeedback")}
+      onHide={() => close()}
     >
       <div className="modal-content">
         <div className="modal-header border-0 mb-n12 justify-content-end">
@@ -87,89 +126,96 @@ export default function FeedbackRequestModal() {
             className="close position-relative zindex-1"
             data-dismiss="modal"
             aria-label="닫기"
-            onClick={() => closeModal("requestFeedback")}
+            onClick={() => close()}
           >
             <i aria-hidden="true" className="ki ki-close" />
           </button>
         </div>
         <div className="modal-body">
           <div className="d-flex flex-column align-items-center">
-            <div
-              className="quick-search quick-search-has-result input-group input-group-solid mb-10 w-225px w-xxl-250px"
-              data-toggle="search"
-              data-list="#layer_rq_srchList"
-            >
-              <div className="input-group-prepend">
-                <span className="input-group-text">
-                  <span className="svg-icon svg-icon-lg">
-                    <SVG name="search" />
-                  </span>
-                </span>
-              </div>
-              <input
-                type="text"
-                className="form-control py-4 h-auto"
-                placeholder="팀 또는 이름을 입력해 주세요."
-                value={searchText}
-                onChange={({ target }) => setSearchText(target.value)}
-              />
-              <div className="input-group-append">
-                <span className="input-group-text">
-                  <i
-                    className="quick-search-close ki ki-close icon-sm text-muted"
-                    style={{
-                      display: searchText.length !== 0 ? "block" : "none",
-                    }}
-                    onClick={() => setSearchText("")}
-                  />
-                </span>
-              </div>
+            {!!requestFeedbackModal && (
               <div
-                id="layer_rq_srchList"
-                className={`dropdown-menu dropdown-menu-left dropdown-menu-md dropdown-menu-anim-up ${
-                  show && "show"
-                }`}
-                style={{ height: "350px", overflowY: "scroll" }}
-                x-placement="bottom-start"
+                className="quick-search quick-search-has-result input-group input-group-solid mb-10 w-225px w-xxl-250px"
+                data-toggle="search"
+                data-list="#layer_rq_srchList"
               >
-                <div className="quick-search-wrapper">
-                  <div className="quick-search-result">
-                    {list.map((userData) => {
-                      const include = !!users?.find(
-                        (obj) => userData.id === obj.id
-                      );
-                      return (
-                        <div
-                          key={userData.id}
-                          className="d-flex align-items-center bg-hover-light cursor-pointer px-5 py-4"
-                          style={
-                            include ? { backgroundColor: "#9993" } : undefined
-                          }
-                          onClick={() =>
-                            include ? deleteUser(userData) : addUser(userData)
-                          }
-                        >
-                          <Profile width={40} user={userData} />
-                          <div className="w-100px flex-grow-1 ml-5">
-                            <div className="font-weight-bolder text-dark-75 font-size-md">
-                              {`${userData.position} ${userData.name}`}
-                            </div>
-                            <div className="text-dark-50 m-0 flex-grow-1 font-size-sm">
-                              {userData.organizationName}
+                <div className="input-group-prepend">
+                  <span className="input-group-text">
+                    <span className="svg-icon svg-icon-lg">
+                      <SVG name="search" />
+                    </span>
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  className="form-control py-4 h-auto"
+                  placeholder="팀 또는 이름을 입력해 주세요."
+                  value={searchText}
+                  onChange={({ target }) => setSearchText(target.value)}
+                />
+                <div className="input-group-append">
+                  <span className="input-group-text">
+                    <i
+                      className="quick-search-close ki ki-close icon-sm text-muted"
+                      style={{
+                        display: searchText.length !== 0 ? "block" : "none",
+                      }}
+                      onClick={() => setSearchText("")}
+                    />
+                  </span>
+                </div>
+                <div
+                  id="layer_rq_srchList"
+                  className={`dropdown-menu dropdown-menu-left dropdown-menu-md dropdown-menu-anim-up ${
+                    show && "show"
+                  }`}
+                  style={{ height: "350px", overflowY: "scroll" }}
+                  x-placement="bottom-start"
+                >
+                  <div className="quick-search-wrapper">
+                    <div className="quick-search-result">
+                      {list.map((userData) => {
+                        const include = !!users?.find(
+                          (obj) => userData.id === obj.id
+                        );
+                        return (
+                          <div
+                            key={userData.id}
+                            className="d-flex align-items-center bg-hover-light cursor-pointer px-5 py-4"
+                            style={
+                              include ? { backgroundColor: "#9993" } : undefined
+                            }
+                            onClick={() =>
+                              include ? deleteUser(userData) : addUser(userData)
+                            }
+                          >
+                            <Profile width={40} user={userData} />
+                            <div className="w-100px flex-grow-1 ml-5">
+                              <div className="font-weight-bolder text-dark-75 font-size-md">
+                                {`${userData.position} ${userData.name}`}
+                              </div>
+                              <div className="text-dark-50 m-0 flex-grow-1 font-size-sm">
+                                {userData.organizationName}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
             <div className="d-flex max-w-100 overflow-x-auto">
               <div className="mx-3 text-center">
-                <Profile user={feedbackUser} type="feedbackModal" />
+                <Profile
+                  user={requestFeedbackModal ? feedbackUser : feed?.sendUser}
+                  type="feedbackModal"
+                />
                 <div className="font-weight-bolder text-dark-75 font-size-lg m-0 pt-1">
-                  {feedbackUser?.name}
+                  {requestFeedbackModal
+                    ? feedbackUser?.name
+                    : feed?.sendUser.name}
                 </div>
               </div>
               {users?.map((userData) => (
@@ -287,13 +333,23 @@ export default function FeedbackRequestModal() {
           </div>
         </div>
         <div className="modal-footer border-0 p-0 mt-5">
-          <button
-            type="button"
-            className="btn btn-lg btn-primary w-100 m-0 rounded-0"
-            onClick={() => sendFeedback()}
-          >
-            요청하기
-          </button>
+          {requestFeedbackModal ? (
+            <button
+              type="button"
+              className="btn btn-lg btn-primary w-100 m-0 rounded-0"
+              onClick={() => sendFeedback()}
+            >
+              요청하기
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-lg btn-primary w-100 m-0 rounded-0"
+              onClick={() => updateFeedback()}
+            >
+              수정하기
+            </button>
+          )}
         </div>
       </div>
     </Modal>
