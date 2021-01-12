@@ -17,6 +17,14 @@ const FEED_BADGE_REQUEST = "FEED_BADGE_REQUEST";
 const FEED_BADGE_SUCCESS = "FEED_BADGE_SUCCESS";
 const FEED_BADGE_FAIL = "FEED_BADGE_FAIL";
 
+const FEED_ONE_UPATE_REQUEST = "FEED_ONE_UPATE_REQUEST";
+const FEED_ONE_UPATE_SUCCESS = "FEED_ONE_UPATE_SUCCESS";
+const FEED_ONE_UPATE_FAIL = "FEED_ONE_UPATE_FAIL";
+
+const FEED_ONE_DELETE_REQUEST = "FEED_ONE_DELETE_REQUEST";
+const FEED_ONE_DELETE_SUCCESS = "FEED_ONE_DELETE_SUCCESS";
+const FEED_ONE_DELETE_FAIL = "FEED_ONE_DELETE_FAIL";
+
 export const feedRecentActionAsync = createAsyncAction(
   FEED_RECENT_REQUEST,
   FEED_RECENT_SUCCESS,
@@ -59,4 +67,25 @@ export const feedBadgeActionTypes = {
   FEED_BADGE_REQUEST,
   FEED_BADGE_SUCCESS,
   FEED_BADGE_FAIL,
+};
+export const feedOneUpdateActionAsync = createAsyncAction(
+  FEED_ONE_UPATE_REQUEST,
+  FEED_ONE_UPATE_SUCCESS,
+  FEED_ONE_UPATE_FAIL
+)<any, any, AxiosError>();
+export const feedOneUpdateActionTypes = {
+  FEED_ONE_UPATE_REQUEST,
+  FEED_ONE_UPATE_SUCCESS,
+  FEED_ONE_UPATE_FAIL,
+};
+
+export const feedOneDeleteActionAsync = createAsyncAction(
+  FEED_ONE_DELETE_REQUEST,
+  FEED_ONE_DELETE_SUCCESS,
+  FEED_ONE_DELETE_FAIL
+)<any, any, AxiosError>();
+export const feedOneDeleteActionTypes = {
+  FEED_ONE_DELETE_REQUEST,
+  FEED_ONE_DELETE_SUCCESS,
+  FEED_ONE_DELETE_FAIL,
 };
