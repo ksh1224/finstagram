@@ -22,6 +22,11 @@ export default function* watchOKR() {
   yield takeEvery(
     teamOKRActionTypes.TEAM_OKR_REQUEST,
     ({ payload }: { type: string; payload?: ObjectType }) =>
-      teamOKRSaga(payload?.year, payload?.quarter, payload?.organizationId)
+      teamOKRSaga(
+        payload?.year,
+        payload?.quarter,
+        payload?.organizationId,
+        payload?.organizationName
+      )
   );
 }

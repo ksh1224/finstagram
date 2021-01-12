@@ -6,7 +6,8 @@ import { teamOKRActionAsync } from "store/actions";
 export default function* teamOKRSaga(
   year?: number,
   quarter?: number,
-  organizationId?: number
+  organizationId?: number,
+  organizationName?: string
 ): Generator<any, void, ObjectType> {
   try {
     const { user } = yield select((state: RootState) => state.APIAuth);
@@ -17,7 +18,14 @@ export default function* teamOKRSaga(
       }${organizationId ? `&organization_id=${organizationId}` : ""}`,
       "GET"
     );
-    yield put(teamOKRActionAsync.success(data));
+
+    yield put(
+      teamOKRActionAsync.success({
+        ...data,
+        ...(organizationId && { organizationId }),
+        ...(organizationName && { organizationName }),
+      })
+    );
   } catch (error) {
     yield put(teamOKRActionAsync.failure(error));
   }

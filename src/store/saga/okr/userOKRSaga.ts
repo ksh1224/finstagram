@@ -8,23 +8,25 @@ export default function* userOKRSaga(
   quarter?: number,
   userId?: number
 ): Generator<any, void, ObjectType> {
-  try {
-    const data = yield call(
-      axios,
-      `/okr/chart/${userId}${
-        year && quarter ? `?year=${year}&quarter=${quarter}` : ""
-      }`,
-      "GET"
-    );
-    const { data: searchUser } = yield select(
-      (state: RootState) => state.searchUser
-    );
-    const user = searchUser?.user?.find(
-      (findUser: any) => findUser.id === userId
-    );
+  if (!userId) throw new Error("userOKRSaga: Not Found UserID");
+  else
+    try {
+      const data = yield call(
+        axios,
+        `/okr/chart/${userId}${
+          year && quarter ? `?year=${year}&quarter=${quarter}` : ""
+        }`,
+        "GET"
+      );
+      const { data: searchUser } = yield select(
+        (state: RootState) => state.searchUser
+      );
+      const user = searchUser?.user?.find(
+        (findUser: any) => findUser.id === userId
+      );
 
-    yield put(userOKRActionAsync.success({ ...data, user }));
-  } catch (error) {
-    yield put(userOKRActionAsync.failure(error));
-  }
+      yield put(userOKRActionAsync.success({ ...data, user }));
+    } catch (error) {
+      yield put(userOKRActionAsync.failure(error));
+    }
 }

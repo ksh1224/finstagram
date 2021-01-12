@@ -15,7 +15,6 @@ export default function* myOKRSaga(
       }`,
       "GET"
     );
-    console.log("myOKRSaga", data);
     yield put(myOKRActionAsync.success(data));
   } catch (error) {
     yield put(myOKRActionAsync.failure(error));
