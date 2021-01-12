@@ -17,12 +17,15 @@ async function axiosUtil(
     };
     const accessToken = await localStorage.getItem("accessToken");
     const token = await localStorage.getItem("token");
+    const testUser = await localStorage.getItem("testUser");
 
     // console.log("accessToken", !!accessToken);
     // console.log("token", !!token);
 
     if (token && !accessToken) headers["X-FNF-MSAUTH-TOKEN"] = token;
     else headers["X-FNF-ACCESS-TOKEN"] = accessToken;
+
+    if (testUser) headers["X-FNF-DEV"] = testUser;
 
     const config: ObjectType = {
       method,
@@ -34,24 +37,22 @@ async function axiosUtil(
     };
 
     if (body) config.data = body;
-    await console.log("config", config);
+    console.log("config", config);
     const response = await axios(config);
-    await console.log("response", response);
     if (response.status === 200) {
       const data: ObjectType = await response.data;
       return data;
     }
-    const { data }: { data: ObjectType } = await response;
-    const responseFail: ObjectType = {
-      ...data,
-      fail: true,
-    };
-    return responseFail;
+    if (response?.data?.message) alert(response?.data?.message);
+    const statusError = new Error();
+    statusError.message = `statusError:${response.status}`;
+    throw statusError;
   } catch (error) {
+    // console.log("error", error.toJSON());
     if (error && error.response) {
       const axiosError = error as AxiosError<ServerError>;
       // console.log("axiosError", axiosError);
-      // console.log("axiosErrorresponse", axiosError.response);
+      console.log("axiosErrorresponse", axiosError.response);
       throw axiosError;
       // return axiosError.response?.data;
     }

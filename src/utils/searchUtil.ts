@@ -16,7 +16,7 @@ export function search(keyword: string, text: string) {
   return 0;
 }
 
-export function searchList(
+export function searchListUser(
   data: SearchItemType[],
   searchText: string,
   filterUser?: { id: number }[]
@@ -44,4 +44,25 @@ export function searchList(
       }
   }
   return [...nameList, ...organizationNameList];
+}
+
+export function searchList(
+  data: any[],
+  searchText: string,
+  findKeys: string[]
+) {
+  if (!searchText || searchText.trim() === "" || searchText.trim().length < 2)
+    return [];
+  const findList: any[] = [];
+  for (const obj of data) {
+    let target: any;
+    for (const key of findKeys) {
+      if (target) target = target[key];
+      else target = obj[key];
+    }
+    if (search(target, searchText)) {
+      findList.push(obj);
+    }
+  }
+  return findList;
 }
