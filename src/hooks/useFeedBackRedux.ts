@@ -5,11 +5,7 @@ import {
   feedRecentActionAsync,
   feedRecivedActionAsync,
   feedSentActionAsync,
-  commentActionAsync,
-  commentDeleteActionAsync,
-  commentLikeActionAsync,
-  commentNewActionAsync,
-  commentUpdateActionAsync,
+  feedOneUpdateActionAsync,
   feedbackRequestActionAsync,
   feedbackSendActionAsync,
   feedbackBadgeActionTypes,
@@ -20,6 +16,7 @@ import {
   feedBadgeActionTypes,
   feedBadgeActionAsync,
   topRankerDetailActionAsync,
+  feedOneDeleteActionAsync,
 } from "../store/actions";
 
 export function useTopRanker() {
@@ -85,37 +82,39 @@ export function useFeedRecent() {
 }
 
 export function useFeedReceived() {
-  const { isFetching, data } = useSelector(
+  const { isFetching, data, currentPage, totalPages } = useSelector(
     (state: RootState) => state.feedReceived
   );
   const dispatch = useDispatch();
 
   const request = useCallback(
-    (year?, quarter?) =>
-      dispatch(feedRecivedActionAsync.request({ year, quarter })),
+    (page?) => dispatch(feedRecivedActionAsync.request(page)),
     [dispatch]
   );
   return {
     request,
     data,
+    currentPage,
+    totalPages,
     isFetching,
   };
 }
 
 export function useFeedSent() {
-  const { isFetching, data } = useSelector(
+  const { isFetching, data, currentPage, totalPages } = useSelector(
     (state: RootState) => state.feedSent
   );
   const dispatch = useDispatch();
 
   const request = useCallback(
-    (year?, quarter?) =>
-      dispatch(feedSentActionAsync.request({ year, quarter })),
+    (page?) => dispatch(feedSentActionAsync.request(page)),
     [dispatch]
   );
   return {
     request,
     data,
+    currentPage,
+    totalPages,
     isFetching,
   };
 }
@@ -143,7 +142,7 @@ export function useFeedback() {
   const dispatch = useDispatch();
 
   const feedbackSend = useCallback(
-    (type, targetUser, selectBadge?, contents?, file?) =>
+    (type, targetUser, selectBadge?, contents?, file?, id?) =>
       dispatch(
         feedbackSendActionAsync.request({
           type,
@@ -151,18 +150,20 @@ export function useFeedback() {
           selectBadge,
           contents,
           file,
+          id,
         })
       ),
     [dispatch]
   );
 
   const feedbackRequest = useCallback(
-    (targetUsers, contents?, file?) =>
+    (targetUsers, contents?, file?, id?) =>
       dispatch(
         feedbackRequestActionAsync.request({
           targetUsers,
           contents,
           file,
+          id,
         })
       ),
     [dispatch]
@@ -175,24 +176,22 @@ export function useFeedback() {
   };
 }
 
-export function useComment() {
-  const { comments } = useSelector((state: RootState) => state.comment);
-
+export function useFeedOne() {
   const dispatch = useDispatch();
 
-  // commentActionAsync,
-  // commentDeleteActionAsync,
-  // commentLikeActionAsync,
-  // commentNewActionAsync,
-  // commentUpdateActionAsync,
-
-  const commentRequest = useCallback(
-    (feedId?) => dispatch(commentActionAsync.request(feedId)),
+  const update = useCallback(
+    (feedId?) => dispatch(feedOneUpdateActionAsync.request(feedId)),
     [dispatch]
   );
+
+  const deleteFeed = useCallback(
+    (feedId?) => dispatch(feedOneDeleteActionAsync.request(feedId)),
+    [dispatch]
+  );
+
   return {
-    comments,
-    commentRequest,
+    update,
+    deleteFeed,
   };
 }
 
@@ -206,12 +205,12 @@ export function useMyFeedback() {
     isFetching: feedbackBadgeFetching,
   } = useSelector((state: RootState) => state.feedbackBadge);
   const dispatch = useDispatch();
-  const feedbackStatisticsRequset = useCallback(
+  const feedbackStatisticsRequest = useCallback(
     (year?, quarter?) =>
       dispatch(feedbackStatisticsActionAsync.request({ year, quarter })),
     [dispatch]
   );
-  const feedbackBadgeRequset = useCallback(
+  const feedbackBadgeRequest = useCallback(
     (year?, quarter?) =>
       dispatch(feedbackBadgeActionAsync.request({ year, quarter })),
     [dispatch]
@@ -221,8 +220,8 @@ export function useMyFeedback() {
     feedbackStatisticsFetching,
     feedbackBadgeData,
     feedbackBadgeFetching,
-    feedbackStatisticsRequset,
-    feedbackBadgeRequset,
+    feedbackStatisticsRequest,
+    feedbackBadgeRequest,
   };
 }
 
