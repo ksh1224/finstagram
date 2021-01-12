@@ -2,7 +2,7 @@ import "scrollbar.css";
 import React, { useEffect, useState } from "react";
 import { useSearchUser } from "hooks/useRedux";
 import SearchListItem from "components/item/FeedbackSearchListItem";
-import { searchList } from "utils/searchUtil";
+import { searchListUser } from "utils/searchUtil";
 
 type SearchListType = {
   text?: string;
@@ -14,11 +14,11 @@ export default function SearchList({ text }: SearchListType) {
   const { data } = useSearchUser();
 
   useEffect(() => {
-    if (text && text.trim() !== "") {
+    if (text && text.trim().length > 1) {
       setShow(true);
       const search = text.trim();
       if (!data) return;
-      const searchData = searchList(data.user, search);
+      const searchData = searchListUser(data.user, search);
       setList(searchData);
     } else setShow(false);
   }, [text]);
