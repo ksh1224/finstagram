@@ -6,6 +6,8 @@ import {
   useSelectBadge,
   useMyFeedback,
   useFeedBadge,
+  useFeedRecent,
+  useFeedOne,
 } from "hooks/useFeedBackRedux";
 
 import Profile from "components/Profile";
@@ -20,33 +22,45 @@ const txtColor = KTAppSettings.colors.gray["gray-800"];
 export default function MyFeedback() {
   const { user } = useAuth();
   const {
-    feedbackBadgeRequset,
-    feedbackStatisticsRequset,
+    feedbackBadgeRequest,
+    feedbackStatisticsRequest,
     feedbackBadgeData,
     feedbackStatisticsData,
     feedbackBadgeFetching,
     feedbackStatisticsFetching,
   } = useMyFeedback();
+
+  const { data: feedRecentData } = useFeedRecent();
   const [show, setShow] = useState(false);
   const { cancelBadge, selectBadge, selectBadgeData } = useSelectBadge();
   const { request: feedBadgeRequest } = useFeedBadge();
 
   useEffect(() => {
-    feedbackBadgeRequset();
-    feedbackStatisticsRequset();
+    feedbackBadgeRequest();
+    feedbackStatisticsRequest();
   }, []);
 
   useEffect(() => {
-    console.log(feedbackStatisticsData);
     if (feedbackStatisticsData?.userList && !show)
       setTimeout(() => setShow(true), 400);
   }, [feedbackStatisticsData]);
 
+  useEffect(() => {
+    if (feedRecentData) {
+      const { year, quarter } = feedbackStatisticsData;
+      cancelBadge();
+      feedbackBadgeRequest(year, quarter);
+      feedbackStatisticsRequest(year, quarter);
+      feedBadgeRequest(year, quarter, selectBadgeData?.badge?.id);
+      selectBadge(selectBadgeData);
+    }
+  }, [feedRecentData]);
+
   function changeDate({ target }: React.ChangeEvent<HTMLSelectElement>) {
     const [year, quarter] = target.value.split("_");
     cancelBadge();
-    feedbackBadgeRequset(year, quarter);
-    feedbackStatisticsRequset(year, quarter);
+    feedbackBadgeRequest(year, quarter);
+    feedbackStatisticsRequest(year, quarter);
     setShow(false);
   }
 
@@ -94,7 +108,10 @@ export default function MyFeedback() {
             </a>
           </div>
           <DataValidationContainer
-            isFetching={feedbackBadgeFetching || feedbackStatisticsFetching}
+            isFetching={
+              !feedbackBadgeData &&
+              (feedbackBadgeFetching || feedbackStatisticsFetching)
+            }
           >
             <div className="card card-custom bg-light-light shadow-none gutter-b">
               <div className="card-header border-0">
