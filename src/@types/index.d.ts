@@ -18,18 +18,57 @@ declare global {
     error: AxiosError | undefined;
   }
 
+  type ObjectiveType = {
+    id?: number;
+    description?: string;
+    progress?: number;
+    keyResult?: KeyResult[];
+    updateValues?: {
+      historyDescription?: string;
+      status?: string;
+      progress?: number;
+    };
+    index?: number;
+  };
+
+  type KeyResultType = {
+    id?: number;
+    description?: string;
+    progress?: number;
+    updateValues?: {
+      historyDescription?: string;
+      progress?: number;
+      status?: string;
+    };
+    objectiveIndex?: number;
+    index?: number;
+  };
+
+  type OKRChangeHandler = (
+    index: number,
+    value: {
+      description?: string;
+      progress?: number;
+      status?: string;
+      historyDescription?: string;
+    },
+    objectiveIndex?: number
+  ) => void;
+
   type FeedbackSendType = {
     targetUser: any;
     type: "PRAISE" | "ADVICE";
     contents: string;
     file: any;
     selectBadge: any;
+    id?: number;
   };
 
   type FeedbackRequestType = {
     targetUsers: any[];
     contents: string;
     file: any;
+    id?: number;
   };
 
   type SearchItemType = {
