@@ -1,3 +1,16 @@
 body {
   margin: 0;
 }
+
+.modal-content {
+  max-height: 95vh;
+}
+
+.modal-body {
+  max-height: 90vh;
+}
+
+div {
+  /* overflow:hidden; */
+  word-wrap:break-word;
+}
