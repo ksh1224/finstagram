@@ -8,15 +8,18 @@ type KeyResultItemType = {
   objectIndex?: number;
   keyResult?: any;
   lastIndex: boolean;
+  index?: number;
 };
 
 export default function KeyResultItem({
   objectIndex,
   keyResult = {},
   lastIndex,
+  index,
 }: KeyResultItemType) {
   const { showModal } = useModal();
   const {
+    id,
     description,
     progress,
     status,
@@ -24,11 +27,15 @@ export default function KeyResultItem({
     keyResultHistory,
     commentCount,
   } = keyResult;
+
   return (
     <Accordion.Collapse eventKey={`${objectIndex}`}>
       <div className="card-body">
         <div className="font-size-base font-weight-bold mb-3 mt-1">
-          Key Results
+          Key-
+          <span className="d-inline-block">
+            Result {index === undefined ? 0 : index + 1}
+          </span>
         </div>
         <div className="d-flex flex-wrap py-3 pr-10">
           <div className="w-100 mb-3">{description}</div>
@@ -44,8 +51,9 @@ export default function KeyResultItem({
           <a
             href="javascript:;"
             className="btn btn-transparent-white btn-icon-dark-65 btn-text-dark-65 btn-hover-text-primary btn-hover-icon-primary text-body ml-4 p-0"
-            data-toggle="modal"
-            data-target="#modal_krComment"
+            onClick={() =>
+              showModal("okrComment", { id, description, progress, status })
+            }
           >
             <span className="svg-icon mr-1">
               <SVG name="comment" />

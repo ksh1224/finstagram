@@ -5,6 +5,7 @@ type OKRGraphType = {
   mediumScore?: number;
   highScore?: number;
   show?: boolean;
+  onlyGraph?: boolean;
 };
 
 export default function OKRGraph({
@@ -12,6 +13,7 @@ export default function OKRGraph({
   mediumScore,
   highScore,
   show,
+  onlyGraph,
 }: OKRGraphType) {
   const total = (rowScore || 0) + (mediumScore || 0) + (highScore || 0);
 
@@ -38,11 +40,13 @@ export default function OKRGraph({
               r="15.91549431"
             />
           )}
-          {highScore && mediumScore && mediumScore > 0 && (
+          {mediumScore && mediumScore > 0 && (
             <circle
               className="donut-segment-2"
               strokeDasharray={`${
-                (100 / total) * (mediumScore + highScore)
+                highScore
+                  ? (100 / total) * (mediumScore + highScore)
+                  : (100 / total) * mediumScore
               },100`}
               cx="20"
               cy="20"
@@ -72,11 +76,11 @@ export default function OKRGraph({
           </g>
         </svg>
       </div>
-      {total !== 0 && (
+      {!onlyGraph && total !== 0 && (
         <div className="char-donut-legend">
           <div className="legend-segment-3">
             <i />
-            <strong>{rowScore}</strong>0.7 이상
+            <strong>{highScore}</strong>0.7 이상
           </div>
           <div className="legend-segment-2">
             <i />
@@ -86,7 +90,7 @@ export default function OKRGraph({
           </div>
           <div className="legend-segment-1">
             <i />
-            <strong>{highScore}</strong>0.3 이하
+            <strong>{rowScore}</strong>0.3 이하
           </div>
         </div>
       )}

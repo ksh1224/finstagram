@@ -13,6 +13,7 @@ type ObjectiveItemType = {
   user?: any;
   isOpen?: (id: number) => boolean;
   clickItem?: (id: number) => void;
+  onUpdateOKR?: (id: number) => void;
 };
 
 export default function ObjectiveItem({
@@ -21,8 +22,10 @@ export default function ObjectiveItem({
   user,
   isOpen = () => false,
   clickItem = () => {},
+  onUpdateOKR,
 }: ObjectiveItemType) {
   const {
+    id,
     description,
     progress,
     keyResult,
@@ -89,6 +92,7 @@ export default function ObjectiveItem({
                       className="btn label label-light-dark label-inline btn-hover-light-primary btn-hover-icon-primary"
                       onClick={(e) => {
                         e.stopPropagation();
+                        if (onUpdateOKR && id) onUpdateOKR(id);
                       }}
                     >
                       <span className="svg-icon svg-icon-1x svg-icon-dark">
@@ -111,6 +115,7 @@ export default function ObjectiveItem({
                   objectIndex={objectIndex}
                   keyResult={data}
                   lastIndex={keyResult.length - 1 === index}
+                  index={index}
                 />
               )
           )}
