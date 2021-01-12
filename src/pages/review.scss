@@ -1,0 +1,9 @@
+.bootstrap-select > .dropdown-toggle.btn-light, .bootstrap-select > .dropdown-toggle.btn-secondary {
+    border-color: #0000;
+    background: #F3F6F9 !important;
+    outline: none;
+}
+
+.bootstrap-select > .dropdown-toggle:focus {
+  border-color: #0000;
+}
