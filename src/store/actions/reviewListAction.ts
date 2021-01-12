@@ -1,0 +1,66 @@
+import { AxiosError } from "axios";
+import { createAsyncAction } from "typesafe-actions";
+
+const REVIEW_TEAM_LIST_REQUEST = "REVIEW_TEAM_LIST_REQUEST";
+const REVIEW_TEAM_LIST_SUCCESS = "REVIEW_TEAM_LIST_SUCCESS";
+const REVIEW_TEAM_LIST_FAIL = "REVIEW_TEAM_LIST_FAIL";
+
+const REVIEW_PEER_LIST_REQUEST = "REVIEW_PEER_LIST_REQUEST";
+const REVIEW_PEER_LIST_SUCCESS = "REVIEW_PEER_LIST_SUCCESS";
+const REVIEW_PEER_LIST_FAIL = "REVIEW_PEER_LIST_FAIL";
+
+const REVIEW_PEER_EVAL_LIST_REQUEST = "REVIEW_PEER_EVAL_LIST_REQUEST";
+const REVIEW_PEER_EVAL_LIST_SUCCESS = "REVIEW_PEER_EVAL_LIST_SUCCESS";
+const REVIEW_PEER_EVAL_LIST_FAIL = "REVIEW_PEER_EVAL_LIST_FAIL";
+
+const REVIEW_OKR_LIST_REQUEST = "REVIEW_OKR_LIST_REQUEST";
+const REVIEW_OKR_LIST_SUCCESS = "REVIEW_OKR_LIST_SUCCESS";
+const REVIEW_OKR_LIST_FAIL = "REVIEW_OKR_LIST_FAIL";
+
+export const reviewTeamListActionAsync = createAsyncAction(
+  REVIEW_TEAM_LIST_REQUEST,
+  REVIEW_TEAM_LIST_SUCCESS,
+  REVIEW_TEAM_LIST_FAIL
+)<any, any, AxiosError>();
+
+export const reviewTeamListActionTypes = {
+  REVIEW_TEAM_LIST_REQUEST,
+  REVIEW_TEAM_LIST_SUCCESS,
+  REVIEW_TEAM_LIST_FAIL,
+};
+
+export const reviewPeerListActionAsync = createAsyncAction(
+  REVIEW_PEER_LIST_REQUEST,
+  REVIEW_PEER_LIST_SUCCESS,
+  REVIEW_PEER_LIST_FAIL
+)<any, any, AxiosError>();
+
+export const reviewPeerListActionTypes = {
+  REVIEW_PEER_LIST_REQUEST,
+  REVIEW_PEER_LIST_SUCCESS,
+  REVIEW_PEER_LIST_FAIL,
+};
+
+export const reviewPeerEvalListActionAsync = createAsyncAction(
+  REVIEW_PEER_EVAL_LIST_REQUEST,
+  REVIEW_PEER_EVAL_LIST_SUCCESS,
+  REVIEW_PEER_EVAL_LIST_FAIL
+)<any, any, AxiosError>();
+
+export const reviewPeerEvalListActionTypes = {
+  REVIEW_PEER_EVAL_LIST_REQUEST,
+  REVIEW_PEER_EVAL_LIST_SUCCESS,
+  REVIEW_PEER_EVAL_LIST_FAIL,
+};
+
+export const reviewOKRListActionAsync = createAsyncAction(
+  REVIEW_OKR_LIST_REQUEST,
+  REVIEW_OKR_LIST_SUCCESS,
+  REVIEW_OKR_LIST_FAIL
+)<any, any, AxiosError>();
+
+export const reviewOKRListActionTypes = {
+  REVIEW_OKR_LIST_REQUEST,
+  REVIEW_OKR_LIST_SUCCESS,
+  REVIEW_OKR_LIST_FAIL,
+};
