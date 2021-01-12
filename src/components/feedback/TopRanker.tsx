@@ -71,7 +71,7 @@ export default function TopRanker() {
           />
           <div className="card-body overflow-hidden overflow-y-auto">
             <div className="tab-content">
-              <DataValidationContainer isFetching={isFetching}>
+              <DataValidationContainer isFetching={!AllGroup && isFetching}>
                 {!isQuerter
                   ? AllGroup?.map(({ data: rankerData, orgGroup }) => {
                       return (
