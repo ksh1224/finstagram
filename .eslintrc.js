@@ -39,6 +39,7 @@ module.exports = {
     "no-script-url": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
+    "jsx-a11y/label-has-associated-control": "off",
     "prettier/prettier": [
       "error",
       {
