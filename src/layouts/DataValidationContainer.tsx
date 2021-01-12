@@ -18,7 +18,6 @@ export default function DataValidationContainer({
   else if (Array.isArray(children) ? children.length !== 0 : children)
     view = children;
   else view = noDataView;
-  console.log("children", children);
   return <>{view}</>;
 }
 

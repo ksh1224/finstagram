@@ -37,7 +37,7 @@ async function axiosUtil(
     };
 
     if (body) config.data = body;
-    console.log("config", config);
+    // console.log("config", config);
     const response = await axios(config);
     if (response.status === 200) {
       const data: ObjectType = await response.data;
