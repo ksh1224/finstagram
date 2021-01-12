@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+/* eslint-disable no-nested-ternary */
+import React, { useEffect, useState } from "react";
 import Profile from "components/Profile";
 import SVG from "utils/SVG";
-import { useAuth } from "hooks/useRedux";
+import { useAuth, useModal } from "hooks/useRedux";
+import axios from "utils/axiosUtil";
 
 export type CommentDataType = {
   content?: string;
@@ -17,6 +19,9 @@ export type CommentDataType = {
     profileImageUrl?: string;
     organization?: { name?: string };
   };
+  type?: "feedback" | "okr";
+  onDelete?: (commentId: number) => void;
+  onUpdate?: () => void;
 };
 
 export default function CommentItem({
@@ -26,8 +31,50 @@ export default function CommentItem({
   createdAt,
   likeCount,
   liked,
+  type,
+  onDelete,
+  onUpdate,
 }: CommentDataType) {
   const { user: my } = useAuth();
+  const { showModal } = useModal();
+  const [like, setLike] = useState(liked);
+
+  const likeComment = async () => {
+    try {
+      if (type === "okr") {
+        const body = {
+          commentId: id,
+          like: !liked,
+          userId: my.id,
+        };
+        await axios(`/okr/comment/like`, "POST", JSON.stringify(body));
+      } else {
+        const body = {
+          feedbackCommentId: id,
+          like: !liked,
+          userId: my.id,
+        };
+        await axios(`/feedbacks/comment/like`, "POST", JSON.stringify(body));
+      }
+      await setLike(!like);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const updateComment = async (text: string) => {
+    try {
+      if (type === "okr") {
+        await axios(`/okr/comment/update/${id}`, "PUT", text);
+      } else {
+        await axios(`/feedbacks/comment/update/${id}`, "PUT", text);
+      }
+      if (onUpdate) await onUpdate();
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   return (
     <div className="py-5">
       <div className="d-flex align-items-center">
@@ -48,10 +95,20 @@ export default function CommentItem({
                   href="javascript:;"
                   data-toggle="modal"
                   data-target="#modal_editCmt"
+                  onClick={() =>
+                    showModal("commentUpdate", {
+                      comment: content,
+                      onClick: updateComment,
+                    })
+                  }
                 >
                   수정
                 </a>
-                <a className="ml-3" href="#">
+                <a
+                  className="ml-3"
+                  href="javascript:;"
+                  onClick={() => id && onDelete && onDelete(id)}
+                >
                   삭제
                 </a>
               </>
@@ -59,16 +116,23 @@ export default function CommentItem({
           </div>
         </div>
         <div className="font-size-sm">
-          <a href="#">
+          <a onClick={() => likeComment()}>
             <span
               className={`svg-icon svg-icon-sm pr-1 ${
-                liked ? "svg-icon-danger" : "svg-icon-light-dark"
+                like ? "svg-icon-danger" : "svg-icon-light-dark"
               }`}
             >
               <SVG name="like" />
             </span>
           </a>
-          {likeCount}
+          {typeof likeCount === "number" &&
+            (liked
+              ? like
+                ? likeCount
+                : likeCount - 1
+              : like
+              ? likeCount + 1
+              : likeCount)}
         </div>
       </div>
       <div className="text-dark-75 font-size-sm font-weight-normal pt-3">
