@@ -39,22 +39,23 @@ ReactDOM.render(
           case AuthenticationState.Unauthenticated:
             return (
               <div className="d-flex flex-row flex-column-fluid page">
-                <div className="d-flex w-100 align-items-center justify-content-center">
-                  <div>
-                    {error && (
-                      <div className="font-size-h4 text-dark-75 font-weight-bolder mb-5">
-                        에러가 발생했습니다. 다시 로그인 해주세요.
-                      </div>
-                    )}
-                    <div className="text-center">
-                      <button
-                        type="button"
-                        className="btn w-30 btn-primary"
-                        onClick={() => login && login()}
-                      >
-                        Sign In
-                      </button>
+                <div
+                  className="d-flex w-100 align-items-center justify-content-center"
+                  style={{ flexDirection: "column" }}
+                >
+                  {error && (
+                    <div className="font-size-h4 text-dark-75 font-weight-bolder mb-5">
+                      sso 에러가 발생했습니다. 다시 로그인 해주세요.
                     </div>
+                  )}
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      className="btn w-30 btn-primary"
+                      onClick={() => login && login()}
+                    >
+                      Sign In
+                    </button>
                   </div>
                 </div>
               </div>

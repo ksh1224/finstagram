@@ -69,6 +69,35 @@ export default function App(): JSX.Element {
         <FeedbackModal />
       </>
     );
+  if (error)
+    return (
+      <div className="d-flex flex-row flex-column-fluid page">
+        <div
+          className="d-flex w-100 align-items-center justify-content-center"
+          style={{ flexDirection: "column" }}
+        >
+          <div
+            className="font-size-h4 text-dark-75 font-weight-bolder mb-5"
+            style={{ textAlign: "center" }}
+          >
+            {`에러가 발생했습니다: ${error?.message}${
+              error?.code ? `(${error?.code})` : ""
+            }`}
+            <br />
+            개발팀에게 문의해주세요.
+          </div>
+          <div className="text-center">
+            <button
+              type="button"
+              className="btn w-30 btn-primary"
+              onClick={() => window.history.go(0)}
+            >
+              재시도
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   return (
     <div className="d-flex flex-row flex-column-fluid page">
       <div className="d-flex w-100 align-items-center justify-content-center">
