@@ -189,8 +189,8 @@ export default function MyFeedback() {
                             }}
                             src={
                               selectBadgeData?.badge?.id === data?.badge?.id
-                                ? data?.badge?.selectedFileUrl
-                                : data?.badge?.fileUrl
+                                ? data?.badge?.selectedFileUrlHttps
+                                : data?.badge?.fileUrlHttps
                             }
                             alt=""
                           />

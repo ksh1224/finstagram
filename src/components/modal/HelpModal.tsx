@@ -7,8 +7,8 @@ import Scroll from "components/Scroll";
 export default function HelpModal() {
   const { modals, closeModal } = useModal();
   const helpModal = modals.find((modal) => modal.name === "help");
-  const { title, uri, fileUrl } = helpModal?.param || {};
-  const url = process.env.REACT_APP_HOST?.replace("s://", "://") + uri;
+  const { title, uri, fileUrlHttps } = helpModal?.param || {};
+  const url = process.env.REACT_APP_HOST + uri;
 
   function close() {
     closeModal("help");

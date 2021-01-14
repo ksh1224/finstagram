@@ -179,7 +179,7 @@ export default function FeedList() {
                       name="total"
                     />
                   ) : (
-                    !!selectBadgeData?.badge?.selectedFileUrl && (
+                    !!selectBadgeData?.badge?.selectedFileUrlHttps && (
                       <img
                         style={{
                           width: "50px",
@@ -187,7 +187,7 @@ export default function FeedList() {
                           borderRadius: "25px",
                           border: `1.5px solid #5555`,
                         }}
-                        src={selectBadgeData?.badge?.selectedFileUrl}
+                        src={selectBadgeData?.badge?.selectedFileUrlHttps}
                         alt=""
                       />
                     )

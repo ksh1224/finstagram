@@ -142,7 +142,7 @@ export default function TopRankerDetailModal() {
                             selectIndex === i + 1 ? "#000" : "#5555"
                           }`,
                         }}
-                        src={badgeData?.feedbackBadge?.selectedFileUrl}
+                        src={badgeData?.feedbackBadge?.selectedFileUrlHttps}
                         alt=""
                       />
                     </span>

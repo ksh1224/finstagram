@@ -44,7 +44,6 @@ export default function FeedbackModal() {
     try {
       if (feedbackModal) {
         const { data } = await axios(`/feedbacks/${id}`, "GET");
-        console.log("FeedbackModal", data);
         setFeedback(data);
       }
     } catch (error) {
@@ -138,7 +137,7 @@ export default function FeedbackModal() {
                   <img
                     className="bg-light-light rounded-lg"
                     alt="배지 이미지"
-                    src={feedbackBadge?.fileUrl}
+                    src={feedbackBadge?.fileUrlHttps}
                     style={{ width: "50px", height: "50px" }}
                   />
                 </div>
@@ -160,7 +159,7 @@ export default function FeedbackModal() {
                 <p>{contents}</p>
                 {fileUrl && (
                   <p>
-                    <img className="max-w-100" src={fileUrl} />
+                    <img className="max-w-100" src={fileUrl} alt="" />
                   </p>
                 )}
               </div>

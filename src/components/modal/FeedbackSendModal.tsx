@@ -68,7 +68,6 @@ export default function FeedbackSendModal() {
 
   useEffect(() => {
     if (updateFeedbackModal) {
-      console.log("feed123", feed);
       if (feed?.feedbackBadge) {
         const findIndex = dadgeList?.CONTRIBUTION.findIndex(
           (badge: any) => badge.id === feed?.feedbackBadge.id
@@ -168,8 +167,8 @@ export default function FeedbackSendModal() {
                             alt=""
                             src={
                               select === i
-                                ? badge?.selectedFileUrl
-                                : badge?.fileUrl
+                                ? badge?.selectedFileUrlHttps
+                                : badge?.fileUrlHttps
                             }
                             style={{
                               width: "50px",

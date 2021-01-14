@@ -269,8 +269,8 @@ export default function SelfReviewModal() {
                             }}
                             src={
                               selectBadgeId === data?.badge?.id
-                                ? data?.badge?.selectedFileUrl
-                                : data?.badge?.fileUrl
+                                ? data?.badge?.selectedFileUrlHttps
+                                : data?.badge?.fileUrlHttps
                             }
                             alt=""
                           />

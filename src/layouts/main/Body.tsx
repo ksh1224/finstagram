@@ -18,7 +18,7 @@ export default function Body({ children }: LayoutType) {
   );
   const [guides, setGuides] = useState<
     {
-      fileUrl: string;
+      fileUrlHttps: string;
       title: string;
       uri: string;
     }[]
@@ -73,14 +73,14 @@ export default function Body({ children }: LayoutType) {
             className="dropdown-menu w-auto"
             aria-labelledby="finstagram_help"
           >
-            {guides.map(({ title, uri, fileUrl }) => (
+            {guides.map(({ title, uri, fileUrlHttps }) => (
               <a
                 className="dropdown-item"
                 onClick={() =>
                   showModal("help", {
                     title,
                     uri,
-                    fileUrl,
+                    fileUrlHttps,
                   })
                 }
               >

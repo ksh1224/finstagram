@@ -18,7 +18,8 @@ export type DataType = {
     id?: number;
     name?: string;
     description?: string;
-    fileUrl?: string;
+    fileUrlHttps?: string;
+    selectedFileUrlHttps?: string;
   };
   id?: number;
   likeCount?: number;
@@ -144,7 +145,7 @@ export default function FeedListItem(feed: DataType) {
                 <img
                   className="bg-light-light rounded-lg"
                   alt="배지 이미지"
-                  src={feedbackBadge?.fileUrl}
+                  src={feedbackBadge?.selectedFileUrlHttps}
                   style={{ width: "50px", height: "50px" }}
                 />
               </div>
