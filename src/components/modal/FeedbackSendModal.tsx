@@ -146,7 +146,7 @@ export default function FeedbackSendModal() {
                   setType("ADVICE");
                 }}
               >
-                조언
+                제안
               </button>
             </div>
           </div>
@@ -225,7 +225,7 @@ export default function FeedbackSendModal() {
                 <div className="d-flex justify-content-between">
                   <p>
                     &apos;협업&apos;또는 &apos;성과추진활동&apos;과 관련해
-                    조언해주고 싶은 내용을 작성해주세요.
+                    제안해주고 싶은 내용을 작성해주세요.
                   </p>
                   <span className="text-muted font-size-sm">{`${contents.length}/${textLimit}`}</span>
                 </div>
@@ -249,10 +249,10 @@ export default function FeedbackSendModal() {
                   style={{ listStylePosition: "inside" }}
                 >
                   <li>
-                    구체적인 행동(관찰 능한 행동)에 초점을 맞추어 조언해 주세요.
+                    구체적인 행동(관찰 능한 행동)에 초점을 맞추어 제안해 주세요.
                   </li>
                   <li>
-                    조언하고 싶은 내용을 건설적으로 제안해 주세요.
+                    제안하고 싶은 내용을 건설적으로 제안해 주세요.
                     <br />
                     *Feedback 내용은 선택하신 동료만 확인 가능합니다.
                   </li>

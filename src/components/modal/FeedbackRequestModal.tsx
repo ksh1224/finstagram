@@ -147,6 +147,7 @@ export default function FeedbackRequestModal() {
                   </span>
                 </div>
                 <input
+                  style={{ fontSize: "12px" }}
                   type="text"
                   className="form-control py-4 h-auto"
                   placeholder="팀 또는 이름을 입력해 주세요."
@@ -256,7 +257,7 @@ export default function FeedbackRequestModal() {
               className="form-control resize-none"
               id="exampleTextarea"
               rows={5}
-              placeholder="피드백 받는 내용이 '칭찬'일 경우 전체 공개가 되며 '조언'일 경우 개인에게만 공개가 됩니다."
+              placeholder="피드백 받는 내용이 '칭찬'일 경우 전체 공개가 되며 '제안'일 경우 개인에게만 공개가 됩니다."
               value={contents}
               onChange={({ target }) =>
                 setContents(

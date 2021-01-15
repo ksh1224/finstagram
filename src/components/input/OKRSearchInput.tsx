@@ -28,7 +28,7 @@ export default function OKRSearchInput({ value, onChangeState }: InputType) {
           }
           type="text"
           className="form-control py-4 h-auto"
-          placeholder="이름을 입력해 주세요."
+          placeholder="팀 또는 이름을 입력해 주세요."
         />
 
         <div className="input-group-append">
