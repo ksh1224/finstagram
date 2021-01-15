@@ -93,11 +93,6 @@ export default function LeaderReviewModal() {
       )
         temporary = true;
       else temporary = false;
-      console.log("generalIndexQna", falseNum);
-      console.log(
-        "generalTextQna",
-        falseNum !== generalIndexQna.length + generalTextQna.length
-      );
       setIsSubmit(submit);
       setIsTemporary(temporary);
     }

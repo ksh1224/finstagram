@@ -44,7 +44,6 @@ export function* feedbackSendSaga(
       "POST",
       formData
     );
-    console.log("data123", data);
     yield put(feedRecentActionAsync.request(null));
     yield put(feedRecivedActionAsync.request(null));
     yield put(feedSentActionAsync.request(null));
@@ -86,7 +85,6 @@ export function* feedbackRequestSaga(
       "POST",
       formData
     );
-    console.log("data", data);
     yield put(feedRecentActionAsync.request(null));
     yield put(feedRecivedActionAsync.request(null));
     yield put(feedSentActionAsync.request(null));

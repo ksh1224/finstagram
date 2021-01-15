@@ -37,7 +37,7 @@ async function axiosUtil(
     };
 
     if (body) config.data = body;
-    // console.log("config", config);
+    if (process.env.REACT_APP_DEV) console.log("config", config);
     const response = await axios(config);
     if (response.status === 200) {
       const data: ObjectType = await response.data;
