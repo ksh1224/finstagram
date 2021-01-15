@@ -111,9 +111,7 @@ export default function Review() {
                 <SelfReview />
               </div>
               <div className="row h-sm-100 flex-grow-1 mx-0 section-group-2">
-                <div className="h-sm-100 flex-grow-1 section-1">
-                  <PeerReview />
-                </div>
+                <PeerReview />
                 <div className="h-sm-100 flex-grow-1 section-2">
                   <TeamReview />
                 </div>
