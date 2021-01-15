@@ -122,8 +122,6 @@ export default function PeerReviewResult() {
     if (
       contributionPieRef.current &&
       collaborationPieRef.current &&
-      contributionBarRef.current &&
-      collaborationBarRef.current &&
       collaboration &&
       contribution
     ) {
@@ -135,7 +133,13 @@ export default function PeerReviewResult() {
         collaborationPieRef.current,
         pieConfig(contribution.continueCount, contribution.considerCount)
       );
-
+    }
+    if (
+      contributionBarRef.current &&
+      collaborationBarRef.current &&
+      collaboration &&
+      contribution
+    ) {
       const bar1 = new Chart(
         contributionBarRef.current,
         barConfig(collaboration.myScore, collaboration.totalScore)
@@ -170,34 +174,38 @@ export default function PeerReviewResult() {
             </div>
             <canvas ref={contributionPieRef} className="max-w-300px" />
           </div>
-          <div className="col-6">
-            <div className="d-flex">
-              <div
-                id="bar-result-legend"
-                className="col-4 chart-reivew-legend p-0"
-              >
-                <ul className="3-legend">
-                  <li>
-                    <span style={{ backgroundColor: "#1bc5bd" }} />
-                    My Score
-                  </li>
-                  <li>
-                    <span style={{ backgroundColor: "#ffa800" }} />
-                    사업부 평균
-                  </li>
-                </ul>
+          {contribution?.myScore ? (
+            <div className="col-6">
+              <div className="d-flex">
+                <div
+                  id="bar-result-legend"
+                  className="col-4 chart-reivew-legend p-0"
+                >
+                  <ul className="3-legend">
+                    <li>
+                      <span style={{ backgroundColor: "#1bc5bd" }} />
+                      My Score
+                    </li>
+                    <li>
+                      <span style={{ backgroundColor: "#ffa800" }} />
+                      사업부 평균
+                    </li>
+                  </ul>
+                </div>
+                <div className="col-8 p-0">
+                  <span className="d-block font-size-sm text-muted mb-4">
+                    *긍정응답률: 5.6점을 준 동료의 비율
+                  </span>
+                  <span className="d-block font-size-sm text-muted mb-4">
+                    *부정응답률: 1.2점을 준 동료의 비율
+                  </span>
+                </div>
               </div>
-              <div className="col-8 p-0">
-                <span className="d-block font-size-sm text-muted mb-4">
-                  *긍정응답률: 5.6점을 준 동료의 비율
-                </span>
-                <span className="d-block font-size-sm text-muted mb-4">
-                  *부정응답률: 1.2점을 준 동료의 비율
-                </span>
-              </div>
+              <canvas ref={contributionBarRef} className="max-w-300px" />
             </div>
-            <canvas ref={contributionBarRef} className="max-w-300px" />
-          </div>
+          ) : (
+            <></>
+          )}
         </div>
         {contribution?.continueComment &&
         contribution?.continueComment.length !== 0 ? (
@@ -258,35 +266,40 @@ export default function PeerReviewResult() {
             </div>
             <canvas ref={collaborationPieRef} className="max-w-300px" />
           </div>
-          <div className="col-6">
-            <div className="d-flex">
-              <div
-                id="bar-collabo-legend"
-                className="col-4 chart-reivew-legend p-0"
-              >
-                <ul className="3-legend">
-                  <li>
-                    <span style={{ backgroundColor: "#1bc5bd" }} />
-                    My Score
-                  </li>
-                  <li>
-                    <span style={{ backgroundColor: "#ffa800" }} />
-                    사업부 평균
-                  </li>
-                </ul>
+          {collaboration?.myScore ? (
+            <div className="col-6">
+              <div className="d-flex">
+                <div
+                  id="bar-collabo-legend"
+                  className="col-4 chart-reivew-legend p-0"
+                >
+                  <ul className="3-legend">
+                    <li>
+                      <span style={{ backgroundColor: "#1bc5bd" }} />
+                      My Score
+                    </li>
+                    <li>
+                      <span style={{ backgroundColor: "#ffa800" }} />
+                      사업부 평균
+                    </li>
+                  </ul>
+                </div>
+                <div className="col-8 p-0">
+                  <span className="d-block font-size-sm text-muted mb-4">
+                    *긍정응답률: 5.6점을 준 동료의 비율
+                  </span>
+                  <span className="d-block font-size-sm text-muted mb-4">
+                    *부정응답률: 1.2점을 준 동료의 비율
+                  </span>
+                </div>
               </div>
-              <div className="col-8 p-0">
-                <span className="d-block font-size-sm text-muted mb-4">
-                  *긍정응답률: 5.6점을 준 동료의 비율
-                </span>
-                <span className="d-block font-size-sm text-muted mb-4">
-                  *부정응답률: 1.2점을 준 동료의 비율
-                </span>
-              </div>
+              <canvas ref={collaborationBarRef} className="max-w-300px" />
             </div>
-            <canvas ref={collaborationBarRef} className="max-w-300px" />
-          </div>
+          ) : (
+            <></>
+          )}
         </div>
+
         {collaboration?.continueComment &&
         collaboration.continueComment.length !== 0 ? (
           <div className="mt-10">
