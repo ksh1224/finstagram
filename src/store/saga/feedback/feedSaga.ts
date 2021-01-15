@@ -114,9 +114,7 @@ export function* feedBadgeSaga(
     const { user } = yield select((state: RootState) => state.APIAuth);
     const data = yield call(
       axios,
-      `/feedbacks/received/list?user_id=${
-        user.id
-      }&year=${year}&quarter=${quarter}${
+      `/feedbacks/recent/${user.id}?year=${year}&quarter=${quarter}${
         badgeId ? `&badge_id=${badgeId}` : ""
       }`,
       "GET"
