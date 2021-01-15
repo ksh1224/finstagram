@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -11,6 +12,123 @@ import OKRAccordion from "components/okr/OKRAccordion";
 import Scroll from "components/Scroll";
 import { useReviewMain } from "hooks/useReview";
 import { tagUtil } from "utils/stringUtil";
+import OKRWrite from "components/okr/OKRWrite";
+
+const Options = ({
+  qna,
+  qnaIndex,
+  finished,
+  changeData,
+  objectiveIndex,
+}: {
+  qna: any;
+  qnaIndex: number;
+  finished: any;
+  changeData: any;
+  objectiveIndex: any;
+}) => {
+  let optionView = <></>;
+  let textView = <></>;
+  const [etc, setEtc] = useState(false);
+
+  useEffect(() => {
+    if (qna?.answerByText) setEtc(true);
+  }, []);
+  useEffect(() => {
+    if (!etc && qna?.type === "MULTIPLE_CHOICE_TEXT")
+      changeData(objectiveIndex, qna.questionId, qna.type, "");
+  }, [etc]);
+
+  if (qna?.type === "MULTIPLE_CHOICE_TEXT" || qna?.type === "MULTIPLE_CHOICE") {
+    optionView = (
+      <div className="checkbox-list mt-5">
+        {qna.optionList.map((option: any) => {
+          const { description, id: optionId } = option;
+          return (
+            <label
+              key={optionId}
+              className="checkbox"
+              onClick={() =>
+                !finished &&
+                changeData(objectiveIndex, qna.questionId, qna.type, optionId)
+              }
+            >
+              <input
+                type="checkbox"
+                disabled
+                checked={qna.answer.includes(optionId)}
+              />
+              <span />
+              {tagUtil(description, "sm")}
+            </label>
+          );
+        })}
+        {!finished && qna?.type === "MULTIPLE_CHOICE_TEXT" ? (
+          <label
+            key={qnaIndex}
+            className="checkbox"
+            onClick={() => setEtc(!etc)}
+          >
+            <input type="checkbox" disabled checked={etc} />
+            <span />
+            기타의견
+          </label>
+        ) : (
+          <></>
+        )}
+      </div>
+    );
+  }
+  if (qna?.type === "MULTIPLE_CHOICE_TEXT" || qna?.type === "TEXT") {
+    textView = finished ? (
+      (
+        qna?.type === "MULTIPLE_CHOICE_TEXT" ? qna?.answerByText : qna?.answer
+      ) ? (
+        <div className="mt-3">
+          {qna?.type === "MULTIPLE_CHOICE_TEXT"
+            ? `기타의견: ${qna?.answerByText}`
+            : qna?.answer}
+        </div>
+      ) : (
+        <div className="pl-2 mt-3">
+          {qna?.type === "MULTIPLE_CHOICE_TEXT" ? "" : "리뷰가 없습니다."}
+        </div>
+      )
+    ) : qna?.type !== "MULTIPLE_CHOICE_TEXT" || etc ? (
+      <textarea
+        className="form-control resize-none mt-3"
+        placeholder={
+          qna?.type === "MULTIPLE_CHOICE_TEXT"
+            ? "기타의견을 작성해주세요."
+            : "Review를 작성해주세요"
+        }
+        rows={6}
+        value={
+          qna?.type === "MULTIPLE_CHOICE_TEXT" ? qna?.answerByText : qna?.answer
+        }
+        onChange={({ target }) =>
+          changeData(objectiveIndex, qna.questionId, qna.type, target.value)
+        }
+      />
+    ) : (
+      <></>
+    );
+  }
+
+  return (
+    <div className="mb-12">
+      <div className="font-size-lg font-weight-bolder word-keep">
+        {2 + qnaIndex}.{" "}
+        {tagUtil(
+          qna?.question.replace("Objective", `Objective${1 + objectiveIndex}`),
+          "sm"
+        )}
+      </div>
+      {optionView}
+      {textView}
+    </div>
+  );
+};
 
 export default function OKRSelfReviewModal() {
   const { modals, closeModal } = useModal();
@@ -22,6 +140,7 @@ export default function OKRSelfReviewModal() {
   const [selfOKRData, setSelfData] = useState<any>({});
   const [reviewData, setReviewData] = useState<any[]>([]);
   const [prevReviewData, setPrevReviewData] = useState<any[]>([]);
+  const [updateId, setUpdateId] = useState<number | null>(null);
 
   const okrSelfReviewModal = modals.find(
     (modal) => modal.name === "okrSelfReview"
@@ -58,6 +177,7 @@ export default function OKRSelfReviewModal() {
       setReviewData(newArr);
       setShow(true);
     } catch (error) {
+      close();
       console.log("error", error);
     }
   };
@@ -110,11 +230,7 @@ export default function OKRSelfReviewModal() {
                 case "MULTIPLE_CHOICE":
                   return {
                     ...qna,
-                    answer: qna.answer.includes(contents)
-                      ? qna.answer.filter(
-                          (optionId: any) => optionId !== contents
-                        )
-                      : [...qna.answer, contents],
+                    answer: qna.answer.includes(contents) ? [] : [contents],
                   };
                 case "TEXT":
                   return { ...qna, answer: contents };
@@ -199,225 +315,154 @@ export default function OKRSelfReviewModal() {
             <i aria-hidden="true" className="ki ki-close" />
           </button>
         </div>
-        <Scroll className="modal-body" style={{ maxHeight: "90vh" }}>
-          <div className="d-flex flex-row flex-wrap align-items-stretch">
-            <Scroll
-              className="d-flex flex-column col-auto w-100px flex-grow-1 section-1 px-6"
-              style={{ maxHeight: "80vh" }}
-            >
-              <div className="flex-nowrap align-items-center border-0">
-                <h5 className="card-title align-items-start flex-column">
-                  <span className="font-weight-bolder text-dark">
-                    My OKR 현황
-                  </span>
-                </h5>
-              </div>
-              <div className="pt-2">
-                <div className="d-flex justify-content-between align-items-center">
-                  <OKRGraph
-                    show={show}
-                    rowScore={okrData?.progressLow}
-                    mediumScore={okrData?.progressMid}
-                    highScore={okrData?.progressHigh}
-                  />
+        <Scroll
+          className="modal-body"
+          style={updateId ? { height: "90vh" } : { maxHeight: "90vh" }}
+        >
+          {!updateId ? (
+            <div className="d-flex flex-row flex-wrap align-items-stretch">
+              <Scroll
+                className="d-flex flex-column col-auto w-100px flex-grow-1 section-1 px-6"
+                style={{ maxHeight: "78vh" }}
+              >
+                <div className="flex-nowrap align-items-center border-0">
+                  <h5 className="card-title align-items-start flex-column">
+                    <span className="font-weight-bolder text-dark">
+                      My OKR 현황
+                    </span>
+                  </h5>
                 </div>
-                {!okrData ? (
-                  <div className="text-center my-10">
-                    <p className="font-size-h5 mb-6">
-                      {`${year}년 ${quarter}분기 OKR Data가 없습니다.`}
-                    </p>
+                <div className="pt-2">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <OKRGraph
+                      show={show}
+                      rowScore={okrData?.progressLow}
+                      mediumScore={okrData?.progressMid}
+                      highScore={okrData?.progressHigh}
+                    />
                   </div>
-                ) : (
-                  <OKRAccordion objectives={okrData?.objective} user={my} />
-                )}
-              </div>
-            </Scroll>
-            <div className="col-auto w-100px flex-grow-1 section-2 px-6">
-              <Scroll style={{ maxHeight: "70vh" }}>
-                <h5 className="card-title align-items-start flex-column font-weight-bolder word-keep">
-                  Review
-                </h5>
-                <div className="gutter-b font-size-h5 font-weight-bold text-center">
-                  <ul
-                    className="d-block header-tabs nav flex-row text-nowrap h-100 overflow-auto flex-nowrap text-left mt-7 mx-0"
-                    role="tablist"
-                  >
-                    {reviewData.map((obj: any, objectiveIndex) => (
-                      <li
-                        key={`objective_${objectiveIndex}`}
-                        className="d-inline-block mr-3"
-                      >
-                        <button
-                          type="button"
-                          className={`btn btn-sm ${
-                            objectiveIndex === 0 ? "active" : ""
-                          }`}
-                          data-toggle="tab"
-                          data-target={`#okr_review_tab1${objectiveIndex}`}
-                          role="tab"
-                        >
-                          Objective {objectiveIndex + 1}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="tab-content">
-                  {reviewData.map((objectiveData, objectiveIndex) => (
-                    <div
-                      className={`tab-pane show ${
-                        objectiveIndex === 0 ? "active" : ""
-                      }`}
-                      id={`okr_review_tab1${objectiveIndex}`}
-                      key={`tab_${objectiveIndex}`}
-                    >
-                      <div className="mb-12">
-                        <div className="font-size-lg font-weight-bolder word-keep">
-                          1. Objective {1 + objectiveIndex}의 최종 Score를
-                          Update 해주세요.
-                        </div>
-                        <p className="d-block font-size-sm mt-3">
-                          <button
-                            type="button"
-                            className="btn btn-primary mx-2"
-                            data-toggle="tab"
-                          >
-                            Score Update 하러가기
-                          </button>
-                        </p>
-                      </div>
-                      {objectiveData.map((qna: any, qnaIndex: number) => {
-                        let optionView = <></>;
-                        let textView = <></>;
-
-                        if (
-                          qna?.type === "MULTIPLE_CHOICE_TEXT" ||
-                          qna?.type === "MULTIPLE_CHOICE"
-                        ) {
-                          optionView = (
-                            <div className="checkbox-list mt-5">
-                              {qna.optionList.map((option: any) => {
-                                const { description, id: optionId } = option;
-                                return (
-                                  <label
-                                    key={optionId}
-                                    className="checkbox"
-                                    onClick={() =>
-                                      !finished &&
-                                      changeData(
-                                        objectiveIndex,
-                                        qna.questionId,
-                                        qna.type,
-                                        optionId
-                                      )
-                                    }
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      disabled
-                                      checked={qna.answer.includes(optionId)}
-                                    />
-                                    <span />
-                                    {tagUtil(description, "sm")}
-                                  </label>
-                                );
-                              })}
-                            </div>
-                          );
-                        }
-                        if (
-                          qna?.type === "MULTIPLE_CHOICE_TEXT" ||
-                          qna?.type === "TEXT"
-                        ) {
-                          textView = finished ? (
-                            (
-                              qna?.type === "MULTIPLE_CHOICE_TEXT"
-                                ? qna?.answerByText
-                                : qna?.answer
-                            ) ? (
-                              <div className="mt-3">
-                                {qna?.type === "MULTIPLE_CHOICE_TEXT"
-                                  ? `기타의견: ${qna?.answerByText}`
-                                  : qna?.answer}
-                              </div>
-                            ) : (
-                              <div className="pl-2 mt-3">
-                                {qna?.type === "MULTIPLE_CHOICE_TEXT"
-                                  ? ""
-                                  : "리뷰가 없습니다."}
-                              </div>
-                            )
-                          ) : (
-                            <textarea
-                              className="form-control resize-none mt-3"
-                              placeholder={
-                                qna?.type === "MULTIPLE_CHOICE_TEXT"
-                                  ? "기타의견을 작성해주세요."
-                                  : "Review를 작성해주세요"
-                              }
-                              rows={6}
-                              value={
-                                qna?.type === "MULTIPLE_CHOICE_TEXT"
-                                  ? qna?.answerByText
-                                  : qna?.answer
-                              }
-                              onChange={({ target }) =>
-                                changeData(
-                                  objectiveIndex,
-                                  qna.questionId,
-                                  qna.type,
-                                  target.value
-                                )
-                              }
-                            />
-                          );
-                        }
-
-                        return (
-                          <div className="mb-12">
-                            <div className="font-size-lg font-weight-bolder word-keep">
-                              {2 + qnaIndex}.{" "}
-                              {tagUtil(
-                                qna?.question.replace(
-                                  "Objective",
-                                  `Objective${1 + objectiveIndex}`
-                                ),
-                                "sm"
-                              )}
-                            </div>
-                            {optionView}
-                            {textView}
-                          </div>
-                        );
-                      })}
+                  {!okrData ? (
+                    <div className="text-center my-10">
+                      <p className="font-size-h5 mb-6">
+                        {`${year}년 ${quarter}분기 OKR Data가 없습니다.`}
+                      </p>
                     </div>
-                  ))}
+                  ) : (
+                    <OKRAccordion objectives={okrData?.objective} user={my} />
+                  )}
                 </div>
               </Scroll>
-              {!finished && (
-                <div className="d-flex align-items-center justify-content-center mt-12">
-                  <button
-                    type="button"
-                    className={`btn btn-lg w-150px font-weight-bold mx-2 ${
-                      isTemporary ? "btn-primary" : "btn-secondary"
-                    }`}
-                    onClick={() => isTemporary && update(false)}
-                  >
-                    임시저장
-                  </button>
-                  <button
-                    type="button"
-                    className={`btn btn-lg w-150px font-weight-bold mx-2 ${
-                      isSubmit ? "btn-primary" : "btn-secondary"
-                    }`}
-                    onClick={() => isSubmit && update(true)}
-                  >
-                    제출하기
-                  </button>
-                </div>
-              )}
+              <div className="col-auto w-100px flex-grow-1 section-2 px-6">
+                <Scroll style={{ maxHeight: "66vh" }}>
+                  <h5 className="card-title align-items-start flex-column font-weight-bolder word-keep">
+                    Review
+                  </h5>
+                  <div className="gutter-b font-size-h5 font-weight-bold text-center">
+                    <ul
+                      className="d-block header-tabs nav flex-row text-nowrap h-100 overflow-auto flex-nowrap text-left mt-7 mx-0"
+                      role="tablist"
+                    >
+                      {reviewData.map((obj: any, objectiveIndex) => (
+                        <li
+                          key={`objective_${objectiveIndex}`}
+                          className="d-inline-block mr-3"
+                        >
+                          <button
+                            type="button"
+                            className={`btn btn-sm ${
+                              objectiveIndex === 0 ? "active" : ""
+                            }`}
+                            data-toggle="tab"
+                            data-target={`#okr_review_tab1${objectiveIndex}`}
+                            role="tab"
+                          >
+                            Objective {objectiveIndex + 1}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="tab-content">
+                    {reviewData.map((objectiveData, objectiveIndex) => (
+                      <div
+                        className={`tab-pane show ${
+                          objectiveIndex === 0 ? "active" : ""
+                        }`}
+                        id={`okr_review_tab1${objectiveIndex}`}
+                        key={`tab_${objectiveIndex}`}
+                      >
+                        <div className="mb-12">
+                          <div className="font-size-lg font-weight-bolder word-keep">
+                            1. Objective {1 + objectiveIndex}의 최종 Score를
+                            Update 해주세요.
+                          </div>
+                          <p className="d-block font-size-sm mt-3">
+                            <button
+                              type="button"
+                              className="btn btn-primary mx-2"
+                              data-toggle="tab"
+                              onClick={() =>
+                                okrData?.objective &&
+                                okrData.objective[objectiveIndex] &&
+                                setUpdateId(
+                                  okrData.objective[objectiveIndex].id
+                                )
+                              }
+                            >
+                              Score Update 하러가기
+                            </button>
+                          </p>
+                        </div>
+                        {objectiveData.map((qna: any, qnaIndex: number) => (
+                          <Options
+                            qna={qna}
+                            qnaIndex={qnaIndex}
+                            finished={finished}
+                            changeData={changeData}
+                            objectiveIndex={objectiveIndex}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </Scroll>
+                {!finished && (
+                  <div className="d-flex align-items-center justify-content-center mt-12">
+                    <button
+                      type="button"
+                      className={`btn btn-lg w-150px font-weight-bold mx-2 ${
+                        isTemporary ? "btn-primary" : "btn-secondary"
+                      }`}
+                      onClick={() => isTemporary && update(false)}
+                    >
+                      임시저장
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn btn-lg w-150px font-weight-bold mx-2 ${
+                        isSubmit ? "btn-primary" : "btn-secondary"
+                      }`}
+                      onClick={() => isSubmit && update(true)}
+                    >
+                      제출하기
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <OKRWrite
+              type="update"
+              show
+              close={() => {
+                setUpdateId(null);
+                getData();
+              }}
+              updateOKRId={updateId}
+              year={year}
+              quarter={quarter}
+            />
+          )}
         </Scroll>
       </div>
     </Modal>
