@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { Modal } from "react-bootstrap";
 import { useModal } from "hooks/useRedux";
 import React, { useEffect, useState, createRef } from "react";
@@ -144,8 +145,7 @@ export default function OKRUpateModal() {
         close();
       }
     } catch (error) {
-      // const aaa = await error.toJSON();
-      // console.log("error", aaa);
+      console.log("error", error);
       alert("실패!");
     }
   };
@@ -194,8 +194,14 @@ export default function OKRUpateModal() {
                         : ""}
                     </span>
                     <span className="label label-xl label-rounded label-inline w-100px flex-grow-1 mx-2">
-                      {prev?.updateValues?.progress
+                      {typeof prev?.updateValues?.progress === "number"
                         ? prev.updateValues.progress
+                        : isObj
+                        ? (
+                            keyResults?.reduce((acc: any, value: any) => {
+                              return acc + (value?.updateValues?.progress || 0);
+                            }, 0) / keyResults?.length
+                          ).toFixed(1)
                         : current?.updateValues?.progress}
                     </span>
                   </div>
