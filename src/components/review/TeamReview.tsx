@@ -112,18 +112,17 @@ export default function TeamReview() {
         </span> */}
       </div>
       <div className="card-body overflow-y-auto">
-        {reviewLeaderIncluded &&
-          progress?.leadership &&
-          progress.leadership.length !== 0 && (
-            <ReviewCardItem
-              title="리더 Review"
-              period={leaderPeriod}
-              periodText={leaderPeriodText}
-              header={<></>}
-              removeCenterText
-            >
-              <Scroll style={{ maxHeight: "250px" }}>
-                {progress?.leadership?.map(({ user, finished }: any) => (
+        {reviewLeaderIncluded && progress?.leadership && (
+          <ReviewCardItem
+            title="리더 Review"
+            period={leaderPeriod}
+            periodText={leaderPeriodText}
+            header={<></>}
+            removeCenterText
+          >
+            <Scroll style={{ maxHeight: "250px" }}>
+              {progress.leadership.length !== 0 ? (
+                progress.leadership.map(({ user, finished }: any) => (
                   <div className="card card-custom gutter-b">
                     <div className="card-body">
                       <div className="d-flex border-light-dark">
@@ -161,10 +160,17 @@ export default function TeamReview() {
                       </div>
                     </div>
                   </div>
-                ))}
-              </Scroll>
-            </ReviewCardItem>
-          )}
+                ))
+              ) : (
+                <div className="d-flex py-4">
+                  <div className="w-100 py-8 text-center word-keep">
+                    리뷰 가능한 리더가 없습니다.
+                  </div>
+                </div>
+              )}
+            </Scroll>
+          </ReviewCardItem>
+        )}
 
         {my.isReviewer && reviewSelfIncluded ? (
           <ReviewCardItem
@@ -235,7 +241,7 @@ export default function TeamReview() {
                 </div>
               </div>
               <Scroll style={{ maxHeight: "250px" }}>
-                {findList &&
+                {findList && findList.length !== 0 ? (
                   findList.map((peer: any) => {
                     if (!isPosible || peer?.progress === "IN_PROGRESS")
                       return (
@@ -247,7 +253,14 @@ export default function TeamReview() {
                         />
                       );
                     return <></>;
-                  })}
+                  })
+                ) : (
+                  <div className="d-flex py-4 border-top border-light-dark">
+                    <div className="w-100 py-8 text-center word-keep">
+                      리뷰 가능한 팀원이 없습니다.
+                    </div>
+                  </div>
+                )}
               </Scroll>
             </div>
           </ReviewCardItem>
@@ -318,7 +331,7 @@ export default function TeamReview() {
                 </div>
                 <div className="w-100px p-0 text-center">현황</div>
               </div>
-              {findOKRList &&
+              {findOKRList && findOKRList.length !== 0 ? (
                 findOKRList.map((peer: any) => {
                   if (!isOKRPosible || peer?.progress === "IN_PROGRESS")
                     return (
@@ -348,7 +361,14 @@ export default function TeamReview() {
                       />
                     );
                   return <></>;
-                })}
+                })
+              ) : (
+                <div className="d-flex py-4 border-top border-light-dark">
+                  <div className="w-100 py-8 text-center word-keep">
+                    리뷰 가능한 팀원이 없습니다.
+                  </div>
+                </div>
+              )}
             </div>
           </ReviewCardItem>
         ) : (

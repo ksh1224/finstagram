@@ -88,7 +88,7 @@ export default function ReviewCardItem({
           </div>
         </div>
       )}
-      {children}
+      {period === "Write" ? children : undefined}
     </div>
   );
 }
