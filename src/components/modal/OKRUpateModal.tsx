@@ -194,9 +194,9 @@ export default function OKRUpateModal() {
                         : ""}
                     </span>
                     <span className="label label-xl label-rounded label-inline w-100px flex-grow-1 mx-2">
-                      {prev?.updateValues?.status
-                        ? statusToKo[prev?.updateValues?.status]
-                        : ""}
+                      {prev?.updateValues?.progress
+                        ? prev.updateValues.progress
+                        : current?.updateValues?.progress}
                     </span>
                   </div>
                   <div className="border mt-3 p-3 h-100px overflow-y-auto rounded">
