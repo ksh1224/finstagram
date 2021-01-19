@@ -22,8 +22,8 @@ async function axiosUtil(
     // console.log("accessToken", !!accessToken);
     // console.log("token", !!token);
 
-    if (token && !accessToken) headers["X-FNF-MSAUTH-TOKEN"] = token;
-    else headers["X-FNF-ACCESS-TOKEN"] = accessToken;
+    if (accessToken && !token) headers["X-FNF-MSAUTH-TOKEN"] = accessToken;
+    else headers["X-FNF-ACCESS-TOKEN"] = token;
 
     if (testUser) headers["X-FNF-DEV"] = testUser;
 

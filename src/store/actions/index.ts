@@ -1,4 +1,4 @@
-export * from "./APIAuthAction";
+export * from "./AuthAction";
 
 export * from "./topRankerAction";
 export * from "./feedAction";

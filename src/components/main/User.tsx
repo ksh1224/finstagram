@@ -4,15 +4,15 @@ import Profile from "components/Profile";
 import { useAuth } from "hooks/useRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveHelp } from "store/actions";
-import { AuthContext } from "index";
+import { useMsal } from "@azure/msal-react";
 
 export default function User() {
   const { user: my } = useAuth();
+  const { instance } = useMsal();
   const { activeHelp, activePush } = useSelector(
     (state: RootState) => state.setting
   );
   const dispatch = useDispatch();
-  const { logout } = useContext(AuthContext);
 
   useEffect(() => {
     const isHelp = localStorage.getItem("help");
@@ -28,6 +28,17 @@ export default function User() {
     if (activeHelp) localStorage.setItem("help", "show");
     else localStorage.setItem("help", "");
   }, [activeHelp]);
+
+  const logOut = async () => {
+    try {
+      await instance.logout();
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+      await localStorage.setItem("accessToken", "");
+      await localStorage.setItem("token", "");
+    }
+  };
 
   return (
     <div className="dropdown">
@@ -64,7 +75,7 @@ export default function User() {
           </div>
           <span
             className="btn btn-primary btn-sm font-weight-bold font-size-sm mt-2"
-            onClick={() => logout && logout()}
+            onClick={() => logOut()}
           >
             Log Out
           </span>

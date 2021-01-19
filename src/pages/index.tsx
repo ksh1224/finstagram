@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Switch, Route, Link, useLocation, useParams } from "react-router-dom";
+
+import { msalConfig } from "utils/msalConfig";
 
 import Header from "layouts/main/Header";
 import Feedback from "pages/Feedback";
@@ -27,15 +29,43 @@ import OKRTeamReviewModal from "components/modal/OKRTeamReviewModal";
 import HelpModal from "components/modal/HelpModal";
 import CommentUpdateModal from "components/modal/CommentUpdateModal";
 import FeedbackModal from "components/modal/FeedbackModal";
+import { useDispatch } from "react-redux";
+import {
+  useMsal,
+  useIsAuthenticated,
+  useAccount,
+  useMsalAuthentication,
+} from "@azure/msal-react";
+import { InteractionType } from "@azure/msal-browser";
 
 export default function App(): JSX.Element {
-  const { user, error, Auth } = useAuth();
-  const { initialized, initializing, logInResponse } = Auth;
+  const { request, user, error } = useAuth();
+  const { instance, accounts } = useMsal();
+  const { result: authResult, error: authError } = useMsalAuthentication(
+    InteractionType.Redirect
+  );
+  const account = useAccount(accounts[0] || {});
+  const isAuthenticated = useIsAuthenticated(accounts[0]);
+  const dispatch = useDispatch();
 
-  // console.log("initialized, initializing, logInResponse");
-  // console.log(initialized, initializing, logInResponse);
+  useEffect(() => {
+    if (accounts.length === 0)
+      instance.loginRedirect(msalConfig.redirectRequestConfig);
+  }, [accounts]);
 
-  if (initialized && user)
+  useEffect(() => {
+    if (account && isAuthenticated)
+      instance
+        .acquireTokenSilent({
+          ...msalConfig.silentRequestConfig,
+          account,
+        })
+        .then(async (result) => {
+          request(result.accessToken);
+        });
+  }, [account, isAuthenticated]);
+
+  if (user)
     return (
       <>
         <Body>
@@ -94,6 +124,51 @@ export default function App(): JSX.Element {
             >
               재시도
             </button>
+          </div>
+        </div>
+      </div>
+    );
+  if (authError)
+    return (
+      <div className="d-flex flex-row flex-column-fluid page">
+        <div
+          className="d-flex w-100 align-items-center justify-content-center"
+          style={{ flexDirection: "column" }}
+        >
+          <div
+            className="font-size-h4 text-dark-75 font-weight-bolder mb-5"
+            style={{ textAlign: "center", width: "70vh" }}
+          >
+            {authError?.message.includes("AADSTS50105") ? (
+              `해당 서비스 계정이 아닙니다. 다른 계정으로 로그인 해주세요.`
+            ) : (
+              <>
+                {`sso 에러가 발생했습니다: `}
+                <br />
+                {authError?.message}
+              </>
+            )}
+          </div>
+          <div className="text-center">
+            {authError?.message.includes("AADSTS50105") ? (
+              <button
+                type="button"
+                className="btn w-30 btn-primary"
+                onClick={() => {
+                  instance.loginRedirect(msalConfig.redirectRequestConfig);
+                }}
+              >
+                다른 계정으로 로그인
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn w-30 btn-primary"
+                onClick={() => window.history.go(0)}
+              >
+                재시도
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -31,7 +31,6 @@ import notification from "./notificationReducer";
 import selectBadge from "./feedback/selectBadgeReducer";
 
 const rootReducer = combineReducers({
-  Auth,
   APIAuth,
   topRanker,
   topRankerDetail,

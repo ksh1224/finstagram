@@ -5,23 +5,29 @@ import {
   badgeListActionAsync,
   showModalAction,
   closeModalAction,
-  setActiveHelp,
-  setActivePush,
   ModalNameType,
   cancelSelectBadgeAction,
   selectBadgeAction,
   notificationActionAsync,
+  APILogInActionAsync,
 } from "../store/actions";
 
 export function useAuth() {
-  const Auth = useSelector((state: RootState) => state.Auth);
+  // const Auth = useSelector((state: RootState) => state.Auth);
 
   const { user, error } = useSelector((state: RootState) => state.APIAuth);
 
+  const dispatch = useDispatch();
+
+  const request = useCallback(
+    (accessToken: string) => dispatch(APILogInActionAsync.request(accessToken)),
+    [dispatch]
+  );
+
   return {
-    Auth,
     user,
     error,
+    request,
   };
 }
 
