@@ -1,4 +1,7 @@
-import React from "react";
+import Notifications from "components/main/Notifications";
+import Search from "components/main/Search";
+import User from "components/main/User";
+import React, { useState } from "react";
 import TabItem from "../../components/main/TabItem";
 import Topbar from "./Topbar";
 
@@ -7,6 +10,7 @@ type LayoutType = {
 };
 
 export default function Header() {
+  const [on, setOn] = useState(false);
   return (
     <div id="kt_header" className="header flex-column header-fixed">
       <div className="header-top">
@@ -18,11 +22,12 @@ export default function Header() {
             <button
               type="button"
               className="btn p-0 burger-icon burger-icon-left"
+              onClick={() => setOn(!on)}
             >
               <span />
             </button>
           </div>
-          <Topbar />
+          <Topbar on={on} />
         </div>
       </div>
 

@@ -5,7 +5,11 @@ import { searchListUser } from "utils/searchUtil";
 import SearchListItem from "components/item/SearchListItem";
 import axios from "utils/axiosUtil";
 
-export default function Search() {
+type Props = {
+  on?: boolean;
+};
+
+export default function Search({ on }: Props) {
   const { showModal } = useModal();
   const { user: my } = useAuth();
   const [isTest, setIsTest] = useState(false);
@@ -31,6 +35,10 @@ export default function Search() {
       setList(searchData);
     } else setShow(false);
   }, [text]);
+
+  useEffect(() => {
+    if (!on) setText("");
+  }, [on]);
 
   const close = () => {
     setText("");
