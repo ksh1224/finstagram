@@ -26,7 +26,7 @@ export default function AddReviewerModal() {
 
   function close() {
     setText("");
-    request();
+    request(meta.id);
     closeModal("addReviewer");
   }
 

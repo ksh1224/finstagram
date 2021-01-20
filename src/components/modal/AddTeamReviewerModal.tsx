@@ -26,7 +26,7 @@ export default function AddTeamReviewerModal() {
   const { meta, user } = addReviewerModal?.param || {};
 
   function close() {
-    request();
+    request(meta?.id);
     setText("");
     setSelectList([]);
     closeModal("addTeamReviewer");
@@ -90,7 +90,7 @@ export default function AddTeamReviewerModal() {
   const fixReviewer = async () => {
     try {
       const res = await axios(
-        `/review/peer/reviewee/submit?metaId=${meta.id}`,
+        `/review/peer/reviewee/team/submit/${user.id}?metaId=${meta.id}`,
         "POST"
       );
       if (res.responseCode === "SUCCESS") {
