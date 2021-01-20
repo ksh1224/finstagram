@@ -42,7 +42,7 @@ export default function SelfReview() {
   );
 
   return (
-    <div className="card card-custom card-stretch w-100 rounded-bottom-0">
+    <div className="card card-custom card-stretch rounded-bottom-0 w-100">
       <div className="card-header border-0 justify-content-start">
         <h3 className="card-title font-weight-bolder">본인 Review</h3>
       </div>
@@ -70,19 +70,18 @@ export default function SelfReview() {
             }
           />
         )}
-        {reviewPeerIncluded &&
-          peerSelectPeriod &&
-          peerSelectPeriod !== "END" && (
-            <ReviewCardItem
-              title="Reviewer 선정"
-              total={6}
-              count={peerRevieweeCount}
-              finished={peerRevieweeSubmitted}
-              period={peerSelectPeriod}
-              periodText={peerSelectPeriodText}
-              onClick={() => showModal("addReviewer", { meta })}
-            />
-          )}
+        {reviewPeerIncluded && (
+          <ReviewCardItem
+            title="Reviewer 선정"
+            total={6}
+            count={peerRevieweeCount}
+            finished={peerRevieweeSubmitted}
+            period={peerSelectPeriod}
+            periodText={peerSelectPeriodText}
+            buttonText="Reviewer 선정"
+            onClick={() => showModal("addReviewer", { meta })}
+          />
+        )}
       </div>
     </div>
   );

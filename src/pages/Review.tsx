@@ -13,10 +13,12 @@ import PeerReviewResult from "components/review/PeerReviewResult";
 import LeaderReviewResult from "components/review/LeaderReviewResult";
 import TeamReviewResult from "components/review/TeamReviewResult";
 import OKRReviewResult from "components/review/OKRReviewResult";
+import useWindowSize from "hooks/useWindowSize";
 import styles from "./review.scss";
 
 export default function Review() {
   const { request, availableMetas = [], data = {} } = useReviewMain();
+  const { width: windowWidth } = useWindowSize();
   const scrollRef = createRef<HTMLDivElement>();
   const { user: my } = useAuth();
   const [selectMeta, setSelectMeta] = useState<any>();
@@ -72,7 +74,7 @@ export default function Review() {
   const click = (index: number) => {
     scrollRef.current?.scrollTo({
       behavior: "smooth",
-      top: (tabArr[index - 2]?.height || 0) + 1,
+      top: (tabArr[index - 1]?.height || 0) + 1,
     });
   };
 
@@ -106,23 +108,47 @@ export default function Review() {
         </div>
         {isWrite ? (
           <div className="row h-100 p-0 section-review flex-nowrap">
-            <>
-              <div className="d-flex col-auto h-sm-100 flex-grow-1 section-group-1 max-w-500px">
-                <SelfReview />
-              </div>
-              <div className="row h-sm-100 flex-grow-1 mx-0 section-group-2">
-                <PeerReview />
-                <div className="h-sm-100 flex-grow-1 section-2">
+            <div className="review-wrap">
+              <SelfReview />
+            </div>
+            <div
+              className="review-two-wrap  h-100"
+              style={{
+                display:
+                  reviewPeerIncluded ||
+                  ((reviewOkrIncluded || reviewSelfIncluded) &&
+                    my.isReviewer) ||
+                  reviewLeaderIncluded
+                    ? "flex"
+                    : "none",
+                flex:
+                  (!windowWidth || windowWidth > 991) &&
+                  reviewPeerIncluded &&
+                  (((reviewOkrIncluded || reviewSelfIncluded) &&
+                    my.isReviewer) ||
+                    reviewLeaderIncluded)
+                    ? 2
+                    : 1,
+              }}
+            >
+              {reviewPeerIncluded && (
+                <div className="review-wrap">
+                  <PeerReview />
+                </div>
+              )}
+
+              {(((reviewOkrIncluded || reviewSelfIncluded) && my.isReviewer) ||
+                reviewLeaderIncluded) && (
+                <div className="review-wrap">
                   <TeamReview />
                 </div>
-              </div>
-            </>
+              )}
+            </div>
           </div>
         ) : (
           <div className="row flex-grow-1 h-100px p-0" id="tab-review">
             <div className="col-auto h-sm-100 flex-grow-1 w-100">
               <div className="card card-custom flex-row h-100 review-result">
-                {/*  */}
                 <div className="section-1 col-auto h-sm-100 w-400px d-flex flex-column border-right px-0">
                   <div className="card card-custom card-stretch rounded-20 shadow-none">
                     <div className="card-body position-relative px-10 py-0">
@@ -172,7 +198,6 @@ export default function Review() {
                     </div>
                   </div>
                 </div>
-                {/*  */}
                 <div className="section-2 col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column px-0">
                   <div className="card card-custom card-stretch rounded-20 shadow-none">
                     <div className="card-body position-relative px-10 py-0">
@@ -212,7 +237,6 @@ export default function Review() {
                           }
                         }}
                       >
-                        {/*  */}
                         {[
                           reviewOkrIncluded,
                           reviewSelfIncluded,
