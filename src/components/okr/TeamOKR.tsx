@@ -32,7 +32,7 @@ export default function TeamOKR() {
 
   return (
     <div className="section-2 col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column px-0">
-      <div className="card card-custom card-stretch rounded-bottom-0 shadow-none">
+      <div className="card card-custom card-stretch rounded-bottom-0  w-100 shadow-none">
         <div className="card-header border-0">
           <h3 className="card-title font-weight-bolder">
             {organizationName || "Team OKR"}

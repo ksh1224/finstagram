@@ -119,7 +119,7 @@ export default function TeamReviewModal() {
     );
 
     if (res.responseCode === "SUCCESS") {
-      request();
+      request(meta?.id);
       close();
     }
   };
@@ -212,7 +212,7 @@ export default function TeamReviewModal() {
             <i aria-hidden="true" className="ki ki-close" />
           </button>
         </div>
-        <div className="modal-body">
+        <Scroll className="modal-body" style={{ maxHeight: "90vh" }}>
           <div className="d-flex flex-row flex-wrap align-items-stretch">
             <div className="col-auto w-100px flex-grow-1 section-1">
               <h5 className="d-flex gutter-b align-items-center justify-content-center line-height-40px">
@@ -262,7 +262,7 @@ export default function TeamReviewModal() {
                     })}
                 </ul>
               </div>
-              <Scroll className="tab-content" style={{ maxHeight: "63vh" }}>
+              <Scroll className="tab-content" style={{ maxHeight: "58vh" }}>
                 {teamData ? (
                   teamData.map(({ name, data }, i) => {
                     if (name)
@@ -429,7 +429,7 @@ export default function TeamReviewModal() {
               )}
             </div>
           </div>
-        </div>
+        </Scroll>
       </div>
     </Modal>
   );
