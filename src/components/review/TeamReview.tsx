@@ -1,6 +1,6 @@
 import ReviewCardItem from "components/item/ReviewCardItem";
 import ReviewCheckItem from "components/item/ReviewCheckItem";
-import ReviewListItem from "components/item/ReviewListItem";
+import ReviewListOneItem from "components/item/ReviewListOneItem";
 import Profile from "components/Profile";
 import Scroll from "components/Scroll";
 import { useAuth, useModal } from "hooks/useRedux";
@@ -335,7 +335,7 @@ export default function TeamReview() {
                 findOKRList.map((peer: any) => {
                   if (!isOKRPosible || peer?.progress === "IN_PROGRESS")
                     return (
-                      <ReviewListItem
+                      <ReviewListOneItem
                         contents={peer.user}
                         buttonText={(() => {
                           switch (peer.progress) {
@@ -356,7 +356,6 @@ export default function TeamReview() {
                             finished: peer.progress === "COMPLETE",
                           })
                         }
-                        between
                         action={peer.progress === "PENDING"}
                       />
                     );
