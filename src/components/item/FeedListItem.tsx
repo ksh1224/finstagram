@@ -111,8 +111,7 @@ export default function FeedListItem(feed: DataType) {
           if (onUpdate) onUpdate();
         }
       } catch (error) {
-        const aaa = await error;
-        console.log("error", aaa);
+        console.log("error", error);
         alert("Error!");
       }
     }
@@ -129,8 +128,7 @@ export default function FeedListItem(feed: DataType) {
         if (onUpdate) onUpdate();
       }
     } catch (error) {
-      const aaa = await error;
-      console.log("error", aaa);
+      console.log("error", error);
       alert("Error!");
     }
   };

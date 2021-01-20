@@ -8,6 +8,7 @@ type Props = {
   title?: string;
   period?: "BEFORE" | "Write" | "END";
   periodText?: string;
+  buttonText?: string;
   total?: number;
   count?: number;
   onClick?: () => void;
@@ -22,6 +23,7 @@ export default function ReviewCardItem({
   title,
   period,
   periodText,
+  buttonText,
   total = 0,
   count,
   onClick,
@@ -82,7 +84,7 @@ export default function ReviewCardItem({
                 data-target="#modal_workReview"
                 onClick={() => period === "Write" && onClick && onClick()}
               >
-                Review 작성
+                {buttonText ?? "Review 작성"}
               </button>
             )}
           </div>

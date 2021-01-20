@@ -45,10 +45,7 @@ export default function Notifications() {
             style={{ height: "500px", overflow: "hidden" }}
           >
             <div className="d-flex flex-column flex-center py-10 bg-secondary rounded-top bg-light mt-n8 mx-n8">
-              <h4 className="text-dark font-weight-bold">
-                {/* 2020년 10월  */}
-                공지사항
-              </h4>
+              <h4 className="text-dark font-weight-bold">공지사항</h4>
               <span className="btn btn-success btn-sm font-weight-bold font-size-sm mt-2">
                 확인하기
               </span>
@@ -77,7 +74,7 @@ export default function Notifications() {
                     <div className="d-flex flex-column font-weight-bold ml-8">
                       <div className="text-dark-50 mb-1">{title}</div>
                       <span className="text-muted font-size-sm">
-                        {createdAt}
+                        {createdAt?.split("T").join(" ")}
                       </span>
                     </div>
                   </div>

@@ -84,8 +84,7 @@ export default function FeedbackModal() {
           getFeedback();
         }
       } catch (error) {
-        const aaa = await error;
-        console.log("error", aaa);
+        console.log("error", error);
         alert("Error!");
       }
     }
@@ -102,8 +101,7 @@ export default function FeedbackModal() {
         getFeedback();
       }
     } catch (error) {
-      const aaa = await error;
-      console.log("error", aaa);
+      console.log("error", error);
       alert("Error!");
     }
   };

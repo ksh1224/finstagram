@@ -122,7 +122,6 @@ export default function SelfReviewModal() {
     try {
       const data = selfData;
       data.reviewData[0].answer = `1. ${text[0]}\n\n2. ${text[1]}\n\n3. ${text[2]}`;
-      console.log("update123", data);
       const res = await axios(
         `/review/self/submit?submit=${submit}&metaId=${id}`,
         "POST",
