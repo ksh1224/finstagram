@@ -47,6 +47,7 @@ export default function PeerReviewModal() {
   const { year, quarter, id } = meta || {};
 
   function close() {
+    setIsExtraComment(false);
     closeModal("peerReview");
   }
 
@@ -112,6 +113,13 @@ export default function PeerReviewModal() {
       );
       setPeerData(JSON.parse(JSON.stringify(data[findIndex])));
       setPrevData({ data, index: findIndex });
+      if (
+        data[findIndex] &&
+        typeof data[findIndex].collaboration?.considerData?.answer ===
+          "string" &&
+        data[findIndex].collaboration.considerData.answer.trim() !== ""
+      )
+        setIsExtraComment(true);
     } catch (error) {
       console.log("error", error);
     }
@@ -230,7 +238,7 @@ export default function PeerReviewModal() {
         setIsTemporary(temporary !== 2);
       }
     }
-  }, [peerData]);
+  }, [peerData, prevData]);
 
   const changeData = (
     type: string,
@@ -497,7 +505,8 @@ export default function PeerReviewModal() {
                                       checked={isExtraComment}
                                       name="Checkboxes1"
                                       onClick={() => {
-                                        setIsExtraComment(!isExtraComment);
+                                        if (!peerData?.submitted)
+                                          setIsExtraComment(!isExtraComment);
                                       }}
                                     />
                                     <span />
@@ -507,8 +516,12 @@ export default function PeerReviewModal() {
                                 {isExtraComment && (
                                   <textarea
                                     className="form-control resize-none mt-3"
-                                    placeholder="기타의견을 작성해주세요."
+                                    placeholder="기타 의견을 작성해주세요."
                                     rows={6}
+                                    value={
+                                      peerData?.collaboration?.considerData
+                                        ?.answer || ""
+                                    }
                                     onChange={({ target }) =>
                                       changeData(type, { text: target.value })
                                     }
