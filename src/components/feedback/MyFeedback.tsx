@@ -137,9 +137,14 @@ export default function MyFeedback() {
                       }
                     >
                       <span
-                        className={`feedback-icon hover-on text-center cursor-pointer ${
+                        className={`feedback-icon hover-on text-center ${
                           selectBadgeData?.badge?.total ? "on" : ""
                         }`}
+                        style={{
+                          cursor: feedbackBadgeData?.receivedTotal
+                            ? undefined
+                            : "default",
+                        }}
                         data-toggle="layer"
                         data-target="#layer_myBadgeFeedback"
                       >
@@ -171,9 +176,12 @@ export default function MyFeedback() {
                         onClick={() => data?.received && clickBadge(data)}
                       >
                         <span
-                          className="feedback-icon hover-on text-center cursor-pointer"
+                          className="feedback-icon hover-on text-center"
                           data-toggle="layer"
                           data-target="#layer_myBadgeFeedback"
+                          style={{
+                            cursor: data?.received ? undefined : "default",
+                          }}
                         >
                           <img
                             className="w-65px h-65px"
