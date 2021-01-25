@@ -27,13 +27,15 @@ export default function Body({ children }: LayoutType) {
     (async () => {
       try {
         let url = "/guide/feedback";
+        let evalData;
         if (pathname === "/OKR") url = "/guide/okr";
         else if (pathname === "/Review") url = "/guide/review";
         const { data } = await axios(url, "GET");
         if (pathname === "/Review" && my.isReviewer) {
-          const { evalData } = await axios("/guide/performance", "GET");
-          setGuides([...evalData, ...data]);
-        } else setGuides(data);
+          ({ evalData } = await axios("/guide/performance", "GET"));
+        }
+        if (evalData) setGuides([...evalData, ...data]);
+        else setGuides(data);
       } catch (error) {
         console.log("error", error);
       }
