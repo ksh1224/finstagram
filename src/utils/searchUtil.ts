@@ -36,11 +36,12 @@ export function searchListUser(
         if (findIndex === -1) nameList.push(obj);
         else nameList.splice(findIndex, 0, obj);
       } else if (search(obj.organizationName, searchText)) {
-        const findIndex = organizationNameList.findIndex(
-          (item) => item.name > obj.name
-        );
-        if (findIndex === -1) organizationNameList.push(obj);
-        else organizationNameList.splice(findIndex, 0, obj);
+        organizationNameList.push(obj);
+        // const findIndex = organizationNameList.findIndex(
+        //   (item) => item.name > obj.name
+        // );
+        // if (findIndex === -1) organizationNameList.push(obj);
+        // else organizationNameList.splice(findIndex, 0, obj);
       }
   }
   return [...nameList, ...organizationNameList];

@@ -1,11 +1,23 @@
 import React from "react";
 
-export function enterLine(string: string) {
-  const splitArray = string.split("\n");
+export function enterLine(
+  string: string,
+  enterString?: string,
+  numbering?: boolean,
+  dubbleLine?: boolean
+) {
+  const splitArray = string.split(enterString || "\n");
   return splitArray.map((line, i) => (
     <>
-      {line}
-      {splitArray.length !== i + 1 && <br />}
+      {numbering ? `${i + 1}. ${line}` : line}
+      {splitArray.length !== i + 1 && dubbleLine ? (
+        <>
+          <br />
+          <br />
+        </>
+      ) : (
+        <br />
+      )}
     </>
   ));
 }
