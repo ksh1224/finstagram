@@ -21,7 +21,7 @@ export default function TabItem({ path }: { path: string }) {
         className={`nav-link ${location.pathname === `/${path}` && "active"}`}
         data-target="#content_tab_review"
       >
-        <span className="d-flex align-items-center nav-title text-uppercase">
+        <span className="d-flex align-items-center nav-title">
           {path === "Review" ? (
             <DropdownButton
               className="d-flex flex-center review-tab-select"

@@ -34,7 +34,7 @@ export default function KeyResultItem({
         <div className="font-size-base font-weight-bold mb-3 mt-1">
           Key-
           <span className="d-inline-block">
-            Result {index === undefined ? 0 : index + 1}
+            Result {index === undefined ? "" : index + 1}
           </span>
         </div>
         <div className="d-flex flex-wrap py-3 pr-10">
