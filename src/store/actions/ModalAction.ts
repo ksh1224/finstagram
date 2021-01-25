@@ -21,7 +21,8 @@ export type ModalNameType =
   | "okrSelfReview"
   | "okrTeamReview"
   | "feedback"
-  | "help";
+  | "help"
+  | "confirm";
 
 export const showModalAction = createAction(
   "SHOW_MODAL",
