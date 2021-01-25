@@ -8,6 +8,7 @@ import {
   feedbackSendActionAsync,
   feedbackRequestActionAsync,
   topRankerActionAsync,
+  showModalAction,
 } from "store/actions";
 
 export function* feedbackSendSaga(
@@ -43,6 +44,11 @@ export function* feedbackSendSaga(
       id ? "/feedbacks/update/basic" : "/feedbacks/new/basic",
       "POST",
       formData
+    );
+    yield put(
+      showModalAction("confirm", {
+        text: id ? "피드백을 수정했습니다." : "피드백을 보냈습니다.",
+      })
     );
     yield put(feedRecentActionAsync.request(null));
     yield put(feedRecivedActionAsync.request(null));
@@ -84,6 +90,11 @@ export function* feedbackRequestSaga(
       id ? "/feedbacks/update/request" : `/feedbacks/new/request`,
       "POST",
       formData
+    );
+    yield put(
+      showModalAction("confirm", {
+        text: id ? "피드백 요청을 수정했습니다." : "피드백을 요청했습니다.",
+      })
     );
     yield put(feedRecentActionAsync.request(null));
     yield put(feedRecivedActionAsync.request(null));
