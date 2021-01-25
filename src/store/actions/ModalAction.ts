@@ -6,6 +6,7 @@ export type ModalNameType =
   | "updateRequestFeedback"
   | "updateSendFeedback"
   | "topRanker"
+  | "keyResult"
   | "okrHistory"
   | "okrComment"
   | "commentUpdate"
@@ -26,7 +27,10 @@ export type ModalNameType =
 
 export const showModalAction = createAction(
   "SHOW_MODAL",
-  (name: ModalNameType, param?: any) => ({ name, param })
+  (
+    name: ModalNameType,
+    param?: { onConfirm?: () => void; isCancel?: boolean; text?: string }
+  ) => ({ name, param })
 )();
 
 export const closeModalAction = createAction(
