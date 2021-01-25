@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import ReviewCardItem from "components/item/ReviewCardItem";
 import ReviewCheckItem from "components/item/ReviewCheckItem";
 import ReviewListOneItem from "components/item/ReviewListOneItem";
@@ -112,65 +113,74 @@ export default function TeamReview() {
         </span> */}
       </div>
       <div className="card-body overflow-y-auto">
-        {reviewLeaderIncluded && progress?.leadership && (
-          <ReviewCardItem
-            title="리더 Review"
-            period={leaderPeriod}
-            periodText={leaderPeriodText}
-            header={<></>}
-            removeCenterText
-          >
-            <Scroll style={{ maxHeight: "250px" }}>
-              {progress.leadership.length !== 0 ? (
-                progress.leadership.map(({ user, finished }: any) => (
-                  <div className="card card-custom gutter-b">
-                    <div className="card-body">
-                      <div className="d-flex border-light-dark">
-                        <div className="d-flex w-150px align-items-center">
-                          <div className="avatar symbol symbol-50 mr-4">
-                            <Profile user={user} />
+        {reviewLeaderIncluded &&
+          progress?.leadership &&
+          progress.leadership.length !== 0 && (
+            <ReviewCardItem
+              title="리더 Review"
+              period={leaderPeriod}
+              periodText={leaderPeriodText}
+              header={<></>}
+              removeCenterText={leaderPeriod !== "END"}
+            >
+              <Scroll style={{ maxHeight: "250px" }}>
+                {progress.leadership.length !== 0 ? (
+                  progress.leadership.map(({ user, finished }: any) => (
+                    <div className="card card-custom gutter-b">
+                      <div className="card-body">
+                        <div className="d-flex border-light-dark">
+                          <div className="d-flex w-150px align-items-center">
+                            <div className="avatar symbol symbol-50 mr-4">
+                              <Profile user={user} />
+                            </div>
+                            <div className="overflow-hidden w-100px flex-grow-1 font-size-lg">
+                              <div className="font-weight-bold">
+                                {user?.name}
+                              </div>
+                              <small className="d-block text-truncate">
+                                {user?.organization?.name}
+                              </small>
+                            </div>
                           </div>
-                          <div className="overflow-hidden w-100px flex-grow-1 font-size-lg">
-                            <div className="font-weight-bold">{user?.name}</div>
-                            <small className="d-block text-truncate">
-                              {user?.organization?.name}
-                            </small>
+                          <div className="d-flex flex-column w-100 p-0 align-items-end justify-content-center">
+                            <button
+                              type="button"
+                              className={`btn btn-sm ${
+                                leaderPeriod === "Write" && !finished
+                                  ? "btn-primary"
+                                  : "btn-secondary"
+                              }`}
+                              onClick={() =>
+                                (leaderPeriod === "Write" ||
+                                  (leaderPeriod === "END" && finished)) &&
+                                showModal("leaderReview", {
+                                  user,
+                                  meta,
+                                  finished,
+                                })
+                              }
+                            >
+                              {finished
+                                ? "작성 완료"
+                                : leaderPeriod === "END"
+                                ? "미작성"
+                                : "Review 작성"}
+                            </button>
                           </div>
-                        </div>
-                        <div className="d-flex flex-column w-100 p-0 align-items-end justify-content-center">
-                          <button
-                            type="button"
-                            className={`btn btn-sm ${
-                              leaderPeriod === "Write" && !finished
-                                ? "btn-primary"
-                                : "btn-secondary"
-                            }`}
-                            onClick={() =>
-                              leaderPeriod === "Write" &&
-                              showModal("leaderReview", {
-                                user,
-                                meta,
-                                finished,
-                              })
-                            }
-                          >
-                            {finished ? "작성 완료" : "Review 작성"}
-                          </button>
                         </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="d-flex py-4">
+                    <div className="w-100 py-8 text-center word-keep">
+                      리뷰 가능한 리더가 없습니다.
+                    </div>
                   </div>
-                ))
-              ) : (
-                <div className="d-flex py-4">
-                  <div className="w-100 py-8 text-center word-keep">
-                    리뷰 가능한 리더가 없습니다.
-                  </div>
-                </div>
-              )}
-            </Scroll>
-          </ReviewCardItem>
-        )}
+                )}
+              </Scroll>
+            </ReviewCardItem>
+          )}
 
         {my.isReviewer && reviewSelfIncluded ? (
           <ReviewCardItem
@@ -340,23 +350,29 @@ export default function TeamReview() {
                         buttonText={(() => {
                           switch (peer.progress) {
                             case "PENDING":
+                              if (okrEvalPeriod === "END") return "미작성";
                               return "Review 하기";
                             case "COMPLETE":
                               return "완료";
-
                             default:
                               return "자기 Review 미작성";
                           }
                         })()}
                         onClick={() =>
                           peer.progress !== "NOT_STARTED" &&
+                          !(
+                            peer.progress === "PENDING" &&
+                            okrEvalPeriod === "END"
+                          ) &&
                           showModal("okrTeamReview", {
                             meta,
                             user: peer.user,
                             finished: peer.progress === "COMPLETE",
                           })
                         }
-                        action={peer.progress === "PENDING"}
+                        action={
+                          peer.progress === "PENDING" && okrEvalPeriod !== "END"
+                        }
                       />
                     );
                   return <></>;

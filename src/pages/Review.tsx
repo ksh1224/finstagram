@@ -138,7 +138,9 @@ export default function Review() {
               )}
 
               {(((reviewOkrIncluded || reviewSelfIncluded) && my.isReviewer) ||
-                reviewLeaderIncluded) && (
+                (reviewLeaderIncluded &&
+                  progress?.leadership?.length &&
+                  progress.leadership.length !== 0)) && (
                 <div className="review-wrap">
                   <TeamReview />
                 </div>

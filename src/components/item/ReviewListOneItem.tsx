@@ -19,7 +19,7 @@ export default function ReviewListOneItem({
     <div
       className="d-flex py-4 border-top border-light-dark justify-content-between"
       role="button"
-      onClick={() => onClick && action && onClick()}
+      onClick={() => onClick && onClick()}
     >
       <div className="d-flex w-150px align-items-center">
         <div className="avatar symbol symbol-50 mr-4">
@@ -40,6 +40,9 @@ export default function ReviewListOneItem({
               ? "bg-primary"
               : "bg-secondary"
           }`}
+          style={{
+            color: typeof action === "undefined" || action ? "#fff" : undefined,
+          }}
         >
           {buttonText}
         </button>

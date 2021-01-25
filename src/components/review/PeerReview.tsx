@@ -70,7 +70,7 @@ export default function PeerReview() {
         <h3 className="card-title font-weight-bolder">동료 Review</h3>
       </div>
       <div className="card-body overflow-y-auto">
-        {my.isReviewer && (
+        {my.isReviewer && peerSelectEvalPeriod === "Write" && (
           <ReviewCardItem
             title="팀원 Reviewer 추가"
             // total={1}
@@ -179,12 +179,22 @@ export default function PeerReview() {
                   <ReviewListItem
                     contents={contents}
                     buttonText={
-                      contents?.submitted ? "작성 완료" : "Review 하기"
+                      // eslint-disable-next-line no-nested-ternary
+                      contents?.submitted
+                        ? "작성 완료"
+                        : peerPeriod === "END"
+                        ? "미작성"
+                        : "Review 하기"
                     }
                     onClick={() =>
-                      showModal("peerReview", { meta, user: contents })
+                      (peerPeriod === "Write" ||
+                        (contents?.submitted && peerPeriod === "END")) &&
+                      showModal("peerReview", {
+                        meta,
+                        user: contents,
+                      })
                     }
-                    action={!contents?.submitted}
+                    action={peerPeriod !== "END" && !contents?.submitted}
                   />
                 ))
               ) : (

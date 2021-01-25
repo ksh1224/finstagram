@@ -53,7 +53,9 @@ export default function SelfReview() {
             finished={self}
             period={selfPeriod}
             periodText={selfPeriodText}
-            onClick={() => !self && showModal("selfReview", meta)}
+            onClick={() =>
+              showModal("selfReview", { meta, period: selfPeriod })
+            }
           />
         )}
         {reviewOkrIncluded && (
@@ -65,12 +67,12 @@ export default function SelfReview() {
             onClick={() =>
               showModal("okrSelfReview", {
                 meta,
-                finished: okrSelfSubmitted,
+                finished: okrSelfSubmitted || okrPeriod === "END",
               })
             }
           />
         )}
-        {reviewPeerIncluded && (
+        {reviewPeerIncluded && peerSelectPeriod === "Write" && (
           <ReviewCardItem
             title="Reviewer 선정"
             total={6}

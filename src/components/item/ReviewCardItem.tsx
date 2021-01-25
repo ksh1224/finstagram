@@ -34,7 +34,16 @@ export default function ReviewCardItem({
   finished,
 }: Props) {
   let centerText = "진행 가능";
-  if (finished) centerText = "진행 완료";
+  if (finished)
+    switch (period) {
+      case "END":
+        centerText = "작성기간이 종료 되었습니다.";
+        break;
+
+      default:
+        centerText = "진행 완료";
+        break;
+    }
   else
     switch (period) {
       case "END":
@@ -56,7 +65,7 @@ export default function ReviewCardItem({
         <h4 className="d-block card-title font-weight-bolder text-dark font-size-lg text-truncate">
           {title}
         </h4>
-        {period === "Write" && (
+        {(period === "Write" || period === "END") && (
           <div className="card-toolbar">
             <span className="label label-md label-light-dark label-inline label-pill ml-2 text-nowrap">
               {periodText}
@@ -64,7 +73,7 @@ export default function ReviewCardItem({
           </div>
         )}
       </div>
-      {removeCenterText && period === "Write" ? (
+      {removeCenterText && (period === "Write" || period === "END") ? (
         <></>
       ) : (
         <div className="card-body pt-2">
@@ -72,7 +81,7 @@ export default function ReviewCardItem({
             <p className="font-size-h4 text-dark-75 font-weight-bolder mb-8">
               {centerText}
             </p>
-            {(period === "Write" && header) || (
+            {((period === "Write" || period === "END") && header) || (
               <button
                 type="button"
                 className={`btn w-100 ${
@@ -82,7 +91,11 @@ export default function ReviewCardItem({
                 }`}
                 data-toggle="modal"
                 data-target="#modal_workReview"
-                onClick={() => period === "Write" && onClick && onClick()}
+                onClick={() =>
+                  (period === "Write" || period === "END") &&
+                  onClick &&
+                  onClick()
+                }
               >
                 {buttonText ?? "Review 작성"}
               </button>
@@ -90,7 +103,7 @@ export default function ReviewCardItem({
           </div>
         </div>
       )}
-      {period === "Write" ? children : undefined}
+      {period === "Write" || period === "END" ? children : undefined}
     </div>
   );
 }
