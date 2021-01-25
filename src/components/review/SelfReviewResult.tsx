@@ -18,7 +18,12 @@ export default function SelfReviewResult() {
         <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
           <div className="card-body p-6 word-keep">
             {result?.self?.reviewData && result.self.reviewData[0].answer
-              ? enterLine(result.self.reviewData[0].answer)
+              ? enterLine(
+                  result.self.reviewData[0].answer,
+                  "<split/>",
+                  true,
+                  true
+                )
               : "리뷰 데이터가 없습니다"}
           </div>
         </div>
