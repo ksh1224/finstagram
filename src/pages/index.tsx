@@ -29,6 +29,7 @@ import OKRTeamReviewModal from "components/modal/OKRTeamReviewModal";
 import HelpModal from "components/modal/HelpModal";
 import CommentUpdateModal from "components/modal/CommentUpdateModal";
 import FeedbackModal from "components/modal/FeedbackModal";
+import ConfirmModal from "components/modal/ConfirmModal";
 import { useDispatch } from "react-redux";
 import {
   useMsal,
@@ -37,6 +38,7 @@ import {
   useMsalAuthentication,
 } from "@azure/msal-react";
 import { InteractionType } from "@azure/msal-browser";
+import KeyResultModal from "components/modal/KeyResultModal";
 
 export default function App(): JSX.Element {
   const { request, user, error } = useAuth();
@@ -65,7 +67,7 @@ export default function App(): JSX.Element {
         });
   }, [account, isAuthenticated]);
 
-  if (user)
+  if (user && account && isAuthenticated)
     return (
       <>
         <Body>
@@ -81,6 +83,8 @@ export default function App(): JSX.Element {
         <FeedbackSendModal />
         <FeedbackRequestModal />
         <TopRankerDetailModal />
+        <KeyResultModal />
+        <OKRHistoryModal />
         <OKRHistoryModal />
         <OKRUpateModal />
         <OKRCommentModal />
@@ -97,6 +101,7 @@ export default function App(): JSX.Element {
         <HelpModal />
         <CommentUpdateModal />
         <FeedbackModal />
+        <ConfirmModal />
       </>
     );
   if (error)
