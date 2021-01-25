@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import SVG from "utils/SVG";
 import React, { createRef, useEffect, useState } from "react";
 import Profile from "components/Profile";
@@ -50,36 +51,61 @@ export default function Notifications() {
                 확인하기
               </span>
             </div>
-            {data &&
-              data.map(({ entityId, user, title, createdAt, sender }: any) => {
-                return (
-                  <div
-                    className="d-flex align-items-center cursor-pointer mx-n8 p-8 bg-hover-secondary-o-1 cursor-pointer"
-                    onClick={() => {
-                      showModal("feedback", entityId);
-                      setShow(false);
-                    }}
-                  >
-                    {sender ? (
-                      <div className="avatar symbol symbol-50">
-                        <Profile user={sender} />
-                        <div className="feedback-icon position-absolute w-30px h-30px bottom-0 right-0">
-                          {/* <span className="position-absolute w-100 h-100 bg-light-light rounded-circle" />
+            {data && data.length !== 0 ? (
+              data.map(
+                ({
+                  entityId,
+                  user,
+                  title,
+                  createdAt,
+                  sender,
+                  targetEntity,
+                }: any) => {
+                  return (
+                    <div
+                      className="d-flex align-items-center cursor-pointer mx-n8 p-8 bg-hover-secondary-o-1 cursor-pointer"
+                      onClick={() => {
+                        switch (targetEntity) {
+                          case "FEEDBACK":
+                            showModal("feedback", entityId);
+                            setShow(false);
+                            break;
+                          case "KEY_RESULT":
+                            showModal("keyResult", entityId);
+                            setShow(false);
+                            break;
+
+                          default:
+                            break;
+                        }
+                      }}
+                    >
+                      {sender ? (
+                        <div className="avatar symbol symbol-50">
+                          <Profile user={sender} />
+                          <div className="feedback-icon position-absolute w-30px h-30px bottom-0 right-0">
+                            {/* <span className="position-absolute w-100 h-100 bg-light-light rounded-circle" />
                           class="position-relative" svg */}
+                          </div>
                         </div>
+                      ) : (
+                        <></>
+                      )}
+                      <div className="d-flex flex-column font-weight-bold ml-8">
+                        <div className="text-dark-50 mb-1">{title}</div>
+                        <span className="text-muted font-size-sm">
+                          {createdAt?.split("T").join(" ")}
+                        </span>
                       </div>
-                    ) : (
-                      <></>
-                    )}
-                    <div className="d-flex flex-column font-weight-bold ml-8">
-                      <div className="text-dark-50 mb-1">{title}</div>
-                      <span className="text-muted font-size-sm">
-                        {createdAt?.split("T").join(" ")}
-                      </span>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                }
+              )
+            ) : (
+              <div className="d-flex align-items-center mx-n8 p-8 mt-8 justify-content-center">
+                <div className="text-dark-50 mb-1">알람이 없습니다</div>
+              </div>
+            )}
 
             <div className="ps__rail-x" style={{ left: "0px", bottom: "0px" }}>
               <div
