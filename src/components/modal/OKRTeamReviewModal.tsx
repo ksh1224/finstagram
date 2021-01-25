@@ -12,11 +12,11 @@ import { tagUtil } from "utils/stringUtil";
 import Profile from "components/Profile";
 
 export default function OKRTeamReviewModal() {
-  const { modals, closeModal } = useModal();
+  const { modals, closeModal, showModal } = useModal();
   const { request } = useReviewOKRList();
   const [isTemporary, setIsTemporary] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
-  const [teamOKRData, setTeamOKRData] = useState<any>({});
+  const [teamOKRData, setTeamOKRData] = useState<any>(null);
   const [reviewData, setReviewData] = useState<any[]>([]);
   const [text, setText] = useState("");
 
@@ -28,10 +28,12 @@ export default function OKRTeamReviewModal() {
   const { year, quarter, id } = meta || {};
 
   function close() {
-    setTeamOKRData({});
-    setReviewData([]);
-    setText("");
     closeModal("okrTeamReview");
+    setTimeout(() => {
+      setTeamOKRData(null);
+      setReviewData([]);
+      setText("");
+    }, 300);
   }
 
   const getData = async () => {
@@ -77,6 +79,11 @@ export default function OKRTeamReviewModal() {
       if (res.responseCode === "SUCCESS") {
         request(id);
         close();
+        setTimeout(() => {
+          showModal("confirm", {
+            text: submit ? "제출되었습니다." : "임시저장되었습니다.",
+          });
+        }, 300);
       }
     } catch (error) {
       console.log("error", error);
@@ -109,7 +116,7 @@ export default function OKRTeamReviewModal() {
   return (
     <Modal
       size="xl"
-      show={!!okrTeamReviewModal}
+      show={!!okrTeamReviewModal && !!teamOKRData}
       animation
       centered
       onHide={() => close()}
@@ -118,8 +125,8 @@ export default function OKRTeamReviewModal() {
       <div className="modal-content">
         <div className="modal-header">
           <h2 className="d-flex modal-title align-items-center">
-            <Profile width={50} user={user} />
-            <div className="ml-3">{user?.name}님 OKR Review</div>
+            <Profile width={50} user={teamOKRData?.user} />
+            <div className="ml-3">{teamOKRData?.user?.name}님 OKR Review</div>
           </h2>
           <button
             type="button"
@@ -267,38 +274,59 @@ export default function OKRTeamReviewModal() {
                   오선영님의 분기 OKR 추진 결과에 대한 의견을 기재해 주시기
                   바랍니다.
                 </div>
-                <textarea
-                  className="form-control resize-none mt-4"
-                  placeholder="Review를 작서해주세요."
-                  rows={12}
-                  value={text}
-                  onChange={({ target }) => setText(target.value)}
-                />
-                <div className="font-size-sm text-muted mt-4">
-                  이번 분기에 특별하게 잘했다고 생각되거나 혹은 다른 방법으로
-                  실행해볼 필요가 있었던 점을 기재해주세요.
+                {finished ? (
+                  <div className="pl-2 mt-3">{text}</div>
+                ) : (
+                  <>
+                    <textarea
+                      className="form-control resize-none mt-4"
+                      placeholder="Review를 작서해주세요."
+                      rows={12}
+                      value={text}
+                      onChange={({ target }) => setText(target.value)}
+                    />
+                    <div className="font-size-sm text-muted mt-4">
+                      이번 분기에 특별하게 잘했다고 생각되거나 혹은 다른
+                      방법으로 실행해볼 필요가 있었던 점을 기재해주세요.
+                    </div>
+                  </>
+                )}
+              </div>
+              {finished ? (
+                <></>
+              ) : (
+                <div className="d-flex align-items-center justify-content-center mt-12">
+                  <button
+                    type="button"
+                    className={`btn btn-lg w-150px font-weight-bold mx-2 ${
+                      isTemporary ? "btn-primary" : "btn-secondary"
+                    }`}
+                    onClick={() => isTemporary && update(false)}
+                  >
+                    임시저장
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn btn-lg w-150px font-weight-bold mx-2 ${
+                      isSubmit ? "btn-primary" : "btn-secondary"
+                    }`}
+                    onClick={() =>
+                      isSubmit &&
+                      showModal("confirm", {
+                        onConfirm: () => update(true),
+                        isCancel: true,
+                        text: (
+                          <>
+                            제출 후 수정할 수 없습니다. <br /> 제출하시겠습니까?
+                          </>
+                        ),
+                      })
+                    }
+                  >
+                    제출하기
+                  </button>
                 </div>
-              </div>
-              <div className="d-flex align-items-center justify-content-center mt-12">
-                <button
-                  type="button"
-                  className={`btn btn-lg w-150px font-weight-bold mx-2 ${
-                    isTemporary ? "btn-primary" : "btn-secondary"
-                  }`}
-                  onClick={() => isTemporary && update(false)}
-                >
-                  임시저장
-                </button>
-                <button
-                  type="button"
-                  className={`btn btn-lg w-150px font-weight-bold mx-2 ${
-                    isSubmit ? "btn-primary" : "btn-secondary"
-                  }`}
-                  onClick={() => isSubmit && update(true)}
-                >
-                  제출하기
-                </button>
-              </div>
+              )}
             </div>
           </div>
         </Scroll>

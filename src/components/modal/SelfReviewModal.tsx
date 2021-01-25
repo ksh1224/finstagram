@@ -8,31 +8,39 @@ import OKRAccordion from "components/okr/OKRAccordion";
 import FeedListItem from "components/item/FeedListItem";
 import Scroll from "components/Scroll";
 import { useReviewMain } from "hooks/useReview";
+import { useMyFeedback } from "hooks/useFeedBackRedux";
 
 export default function SelfReviewModal() {
-  const { modals, closeModal } = useModal();
+  const { modals, closeModal, showModal } = useModal();
   const { user: my } = useAuth();
   const { request } = useReviewMain();
   const [isTemporary, setIsTemporary] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [show, setShow] = useState<any>();
   const [okrData, setOKRData] = useState<any>();
-  const [feedbackBadge, setFeedbackBadge] = useState<any>([]);
+  const [feedbackBadge, setFeedbackBadge] = useState<any>(null);
   const [selectBadgeId, setSelectBadgeId] = useState(-1);
   const [feedbackListData, setFeedbackListData] = useState<any[]>([]);
   const [selfData, setSelfData] = useState<any>({});
-  const [text, setText] = useState(["", "", ""]);
+  const [textArr, setTextArr] = useState(["", "", ""]);
+  const [yearQuarter, setYearQuarter] = useState({ year: 0, quarter: 0 });
+  const { feedbackStatisticsData, feedbackStatisticsRequest } = useMyFeedback();
 
   const selfReviewModal = modals.find((modal) => modal.name === "selfReview");
 
-  const { year, quarter, id } = selfReviewModal?.param || {};
+  const { meta, period } = selfReviewModal?.param || {};
+
+  const { year: paramYear, quarter: paramQuarter, id } = meta || {};
 
   function close() {
+    setYearQuarter({ year: 0, quarter: 0 });
+    setFeedbackBadge(null);
     closeModal("selfReview");
-    setText(["", "", ""]);
+    setTextArr(["", "", ""]);
   }
 
-  const getBadgeList = async () => {
+  const getBadgeList = async (year: number, quarter: number) => {
     if (year && quarter) {
       try {
         const { data } = await axios(
@@ -48,7 +56,7 @@ export default function SelfReviewModal() {
     }
   };
 
-  const getFeedbackData = async () => {
+  const getFeedbackData = async (year: number, quarter: number) => {
     try {
       if (year && quarter) {
         const { data: feedbackBadgeData } = await axios(
@@ -58,14 +66,14 @@ export default function SelfReviewModal() {
           "GET"
         );
         setFeedbackBadge(feedbackBadgeData?.CONTRIBUTION);
-        getBadgeList();
+        getBadgeList(year, quarter);
       }
     } catch (error) {
       console.log("error", error);
     }
   };
 
-  const getOKRData = async () => {
+  const getOKRData = async (year: number, quarter: number) => {
     try {
       if (year && quarter) {
         await setShow(false);
@@ -90,16 +98,18 @@ export default function SelfReviewModal() {
         "GET"
       );
       setSelfData(data);
+
       if (data?.reviewData && data.reviewData[0].answer) {
-        const replace = data.reviewData[0].answer
-          .replace(/\n/gm, "&enter&")
-          .replace(/\./gm, "&dot&")
-          .replace(/(&enter&){0,2}([1-3]&dot&)/g, "\n");
-        const split = replace.split(/\n/gm).map((string: string) => {
-          const aa = string.replace(/&enter&/gm, "\n").replace(/&dot&/gm, ".");
-          return aa;
-        });
-        setText([split[1], split[2], split[3]]);
+        setTextArr(data.reviewData[0].answer.split("<split/>"));
+        // const replace = data.reviewData[0].answer
+        //   .replace(/\n/gm, "&enter&")
+        //   .replace(/\./gm, "&dot&")
+        //   .replace(/(&enter&){0,2}([1-3]&dot&)/g, "\n");
+        // const split = replace.split(/\n/gm).map((string: string) => {
+        //   const aa = string.replace(/&enter&/gm, "\n").replace(/&dot&/gm, ".");
+        //   return aa;
+        // });
+        // setText([split[1], split[2], split[3]]);
       }
     } catch (error) {
       console.log("error", error);
@@ -108,11 +118,11 @@ export default function SelfReviewModal() {
 
   const getSubmitted = async () => {
     try {
-      const { data: isSubmitted } = await axios(
+      const { data: submitted } = await axios(
         `/review/self/isSubmitted?metaId=${id}`,
         "GET"
       );
-      if (isSubmitted) close();
+      setIsSubmitted(submitted || period === "END");
     } catch (error) {
       console.log("error", error);
     }
@@ -121,7 +131,7 @@ export default function SelfReviewModal() {
   const update = async (submit: boolean) => {
     try {
       const data = selfData;
-      data.reviewData[0].answer = `1. ${text[0]}\n\n2. ${text[1]}\n\n3. ${text[2]}`;
+      data.reviewData[0].answer = textArr.join("<split/>");
       const res = await axios(
         `/review/self/submit?submit=${submit}&metaId=${id}`,
         "POST",
@@ -130,6 +140,11 @@ export default function SelfReviewModal() {
       if (res.responseCode === "SUCCESS") {
         request(id);
         close();
+        setTimeout(() => {
+          showModal("confirm", {
+            text: submit ? "제출되었습니다." : "임시저장되었습니다.",
+          });
+        }, 300);
       }
     } catch (error) {
       console.log("error", error);
@@ -139,62 +154,51 @@ export default function SelfReviewModal() {
   useEffect(() => {
     if (selfReviewModal) {
       getSubmitted();
-      getFeedbackData();
-      getOKRData();
+      feedbackStatisticsRequest(paramYear, paramQuarter);
+      setYearQuarter({ year: paramYear, quarter: paramQuarter });
       getData();
     }
   }, [selfReviewModal]);
 
   useEffect(() => {
-    if (my) {
-      getBadgeList();
+    const { year, quarter } = yearQuarter;
+    getFeedbackData(year, quarter);
+    getOKRData(year, quarter);
+  }, [yearQuarter]);
+
+  useEffect(() => {
+    const { year, quarter } = yearQuarter;
+    if (my && year && quarter) {
+      getBadgeList(year, quarter);
     }
   }, [selectBadgeId]);
 
   useEffect(() => {
-    if (selfData?.reviewData) {
-      if (
-        !text[0] ||
-        text[0].trim() === "" ||
-        !text[1] ||
-        text[1].trim() === "" ||
-        !text[2] ||
-        text[2].trim() === ""
-      )
-        setIsSubmit(false);
-      else setIsSubmit(true);
-      if (!selfData.reviewData[0].answer) {
-        if (
-          text[0].trim() !== "" ||
-          text[1].trim() !== "" ||
-          text[2].trim() !== ""
-        )
-          setIsTemporary(true);
-        else setIsTemporary(false);
-      } else {
-        const split = selfData.reviewData[0].answer.match(
-          /[^(1. )(\n\n2. )(\n\n3. )]+/gm
-        );
-        if (
-          !(
-            text[0] === split[0] &&
-            text[1] === split[1] &&
-            text[2] === split[2]
-          ) &&
-          (text[0].trim() !== "" ||
-            text[1].trim() !== "" ||
-            text[2].trim() !== "")
-        )
-          setIsTemporary(true);
-        else setIsTemporary(false);
+    let submit = true;
+    let temporary = true;
+    let count = 0;
+    textArr.forEach((text) => {
+      if (text.trim() === "") {
+        submit = false;
+        count += 1;
       }
+    });
+    if (count === textArr.length) temporary = false;
+    if (selfData?.reviewData && selfData.reviewData[0].answer) {
+      if (
+        JSON.stringify(selfData.reviewData[0].answer.split("<split/>")) ===
+        JSON.stringify(textArr)
+      )
+        temporary = false;
     }
-  }, [text]);
+    setIsSubmit(submit);
+    setIsTemporary(temporary);
+  }, [textArr]);
 
   return (
     <Modal
       size="xl"
-      show={!!selfReviewModal}
+      show={!!selfReviewModal && !!feedbackBadge}
       animation
       centered
       onHide={() => close()}
@@ -217,14 +221,43 @@ export default function SelfReviewModal() {
           <div className="d-flex flex-row flex-wrap align-items-stretch">
             <Scroll
               className="d-flex flex-column col-auto w-100px flex-grow-1 section-1 px-6"
-              style={{ maxHeight: "80vh" }}
+              style={{ maxHeight: "74vh" }}
             >
               <div className="d-flex flex-column  px-6">
                 <div className="flex-nowrap align-items-center border-0">
-                  <h5 className="align-items-start flex-column">
+                  <h5
+                    className="align-items-center d-flex flex-row"
+                    style={{ justifyContent: "space-between" }}
+                  >
                     <span className="font-weight-bolder text-dark">
                       Feedback
                     </span>
+                    <div className="card-toolbar">
+                      <select
+                        onChange={({
+                          target,
+                        }: React.ChangeEvent<HTMLSelectElement>) => {
+                          const [year, quarter] = target.value.split("_");
+                          setYearQuarter({
+                            year: Number(year),
+                            quarter: Number(quarter),
+                          });
+                        }}
+                        className="custom-select form-control border-0 shadow-none pr-5 bgi-position-x-right"
+                      >
+                        {feedbackStatisticsData?.availableDates?.map(
+                          ({ year, quarter }: any) => (
+                            <option
+                              selected={
+                                feedbackStatisticsData?.year === year &&
+                                feedbackStatisticsData?.quarter === quarter
+                              }
+                              value={`${year}_${quarter}`}
+                            >{`${year}년 ${quarter}분기`}</option>
+                          )
+                        )}
+                      </select>
+                    </div>
                   </h5>
                 </div>
                 <div className="pt-2">
@@ -292,7 +325,12 @@ export default function SelfReviewModal() {
                             key={feedback.id}
                             {...feedback}
                             feedType="modal"
-                            onUpdate={() => getFeedbackData()}
+                            onUpdate={() =>
+                              getFeedbackData(
+                                yearQuarter.year,
+                                yearQuarter.quarter
+                              )
+                            }
                           />
                         );
                       })}
@@ -315,7 +353,7 @@ export default function SelfReviewModal() {
                   {!okrData ? (
                     <div className="text-center my-10">
                       <p className="font-size-h5 mb-6">
-                        {`${year}년 ${quarter}분기 OKR Data가 없습니다.`}
+                        {`${yearQuarter.year}년 ${yearQuarter.quarter}분기 OKR Data가 없습니다.`}
                       </p>
                     </div>
                   ) : (
@@ -324,78 +362,112 @@ export default function SelfReviewModal() {
                 </div>
               </div>
             </Scroll>
-            <Scroll
-              className="col-auto w-100px flex-grow-1 section-2 px-6"
-              style={{ maxHeight: "80vh" }}
-            >
-              <h5 className="align-items-start flex-column font-weight-bolder word-keep">
-                {selfData?.reviewData && selfData.reviewData[0].question}
-              </h5>
-              <ol className="pl-4 mt-4 mb-0 font-size-sm text-black-50">
-                <li className="mt-1">
-                  팀에 대한 기여도가 높은 성과, 달성하기 어려운 도전적 성과 등을
-                  우선 기재해 주시기 바랍니다.
-                </li>
-                <li className="mt-1">
-                  가능하시면, 성과 수준을 판단할 수 있는 근거를 함께 기재해
-                  주시기 바랍니다. (예: 전년 대비 성장률, 기존 방식 대비 개선
-                  내용 등)
-                </li>
-                <li className="mt-1">
-                  필요 시 본인 OKR 등을 확인하고 작성해 주십시오.
-                </li>
-                <li className="mt-1">5개 이내로 작성해 주십시오.</li>
-              </ol>
-              <textarea
-                className="form-control resize-none mt-6"
-                placeholder="1. 본인의 핵심 성과 내용"
-                rows={6}
-                value={text[0]}
-                onChange={({ target }) =>
-                  setText([target.value, text[1], text[2]])
-                }
-              />
-              <textarea
-                className="form-control resize-none mt-6"
-                placeholder="2. 본인의 핵심 성과 내용"
-                rows={6}
-                value={text[1]}
-                onChange={({ target }) =>
-                  setText([text[0], target.value, text[2]])
-                }
-              />
-              <textarea
-                className="form-control resize-none mt-6"
-                placeholder="3. 본인의 핵심 성과 내용"
-                rows={6}
-                value={text[2]}
-                onChange={({ target }) =>
-                  setText([text[0], text[1], target.value])
-                }
-              />
-              <div className="d-flex align-items-center justify-content-center mt-12">
-                <button
-                  type="button"
-                  className={`btn btn-lg w-150px font-weight-bold mx-2 ${
-                    isTemporary ? "btn-primary" : "btn-secondary"
-                  }`}
-                  onClick={() => isTemporary && update(false)}
-                >
-                  임시저장
-                </button>
-                <button
-                  type="button"
-                  className={`btn btn-lg w-150px font-weight-bold mx-2 ${
-                    isSubmit ? "btn-primary" : "btn-secondary"
-                  }`}
-                  data-toggle="modal"
-                  data-target="#modal_workPreview"
-                  onClick={() => isSubmit && update(true)}
-                >
-                  제출하기
-                </button>
-              </div>
-            </Scroll>
+            <div className="col-auto w-100px flex-grow-1 section-2 px-6">
+              <Scroll style={{ maxHeight: "62vh" }}>
+                <h5 className="align-items-start flex-column font-weight-bolder word-keep">
+                  {selfData?.reviewData && selfData.reviewData[0].question}
+                </h5>
+                <ol className="pl-4 mt-4 mb-0 font-size-sm text-black-50">
+                  <li className="mt-1">
+                    팀에 대한 기여도가 높은 성과, 달성하기 어려운 도전적 성과
+                    등을 우선 기재해 주시기 바랍니다.
+                  </li>
+                  <li className="mt-1">
+                    가능하시면, 성과 수준을 판단할 수 있는 근거를 함께 기재해
+                    주시기 바랍니다. (예: 전년 대비 성장률, 기존 방식 대비 개선
+                    내용 등)
+                  </li>
+                  <li className="mt-1">
+                    필요 시 본인 OKR 등을 확인하고 작성해 주십시오.
+                  </li>
+                  <li className="mt-1">5개 이내로 작성해 주십시오.</li>
+                </ol>
+                <>
+                  {textArr.map((text, index) =>
+                    isSubmitted ? (
+                      <div className="pl-2 mt-3">
+                        {index + 1}. {text}
+                      </div>
+                    ) : (
+                      <textarea
+                        className="form-control resize-none mt-6"
+                        placeholder={`${index + 1}. 본인의 핵심 성과 내용`}
+                        rows={6}
+                        value={text}
+                        onChange={({ target }) =>
+                          setTextArr([
+                            ...textArr.slice(0, index),
+                            target.value,
+                            ...textArr.slice(index + 1),
+                          ])
+                        }
+                      />
+                    )
+                  )}
+                </>
+                {!isSubmitted ? (
+                  <div className="text-center mt-6">
+                    {textArr.length > 1 && (
+                      <a
+                        className="svg-icon svg-icon-danger svg-icon-xxl "
+                        onClick={() =>
+                          setTextArr([...textArr.slice(0, textArr.length - 1)])
+                        }
+                      >
+                        <SVG name="bigMinus" />
+                      </a>
+                    )}
+                    {textArr.length < 10 && (
+                      <a
+                        className="svg-icon svg-icon-primary svg-icon-xxl"
+                        onClick={() => setTextArr([...textArr, ""])}
+                      >
+                        <SVG name="bigPlus" />
+                      </a>
+                    )}
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </Scroll>
+              {!isSubmitted ? (
+                <div className="d-flex align-items-center justify-content-center mt-12">
+                  <button
+                    type="button"
+                    className={`btn btn-lg w-150px font-weight-bold mx-2 ${
+                      isTemporary ? "btn-primary" : "btn-secondary"
+                    }`}
+                    onClick={() => isTemporary && update(false)}
+                  >
+                    임시저장
+                  </button>
+                  <button
+                    type="button"
+                    className={`btn btn-lg w-150px font-weight-bold mx-2 ${
+                      isSubmit ? "btn-primary" : "btn-secondary"
+                    }`}
+                    data-toggle="modal"
+                    data-target="#modal_workPreview"
+                    onClick={() =>
+                      isSubmit &&
+                      showModal("confirm", {
+                        onConfirm: () => update(true),
+                        isCancel: true,
+                        text: (
+                          <>
+                            제출 후 수정할 수 없습니다. <br /> 제출하시겠습니까?
+                          </>
+                        ),
+                      })
+                    }
+                  >
+                    제출하기
+                  </button>
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
         </Scroll>
       </div>

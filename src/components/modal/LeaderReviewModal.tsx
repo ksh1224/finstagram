@@ -8,7 +8,7 @@ import Profile from "components/Profile";
 import { useReviewMain } from "hooks/useReview";
 
 export default function LeaderReviewModal() {
-  const { modals, closeModal } = useModal();
+  const { modals, closeModal, showModal } = useModal();
   const [isTemporary, setIsTemporary] = useState(false);
   const { request } = useReviewMain();
   const [isSubmit, setIsSubmit] = useState(false);
@@ -24,8 +24,11 @@ export default function LeaderReviewModal() {
 
   function close() {
     closeModal("leaderReview");
-    setGeneralIndexQna([]);
-    setGeneralTextQna([]);
+    setTimeout(() => {
+      setPrevData(null);
+      setGeneralIndexQna([]);
+      setGeneralTextQna([]);
+    }, 300);
   }
 
   const getData = async () => {
@@ -53,6 +56,11 @@ export default function LeaderReviewModal() {
       if (res.responseCode === "SUCCESS") {
         request(meta?.id);
         close();
+        setTimeout(() => {
+          showModal("confirm", {
+            text: submit ? "제출되었습니다." : "임시저장되었습니다.",
+          });
+        }, 300);
       }
     } catch (error) {
       console.log("error", error);
@@ -100,7 +108,7 @@ export default function LeaderReviewModal() {
 
   return (
     <Modal
-      show={!!leaderReviewModal}
+      show={!!leaderReviewModal && !!prevData}
       animation
       centered
       onHide={() => close()}
@@ -109,8 +117,10 @@ export default function LeaderReviewModal() {
       <div className="modal-content">
         <div className="modal-header">
           <h2 className="d-flex modal-title align-items-center">
-            <Profile width={50} user={user} />
-            <div className="ml-3">{user?.name}님 리더 Review</div>
+            <Profile width={50} user={prevData?.receiveUser} />
+            <div className="ml-3">
+              {prevData?.receiveUser?.name}님 리더 Review
+            </div>
           </h2>
           <button
             type="button"
@@ -267,7 +277,18 @@ export default function LeaderReviewModal() {
                 }`}
                 data-toggle="modal"
                 data-target="#modal_workPreview"
-                onClick={() => isSubmit && update(true)}
+                onClick={() =>
+                  isSubmit &&
+                  showModal("confirm", {
+                    onConfirm: () => update(true),
+                    isCancel: true,
+                    text: (
+                      <>
+                        제출 후 수정할 수 없습니다. <br /> 제출하시겠습니까?
+                      </>
+                    ),
+                  })
+                }
               >
                 제출하기
               </button>

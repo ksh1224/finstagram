@@ -18,6 +18,7 @@ export default function AddTeamReviewerModal() {
   const [text, setText] = useState("");
   const [searchList, setSearchList] = useState<any[]>([]);
   const [selectList, setSelectList] = useState<any[]>([]);
+  const [profile, setProfile] = useState<any>(null);
   const { data: userData } = useSearchUser();
 
   const addReviewerModal = modals.find(
@@ -27,9 +28,14 @@ export default function AddTeamReviewerModal() {
 
   function close() {
     request(meta?.id);
-    setText("");
-    setSelectList([]);
     closeModal("addTeamReviewer");
+    setTimeout(() => {
+      setText("");
+      setReviewerList([]);
+      setFeedbackList([]);
+      setIsSubmit(false);
+      setProfile(null);
+    }, 300);
   }
 
   const getData = async () => {
@@ -38,6 +44,7 @@ export default function AddTeamReviewerModal() {
         `/review/peer/reviewee/team/list/${user.id}?metaId=${meta.id}`,
         "GET"
       );
+      setProfile(data?.user);
       setReviewerList(data?.data);
       setFeedbackList(data?.feedbackUsers);
       setIsSubmit(data?.submitted);
@@ -95,6 +102,11 @@ export default function AddTeamReviewerModal() {
       );
       if (res.responseCode === "SUCCESS") {
         close();
+        setTimeout(() => {
+          showModal("confirm", {
+            text: "확정되었습니다.",
+          });
+        }, 300);
       }
     } catch (error) {
       console.log("error", error);
@@ -121,23 +133,23 @@ export default function AddTeamReviewerModal() {
 
   return (
     <Modal
-      show={!!addReviewerModal}
+      show={!!addReviewerModal && !!profile}
       animation
       centered
       onHide={() => close()}
       id="modal_myReviewer"
     >
-      <Scroll className="modal-content" style={{ maxHeight: "95vh" }}>
+      <Scroll className="modal-content" style={{ maxHeight: "90vh" }}>
         <div className="modal-header">
           <h2 className="d-flex modal-title align-items-center">
-            <Profile width={50} user={user} />
-            <div className="ml-3">{user?.name}님의 Reviewer</div>
+            <Profile width={50} user={profile} />
+            <div className="ml-3">{profile?.name}님의 Reviewer</div>
           </h2>
           <button type="button" className="close" onClick={() => close()}>
             <i aria-hidden="true" className="ki ki-close" />
           </button>
         </div>
-        <Scroll className="modal-body px-0" style={{ maxHeight: "90vh" }}>
+        <Scroll className="modal-body px-0 pb-0" style={{ maxHeight: "85vh" }}>
           {isSubmit ? (
             <></>
           ) : (
@@ -362,7 +374,17 @@ export default function AddTeamReviewerModal() {
               <button
                 type="button"
                 className="btn btn-lg btn-primary w-100 m-0 rounded-0"
-                onClick={() => fixReviewer()}
+                onClick={() =>
+                  showModal("confirm", {
+                    onConfirm: () => fixReviewer(),
+                    isCancel: true,
+                    text: (
+                      <>
+                        확정 후 수정할 수 없습니다. <br /> 확정하시겠습니까?
+                      </>
+                    ),
+                  })
+                }
               >
                 확정하기
               </button>

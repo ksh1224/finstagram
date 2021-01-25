@@ -25,9 +25,14 @@ export default function AddReviewerModal() {
   const { meta } = addReviewerModal?.param || {};
 
   function close() {
-    setText("");
     request(meta.id);
     closeModal("addReviewer");
+    setTimeout(() => {
+      setText("");
+      setReviewerList([]);
+      setFeedbackList([]);
+      setIsSubmit(false);
+    }, 300);
   }
 
   const getData = async () => {
@@ -92,6 +97,11 @@ export default function AddReviewerModal() {
         "POST"
       );
       if (res.responseCode === "SUCCESS") {
+        setTimeout(() => {
+          showModal("confirm", {
+            text: "확정되었습니다.",
+          });
+        }, 300);
         close();
       }
     } catch (error) {
@@ -119,20 +129,20 @@ export default function AddReviewerModal() {
 
   return (
     <Modal
-      show={!!addReviewerModal}
+      show={!!addReviewerModal && reviewerlist.length !== 0}
       animation
       centered
       onHide={() => close()}
       id="modal_myReviewer"
     >
-      <Scroll className="modal-content" style={{ maxHeight: "95vh" }}>
+      <Scroll className="modal-content" style={{ maxHeight: "90vh" }}>
         <div className="modal-header">
           <h5 className="modal-title">나의 Reviewer</h5>
           <button type="button" className="close" onClick={() => close()}>
             <i aria-hidden="true" className="ki ki-close" />
           </button>
         </div>
-        <Scroll className="modal-body px-0" style={{ maxHeight: "90vh" }}>
+        <Scroll className="modal-body px-0 pb-0" style={{ maxHeight: "85vh" }}>
           {isSubmit ? (
             <></>
           ) : (
@@ -366,7 +376,17 @@ export default function AddReviewerModal() {
               <button
                 type="button"
                 className="btn btn-lg btn-primary w-100 m-0 rounded-0"
-                onClick={() => fixReviewer()}
+                onClick={() =>
+                  showModal("confirm", {
+                    onConfirm: () => fixReviewer(),
+                    isCancel: true,
+                    text: (
+                      <>
+                        확정 후 수정할 수 없습니다. <br /> 확정하시겠습니까?
+                      </>
+                    ),
+                  })
+                }
               >
                 확정하기
               </button>

@@ -4,7 +4,6 @@ import React, { useEffect, useState, createRef } from "react";
 import SVG from "utils/SVG";
 import Profile from "components/Profile";
 import { useMyOKR, useRefreshOKRData } from "hooks/useOKRRedux";
-import { statusToKo } from "constant/progress";
 import axios from "utils/axiosUtil";
 import OKRGraph from "components/okr/OKRGraph";
 import { useMyFeedback } from "hooks/useFeedBackRedux";
@@ -22,6 +21,7 @@ export default function UserProfileModal() {
   const [feedbackBadge, setFeedbackBadge] = useState<any>([]);
   const [selectBadgeId, setSelectBadgeId] = useState(-1);
   const [feedbackListData, setFeedbackListData] = useState<any[]>([]);
+  const [showUserModal, setUserShowMoal] = useState(false);
 
   const userProfileModal = modals.find(
     (modal: any) => modal.name === "userProfile"
@@ -30,7 +30,10 @@ export default function UserProfileModal() {
   const { user } = userProfileModal?.param || {};
 
   function close() {
-    closeModal("userProfile");
+    setUserShowMoal(false);
+    setTimeout(() => {
+      closeModal("userProfile");
+    }, 300);
   }
 
   const getBadgeList = async (year?: string, quarter?: string) => {
@@ -86,6 +89,7 @@ export default function UserProfileModal() {
         year: feedbackStatisticsData?.year,
         quarter: feedbackStatisticsData?.quarter,
       });
+      setUserShowMoal(true);
     }
   }, [userProfileModal]);
 
@@ -111,7 +115,7 @@ export default function UserProfileModal() {
   return (
     <Modal
       size="xl"
-      show={!!userProfileModal}
+      show={showUserModal}
       animation
       centered
       onHide={() => close()}

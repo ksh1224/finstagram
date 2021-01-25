@@ -18,6 +18,7 @@ export default function FeedbackSendModal() {
   const { feedbackSend } = useFeedback();
   const { modals, closeModal } = useModal();
   const { data: dadgeList } = useBadgeList();
+  const [show, setShow] = useState(false);
   const sendFeedbackModal = modals.find(
     (modal: any) => modal.name === "sendFeedback"
   );
@@ -28,14 +29,17 @@ export default function FeedbackSendModal() {
 
   const close = () => {
     if (sendFeedbackModal || updateFeedbackModal) {
-      if (sendFeedbackModal) closeModal("sendFeedback");
-      else {
-        closeModal("updateSendFeedback");
-        setPrevFileName(undefined);
-      }
-      setSelect(0);
-      setContents("");
-      setFile(null);
+      setShow(false);
+      setTimeout(() => {
+        if (sendFeedbackModal) closeModal("sendFeedback");
+        else {
+          closeModal("updateSendFeedback");
+          setPrevFileName(undefined);
+        }
+        setSelect(0);
+        setContents("");
+        setFile(null);
+      }, 300);
     }
   };
 
@@ -77,16 +81,18 @@ export default function FeedbackSendModal() {
       setType(feed?.type);
       setContents(feed?.contents);
       setPrevFileName(feed?.fileName);
+      setShow(true);
     }
   }, [updateFeedbackModal]);
 
+  useEffect(() => {
+    if (sendFeedbackModal) {
+      setShow(true);
+    }
+  }, [sendFeedbackModal]);
+
   return (
-    <Modal
-      show={!!sendFeedbackModal || !!updateFeedbackModal}
-      animation
-      centered
-      onHide={() => close()}
-    >
+    <Modal show={show} animation centered onHide={() => close()}>
       <div className="modal-content">
         <div className="modal-header border-0 mb-n12 justify-content-end">
           <button

@@ -10,6 +10,7 @@ import FeedListItem from "components/item/FeedListItem";
 import Scroll from "components/Scroll";
 import { useReviewMain } from "hooks/useReview";
 import Profile from "components/Profile";
+import { useMyFeedback } from "hooks/useFeedBackRedux";
 
 const selectArray = [
   "매우 동의하지 않음",
@@ -27,7 +28,8 @@ const collaboration = "collaboration";
 const contribution = "contribution";
 
 export default function PeerReviewModal() {
-  const { modals, closeModal } = useModal();
+  const { modals, closeModal, showModal } = useModal();
+  const { feedbackStatisticsData, feedbackStatisticsRequest } = useMyFeedback();
   const { request } = useReviewMain();
   const [show, setShow] = useState<any>();
   const [okrData, setOKRData] = useState<any>();
@@ -40,18 +42,23 @@ export default function PeerReviewModal() {
   const [peerData, setPeerData] = useState<any>(null);
   const [prevData, setPrevData] = useState<any>(null);
   const [isExtraComment, setIsExtraComment] = useState(false);
+  const [yearQuarter, setYearQuarter] = useState({ year: 0, quarter: 0 });
 
   const peerReviewModal = modals.find((modal) => modal.name === "peerReview");
 
   const { meta, user } = peerReviewModal?.param || {};
-  const { year, quarter, id } = meta || {};
+  const { year: paramYear, quarter: paramQuarter, id } = meta || {};
 
   function close() {
-    setIsExtraComment(false);
     closeModal("peerReview");
+    setTimeout(() => {
+      setIsExtraComment(false);
+      setPeerData(null);
+      setPrevData(null);
+    }, 300);
   }
 
-  const getBadgeList = async () => {
+  const getBadgeList = async (year: number, quarter: number) => {
     if (year && quarter) {
       try {
         const { data } = await axios(
@@ -67,7 +74,7 @@ export default function PeerReviewModal() {
     }
   };
 
-  const getFeedbackData = async () => {
+  const getFeedbackData = async (year: number, quarter: number) => {
     try {
       if (year && quarter) {
         const { data: feedbackBadgeData } = await axios(
@@ -77,14 +84,14 @@ export default function PeerReviewModal() {
           "GET"
         );
         setFeedbackBadge(feedbackBadgeData?.CONTRIBUTION);
-        getBadgeList();
+        getBadgeList(year, quarter);
       }
     } catch (error) {
       console.log("error", error);
     }
   };
 
-  const getOKRData = async () => {
+  const getOKRData = async (year: number, quarter: number) => {
     try {
       if (year && quarter) {
         await setShow(false);
@@ -153,6 +160,11 @@ export default function PeerReviewModal() {
       if (res.responseCode === "SUCCESS") {
         request(id);
         close();
+        setTimeout(() => {
+          showModal("confirm", {
+            text: submit ? "제출되었습니다." : "임시저장되었습니다.",
+          });
+        }, 300);
       }
     } catch (error) {
       console.log("error", error);
@@ -161,17 +173,26 @@ export default function PeerReviewModal() {
 
   useEffect(() => {
     if (peerReviewModal && user) {
-      getFeedbackData();
-      getOKRData();
+      getFeedbackData(paramYear, paramQuarter);
+      getOKRData(paramYear, paramQuarter);
+      feedbackStatisticsRequest(paramYear, paramQuarter);
       getData();
+      setYearQuarter({ year: paramYear, quarter: paramQuarter });
     }
   }, [peerReviewModal]);
 
   useEffect(() => {
-    if (user) {
-      getBadgeList();
+    const { year, quarter } = yearQuarter;
+    if (user && year && quarter) {
+      getBadgeList(year, quarter);
     }
   }, [selectBadgeId]);
+
+  useEffect(() => {
+    const { year, quarter } = yearQuarter;
+    getFeedbackData(year, quarter);
+    getOKRData(year, quarter);
+  }, [yearQuarter]);
 
   useEffect(() => {
     if (peerData && prevData) {
@@ -281,7 +302,7 @@ export default function PeerReviewModal() {
   return (
     <Modal
       size="xl"
-      show={!!peerReviewModal}
+      show={!!peerReviewModal && !!prevData}
       animation
       centered
       onHide={() => close()}
@@ -290,8 +311,10 @@ export default function PeerReviewModal() {
       <div className="modal-content">
         <div className="modal-header">
           <h2 className="d-flex modal-title align-items-center">
-            <Profile width={50} user={user} />
-            <div className="ml-3">{user?.name}님 동료 Review</div>
+            <Profile width={50} user={prevData?.data[prevData?.index]?.user} />
+            <div className="ml-3">
+              {prevData?.data[prevData?.index]?.user?.name}님 동료 Review
+            </div>
           </h2>
           <button
             type="button"
@@ -307,14 +330,43 @@ export default function PeerReviewModal() {
           <div className="d-flex flex-row flex-wrap align-items-stretch">
             <Scroll
               className="d-flex flex-column col-auto w-100px flex-grow-1 section-1 px-6"
-              style={{ maxHeight: "80vh" }}
+              style={{ maxHeight: "77vh" }}
             >
               <div className="d-flex flex-column  px-6">
                 <div className="flex-nowrap align-items-center border-0">
-                  <h5 className="align-items-start flex-column">
+                  <h5
+                    className="align-items-center d-flex flex-row"
+                    style={{ justifyContent: "space-between" }}
+                  >
                     <span className="font-weight-bolder text-dark">
                       Feedback
                     </span>
+                    <div className="card-toolbar">
+                      <select
+                        onChange={({
+                          target,
+                        }: React.ChangeEvent<HTMLSelectElement>) => {
+                          const [year, quarter] = target.value.split("_");
+                          setYearQuarter({
+                            year: Number(year),
+                            quarter: Number(quarter),
+                          });
+                        }}
+                        className="custom-select form-control border-0 shadow-none pr-5 bgi-position-x-right"
+                      >
+                        {feedbackStatisticsData?.availableDates?.map(
+                          ({ year, quarter }: any) => (
+                            <option
+                              selected={
+                                feedbackStatisticsData?.year === year &&
+                                feedbackStatisticsData?.quarter === quarter
+                              }
+                              value={`${year}_${quarter}`}
+                            >{`${year}년 ${quarter}분기`}</option>
+                          )
+                        )}
+                      </select>
+                    </div>
                   </h5>
                 </div>
                 <div className="pt-2">
@@ -382,7 +434,12 @@ export default function PeerReviewModal() {
                             key={feedback.id}
                             {...feedback}
                             feedType="modal"
-                            onUpdate={() => getFeedbackData()}
+                            onUpdate={() =>
+                              getFeedbackData(
+                                yearQuarter.year,
+                                yearQuarter.quarter
+                              )
+                            }
                           />
                         );
                       })}
@@ -405,7 +462,7 @@ export default function PeerReviewModal() {
                   {!okrData ? (
                     <div className="text-center my-10">
                       <p className="font-size-h5 mb-6">
-                        {`${year}년 ${quarter}분기 OKR Data가 없습니다.`}
+                        {`${yearQuarter.year}년 ${yearQuarter.quarter}분기 OKR Data가 없습니다.`}
                       </p>
                     </div>
                   ) : (
@@ -415,7 +472,7 @@ export default function PeerReviewModal() {
               </div>
             </Scroll>
             <div className="col-auto w-100px flex-grow-1 section-2 px-6">
-              <Scroll style={{ maxHeight: "70vh" }}>
+              <Scroll style={{ maxHeight: "67vh" }}>
                 <>
                   {!!peerData &&
                     [contribution, collaboration].map((type: any) => (
@@ -513,20 +570,26 @@ export default function PeerReviewModal() {
                                     기타 의견
                                   </label>
                                 </div>
-                                {isExtraComment && (
-                                  <textarea
-                                    className="form-control resize-none mt-3"
-                                    placeholder="기타 의견을 작성해주세요."
-                                    rows={6}
-                                    value={
-                                      peerData?.collaboration?.considerData
-                                        ?.answer || ""
-                                    }
-                                    onChange={({ target }) =>
-                                      changeData(type, { text: target.value })
-                                    }
-                                  />
-                                )}
+                                {isExtraComment &&
+                                  (peerData?.submitted ? (
+                                    <div className="resize-none mt-3 mb-5">
+                                      {peerData?.collaboration?.considerData
+                                        ?.answer || "리뷰 데이터가 없습니다."}
+                                    </div>
+                                  ) : (
+                                    <textarea
+                                      className="form-control resize-none mt-3"
+                                      placeholder="기타 의견을 작성해주세요."
+                                      rows={6}
+                                      value={
+                                        peerData?.collaboration?.considerData
+                                          ?.answer || ""
+                                      }
+                                      onChange={({ target }) =>
+                                        changeData(type, { text: target.value })
+                                      }
+                                    />
+                                  ))}
                               </div>
                             ) : (
                               <div className="mt-5">
@@ -539,21 +602,31 @@ export default function PeerReviewModal() {
                                     ]?.question
                                   }
                                 </span>
-                                <textarea
-                                  className="form-control resize-none mt-3"
-                                  placeholder="Review를 작성해주세요."
-                                  rows={6}
-                                  value={
-                                    peerData[type][
+                                {peerData?.submitted ? (
+                                  <div className="pl-2 mt-3">
+                                    {peerData[type][
                                       peerData[type]?.answer === Consider
                                         ? "considerData"
                                         : "continueData"
-                                    ].answer || ""
-                                  }
-                                  onChange={({ target }) =>
-                                    changeData(type, { text: target.value })
-                                  }
-                                />
+                                    ].answer || ""}
+                                  </div>
+                                ) : (
+                                  <textarea
+                                    className="form-control resize-none mt-3"
+                                    placeholder="Review를 작성해주세요."
+                                    rows={6}
+                                    value={
+                                      peerData[type][
+                                        peerData[type]?.answer === Consider
+                                          ? "considerData"
+                                          : "continueData"
+                                      ].answer || ""
+                                    }
+                                    onChange={({ target }) =>
+                                      changeData(type, { text: target.value })
+                                    }
+                                  />
+                                )}
                               </div>
                             )}
                           </>
@@ -580,7 +653,18 @@ export default function PeerReviewModal() {
                     }`}
                     data-toggle="modal"
                     data-target="#modal_workPreview"
-                    onClick={() => isSubmit && update(true)}
+                    onClick={() =>
+                      isSubmit &&
+                      showModal("confirm", {
+                        onConfirm: () => update(true),
+                        isCancel: true,
+                        text: (
+                          <>
+                            제출 후 수정할 수 없습니다. <br /> 제출하시겠습니까?
+                          </>
+                        ),
+                      })
+                    }
                   >
                     제출하기
                   </button>

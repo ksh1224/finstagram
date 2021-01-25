@@ -32,6 +32,7 @@ export default function FeedbackRequestModal() {
   const [contents, setContents] = useState("");
   const [file, setFile] = useState<any>(null);
   const [prevFileName, setPrevFileName] = useState<string>();
+  const [showRequestModal, setShowRequestModal] = useState(false);
   const { data } = useSearchUser();
   const { feedbackRequest } = useFeedback();
 
@@ -44,13 +45,16 @@ export default function FeedbackRequestModal() {
   );
 
   const close = () => {
-    if (requestFeedbackModal) closeModal("requestFeedback");
-    if (updateRequestFeedbackModal) {
-      closeModal("updateRequestFeedback");
-      setPrevFileName(undefined);
-    }
-    setContents("");
-    setFile(null);
+    setShowRequestModal(false);
+    setTimeout(() => {
+      if (requestFeedbackModal) closeModal("requestFeedback");
+      if (updateRequestFeedbackModal) {
+        closeModal("updateRequestFeedback");
+        setPrevFileName(undefined);
+      }
+      setContents("");
+      setFile(null);
+    }, 300);
   };
 
   const feedbackUser = requestFeedbackModal?.param;
@@ -59,10 +63,17 @@ export default function FeedbackRequestModal() {
 
   useEffect(() => {
     if (updateRequestFeedbackModal) {
+      setShowRequestModal(true);
       setContents(feed?.contents);
       setPrevFileName(feed?.fileName);
     }
   }, [updateRequestFeedbackModal]);
+
+  useEffect(() => {
+    if (requestFeedbackModal) {
+      setShowRequestModal(true);
+    }
+  }, [requestFeedbackModal]);
 
   useEffect(() => {
     if (searchText && searchText.trim() !== "") {
@@ -113,17 +124,13 @@ export default function FeedbackRequestModal() {
   }
 
   return (
-    <Modal
-      show={!!requestFeedbackModal || !!updateRequestFeedbackModal}
-      animation
-      centered
-      onHide={() => close()}
-    >
-      <div className="modal-content">
-        <div className="modal-header border-0 mb-n12 justify-content-end">
+    <Modal show={showRequestModal} animation centered onHide={() => close()}>
+      <div className="modal-content" onClick={() => setSearchText("")}>
+        <div className="modal-header border-0 mb-n12">
+          <h3 className="modal-title">피드백 요청 동료 추가</h3>
           <button
             type="button"
-            className="close position-relative zindex-1"
+            className="close"
             data-dismiss="modal"
             aria-label="닫기"
             onClick={() => close()}
@@ -170,6 +177,7 @@ export default function FeedbackRequestModal() {
                   className={`dropdown-menu dropdown-menu-left dropdown-menu-md dropdown-menu-anim-up ${
                     show && "show"
                   }`}
+                  onClick={(e) => e.stopPropagation()}
                   style={{ height: "350px", overflowY: "scroll" }}
                   x-placement="bottom-start"
                 >
@@ -190,7 +198,15 @@ export default function FeedbackRequestModal() {
                               include ? deleteUser(userData) : addUser(userData)
                             }
                           >
-                            <Profile width={40} user={userData} />
+                            <Profile
+                              width={40}
+                              user={userData}
+                              onClick={() =>
+                                include
+                                  ? deleteUser(userData)
+                                  : addUser(userData)
+                              }
+                            />
                             <div className="w-100px flex-grow-1 ml-5">
                               <div className="font-weight-bolder text-dark-75 font-size-md">
                                 {`${userData.position} ${userData.name}`}
@@ -292,11 +308,16 @@ export default function FeedbackRequestModal() {
                 </a>
               </div>
               <div className="dropzone-items">
-                {!!file && !!file[0] && (
+                {!!file && !!file[0] ? (
                   <div className="dropzone-item">
                     <div className="dropzone-file">
-                      <div className="dropzone-filename" title={file[0].name}>
-                        <span data-dz-name="">{file[0].name}</span>
+                      <div
+                        className="dropzone-filename"
+                        title={file[0].name || prevFileName}
+                      >
+                        <span data-dz-name="">
+                          {file[0].name || prevFileName}
+                        </span>
                         <strong>
                           (
                           <span data-dz-size={file[0].size}>
@@ -328,6 +349,36 @@ export default function FeedbackRequestModal() {
                       </span>
                     </div>
                   </div>
+                ) : (
+                  prevFileName && (
+                    <div className="dropzone-item">
+                      <div className="dropzone-file">
+                        <div className="dropzone-filename" title={prevFileName}>
+                          <span data-dz-name="">{prevFileName}</span>
+                        </div>
+                      </div>
+                      <div className="dropzone-progress">
+                        <div className="progress">
+                          <div
+                            className="progress-bar bg-primary"
+                            role="progressbar"
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            aria-valuenow={0}
+                            data-dz-uploadprogress=""
+                          />
+                        </div>
+                      </div>
+                      <div className="dropzone-toolbar">
+                        <span className="dropzone-delete" data-dz-remove="">
+                          <i
+                            className="flaticon2-cross"
+                            onClick={() => setFile(null)}
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  )
                 )}
               </div>
             </div>

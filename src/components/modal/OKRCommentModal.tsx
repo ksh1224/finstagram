@@ -12,15 +12,16 @@ export default function OKRCommentModal() {
   const { modals, closeModal } = useModal();
   const { refreshOKRData } = useRefreshOKRData();
   const [comments, setComments] = useState<
-    {
-      user: any;
-      content: string;
-      createdAt: string;
-      id: number;
-      likeCount: number;
-      liked: boolean;
-      updatedAt: string;
-    }[]
+    | {
+        user: any;
+        content: string;
+        createdAt: string;
+        id: number;
+        likeCount: number;
+        liked: boolean;
+        updatedAt: string;
+      }[]
+    | null
   >([]);
 
   const [text, setText] = useState("");
@@ -29,12 +30,15 @@ export default function OKRCommentModal() {
     (modal: any) => modal.name === "okrComment"
   );
 
-  const { id, description, progress, status } = okrCommentModal?.param || {};
+  const { id, description, progress, status, onUpdate } =
+    okrCommentModal?.param || {};
 
   function close() {
-    setComments([]);
     closeModal("okrComment");
-    setText("");
+    setTimeout(() => {
+      setComments(null);
+      setText("");
+    }, 300);
   }
 
   const getComments = async () => {
@@ -62,6 +66,7 @@ export default function OKRCommentModal() {
           setText("");
           getComments();
           refreshOKRData();
+          if (onUpdate) onUpdate();
         }
       } catch (error) {
         console.log("error", error);
@@ -76,6 +81,7 @@ export default function OKRCommentModal() {
       if (res.responseCode === "SUCCESS") {
         getComments();
         refreshOKRData();
+        if (onUpdate) onUpdate();
       }
     } catch (error) {
       console.log("error", error);
@@ -90,7 +96,12 @@ export default function OKRCommentModal() {
   }, [okrCommentModal]);
 
   return (
-    <Modal show={!!okrCommentModal} animation centered onHide={() => close()}>
+    <Modal
+      show={!!okrCommentModal && comments}
+      animation
+      centered
+      onHide={() => close()}
+    >
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title font-size-h6">
@@ -115,14 +126,15 @@ export default function OKRCommentModal() {
             style={{ maxHeight: "300px" }}
             className="overflow-hidden overflow-y-auto"
           >
-            {comments.map((props) => (
-              <CommentItem
-                type="okr"
-                {...props}
-                onUpdate={() => getComments()}
-                onDelete={deleteComment}
-              />
-            ))}
+            {comments &&
+              comments.map((props) => (
+                <CommentItem
+                  type="okr"
+                  {...props}
+                  onUpdate={() => getComments()}
+                  onDelete={deleteComment}
+                />
+              ))}
           </div>
 
           <div className="separator separator-solid my-5" />

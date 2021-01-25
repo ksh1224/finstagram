@@ -11,7 +11,7 @@ const scores = ["LEADING", "STRONG", "SOLID", "BUILDING", "IMPROVEMENT_NEEDED"];
 
 export default function TeamReviewModal() {
   const { request } = useReviewMain();
-  const { modals, closeModal } = useModal();
+  const { modals, closeModal, showModal } = useModal();
   const [prevData, setPrevData] = useState<any>({});
   const [isTemporary, setIsTemporary] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
@@ -21,6 +21,17 @@ export default function TeamReviewModal() {
     { name: number | string; data: any }[] | null
   >(null);
   const [editData, setEditData] = useState<{
+    considerPoint?: string | null;
+    continuePoint?: string | null;
+    rating?: string | null;
+    name?: string | number | null;
+  }>({
+    considerPoint: null,
+    continuePoint: null,
+    rating: null,
+    name: null,
+  });
+  const [prevEditData, setPrevEditData] = useState<{
     considerPoint?: string | null;
     continuePoint?: string | null;
     rating?: string | null;
@@ -82,6 +93,14 @@ export default function TeamReviewModal() {
           : rating,
         name,
       });
+      setPrevEditData({
+        considerPoint,
+        continuePoint,
+        rating: evaluationFinal?.editable
+          ? newTeamData[newTeamData.length - 2]?.data?.rating
+          : rating,
+        name,
+      });
       setTeamData(newTeamData);
     } catch (error) {
       console.log("error", error);
@@ -121,6 +140,11 @@ export default function TeamReviewModal() {
     if (res.responseCode === "SUCCESS") {
       request(meta?.id);
       close();
+      setTimeout(() => {
+        showModal("confirm", {
+          text: submit ? "제출되었습니다." : "임시저장되었습니다.",
+        });
+      }, 300);
     }
   };
 
@@ -139,13 +163,20 @@ export default function TeamReviewModal() {
       editData.considerPoint.trim() !== "" &&
       editData.continuePoint.trim() !== ""
     ) {
-      setIsTemporary(true);
       setIsSubmit(true);
     } else {
-      setIsTemporary(false);
       setIsSubmit(false);
     }
-  }, [editData]);
+    if (
+      JSON.stringify(prevEditData) !== JSON.stringify(editData) &&
+      (editData.name === "Final" ||
+        !!editData.rating ||
+        (!!editData.considerPoint && editData.considerPoint.trim() !== "") ||
+        (!!editData.continuePoint && editData.continuePoint.trim() !== ""))
+    ) {
+      setIsTemporary(true);
+    } else setIsTemporary(false);
+  }, [editData, prevEditData]);
 
   useEffect(() => {
     if (teamData) {
@@ -228,7 +259,8 @@ export default function TeamReviewModal() {
                     </h6>
                     <div className="mt-12">
                       <div className="font-size-lg font-weight-bold">
-                        {!!review?.answer && enterLine(review?.answer)}
+                        {!!review?.answer &&
+                          enterLine(review?.answer, "<split/>", true, true)}
                       </div>
                       {/* <div className="text-dark-75 font-size-sm font-weight-normal word-keep pt-3">성과 내용</div> */}
                     </div>
@@ -421,7 +453,18 @@ export default function TeamReviewModal() {
                     className={`btn btn-lg w-150px font-weight-bold mx-2 ${
                       isSubmit ? "btn-primary" : "btn-secondary"
                     }`}
-                    onClick={() => isSubmit && update(true)}
+                    onClick={() =>
+                      isSubmit &&
+                      showModal("confirm", {
+                        onConfirm: () => update(true),
+                        isCancel: true,
+                        text: (
+                          <>
+                            제출 후 수정할 수 없습니다. <br /> 제출하시겠습니까?
+                          </>
+                        ),
+                      })
+                    }
                   >
                     제출하기
                   </button>

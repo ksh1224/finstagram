@@ -118,7 +118,7 @@ const Options = ({
   return (
     <div className="mb-12">
       <div className="font-size-lg font-weight-bolder word-keep">
-        {2 + qnaIndex}.{" "}
+        {(finished ? 1 : 2) + qnaIndex}.{" "}
         {tagUtil(
           qna?.question.replace("Objective", `Objective${1 + objectiveIndex}`),
           "sm"
@@ -131,7 +131,7 @@ const Options = ({
 };
 
 export default function OKRSelfReviewModal() {
-  const { modals, closeModal } = useModal();
+  const { modals, closeModal, showModal } = useModal();
   const { request } = useReviewMain();
   const { user: my } = useAuth();
   const [isTemporary, setIsTemporary] = useState(false);
@@ -150,10 +150,12 @@ export default function OKRSelfReviewModal() {
   const { year, quarter, id } = meta || {};
 
   function close() {
-    setSelfData({});
-    setReviewData([]);
-    setPrevReviewData([]);
     closeModal("okrSelfReview");
+    setTimeout(() => {
+      setSelfData({});
+      setReviewData([]);
+      setPrevReviewData([]);
+    }, 500);
   }
 
   const getData = async () => {
@@ -197,6 +199,11 @@ export default function OKRSelfReviewModal() {
       if (res.responseCode === "SUCCESS") {
         request(id);
         close();
+        setTimeout(() => {
+          showModal("confirm", {
+            text: submit ? "제출되었습니다." : "임시저장되었습니다.",
+          });
+        }, 300);
       }
     } catch (error) {
       console.log("error", error);
@@ -221,11 +228,7 @@ export default function OKRSelfReviewModal() {
                     return { ...qna, answerByText: contents };
                   return {
                     ...qna,
-                    answer: qna.answer.includes(contents)
-                      ? qna.answer.filter(
-                          (optionId: any) => optionId !== contents
-                        )
-                      : [...qna.answer, contents],
+                    answer: qna.answer.includes(contents) ? [] : [contents],
                   };
                 case "MULTIPLE_CHOICE":
                   return {
@@ -296,7 +299,7 @@ export default function OKRSelfReviewModal() {
   return (
     <Modal
       size="xl"
-      show={!!okrSelfReviewModal}
+      show={!!okrSelfReviewModal && !!reviewData[0]}
       animation
       centered
       onHide={() => close()}
@@ -391,28 +394,32 @@ export default function OKRSelfReviewModal() {
                         id={`okr_review_tab1${objectiveIndex}`}
                         key={`tab_${objectiveIndex}`}
                       >
-                        <div className="mb-12">
-                          <div className="font-size-lg font-weight-bolder word-keep">
-                            1. Objective {1 + objectiveIndex}의 최종 Score를
-                            Update 해주세요.
+                        {!finished ? (
+                          <div className="mb-12">
+                            <div className="font-size-lg font-weight-bolder word-keep">
+                              1. Objective {1 + objectiveIndex}의 최종 Score를
+                              Update 해주세요.
+                            </div>
+                            <p className="d-block font-size-sm mt-3">
+                              <button
+                                type="button"
+                                className="btn btn-primary mx-2"
+                                data-toggle="tab"
+                                onClick={() =>
+                                  okrData?.objective &&
+                                  okrData.objective[objectiveIndex] &&
+                                  setUpdateId(
+                                    okrData.objective[objectiveIndex].id
+                                  )
+                                }
+                              >
+                                Score Update 하러가기
+                              </button>
+                            </p>
                           </div>
-                          <p className="d-block font-size-sm mt-3">
-                            <button
-                              type="button"
-                              className="btn btn-primary mx-2"
-                              data-toggle="tab"
-                              onClick={() =>
-                                okrData?.objective &&
-                                okrData.objective[objectiveIndex] &&
-                                setUpdateId(
-                                  okrData.objective[objectiveIndex].id
-                                )
-                              }
-                            >
-                              Score Update 하러가기
-                            </button>
-                          </p>
-                        </div>
+                        ) : (
+                          <></>
+                        )}
                         {objectiveData.map((qna: any, qnaIndex: number) => (
                           <Options
                             qna={qna}
@@ -442,7 +449,19 @@ export default function OKRSelfReviewModal() {
                       className={`btn btn-lg w-150px font-weight-bold mx-2 ${
                         isSubmit ? "btn-primary" : "btn-secondary"
                       }`}
-                      onClick={() => isSubmit && update(true)}
+                      onClick={() =>
+                        isSubmit &&
+                        showModal("confirm", {
+                          onConfirm: () => update(true),
+                          isCancel: true,
+                          text: (
+                            <>
+                              제출 후 수정할 수 없습니다. <br />
+                              제출하시겠습니까?
+                            </>
+                          ),
+                        })
+                      }
                     >
                       제출하기
                     </button>
