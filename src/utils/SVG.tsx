@@ -5,7 +5,8 @@ type SVGType = {
     | "like"
     | "comment"
     | "search"
-    | "notification"
+    | "notificationOn"
+    | "notificationOff"
     | "user"
     | "send"
     | "delete"
@@ -29,6 +30,7 @@ type SVGType = {
   height?: number;
   viewBox?: string;
   version?: string;
+  style?: React.CSSProperties;
 };
 
 export default function SVG({
@@ -39,6 +41,7 @@ export default function SVG({
   height,
   viewBox,
   version,
+  style,
 }: SVGType) {
   let data = null;
   switch (name) {
@@ -92,7 +95,26 @@ export default function SVG({
         </g>
       );
       break;
-    case "notification":
+    case "notificationOn":
+      data = (
+        <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+          <path
+            d="M17,12 L18.5,12 C19.3284271,12 20,12.6715729 20,13.5 C20,14.3284271 19.3284271,15 18.5,15 L5.5,15 C4.67157288,15 4,14.3284271 4,13.5 C4,12.6715729 4.67157288,12 5.5,12 L7,12 L7.5582739,6.97553494 C7.80974924,4.71225688 9.72279394,3 12,3 C14.2772061,3 16.1902508,4.71225688 16.4417261,6.97553494 L17,12 Z"
+            fill="#000000"
+          />
+          <rect
+            fill="#000000"
+            opacity="0.3"
+            x="10"
+            y="16"
+            width="4"
+            height="4"
+            rx="2"
+          />
+        </g>
+      );
+      break;
+    case "notificationOff":
       data = (
         <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           <path
@@ -383,6 +405,7 @@ export default function SVG({
     <svg
       className={className}
       xmlns={xmlns}
+      style={style}
       width={`${width}px`}
       height={`${height}px`}
       viewBox={viewBox}
