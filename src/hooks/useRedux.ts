@@ -105,12 +105,12 @@ export function useSelectBadge() {
 }
 
 export function useNotification() {
-  const { data, currentPage, isFetching, totalPages } = useSelector(
+  const { data, currentPage, isFetching, totalPages, notiCount } = useSelector(
     (state: RootState) => state.notification
   );
   const dispatch = useDispatch();
   const request = useCallback(
-    (page: number) => dispatch(notificationActionAsync.request(page)),
+    (page?: number) => dispatch(notificationActionAsync.request(page)),
     [dispatch]
   );
   return {
@@ -119,5 +119,6 @@ export function useNotification() {
     currentPage,
     isFetching,
     totalPages,
+    notiCount,
   };
 }

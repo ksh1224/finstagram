@@ -118,19 +118,21 @@ export function useFeedSent() {
 }
 
 export function useFeedBadge() {
-  const { isFetching, data } = useSelector(
+  const { isFetching, data, currentPage, totalPages } = useSelector(
     (state: RootState) => state.feedBadge
   );
   const dispatch = useDispatch();
 
   const request = useCallback(
-    (year, quarter, badgeId?) =>
-      dispatch(feedBadgeActionAsync.request({ year, quarter, badgeId })),
+    (year, quarter, badgeId?, page?) =>
+      dispatch(feedBadgeActionAsync.request({ year, quarter, badgeId, page })),
     [dispatch]
   );
   return {
     request,
     data,
+    currentPage,
+    totalPages,
     isFetching,
   };
 }
