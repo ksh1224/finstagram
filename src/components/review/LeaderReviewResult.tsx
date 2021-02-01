@@ -54,6 +54,9 @@ const barConfig = (
         datalabels: {
           anchor: "end",
           align: "end",
+          formatter(value: any) {
+            return `${value}%`;
+          },
         },
       },
     },
@@ -81,7 +84,7 @@ export default function LeaderReviewResult() {
     ) {
       const bar = new Chart(
         barRef.current,
-        barConfig(myScorePercentage * 100, averageScorePercentage * 100)
+        barConfig(myScorePercentage, averageScorePercentage)
       );
     }
   }, [data]);
@@ -98,18 +101,25 @@ export default function LeaderReviewResult() {
           </div>
           <div className="position-relative mt-4">
             <canvas ref={barRef} className="max-w-600px" height="50px" />
-            <div className="chart-sub-value">
+            <div
+              className="chart-sub-value"
+              style={{ width: "calc(100% - 200px)" }}
+            >
               <span
-                className="d-flex align-items-center mt-2"
-                style={myScorePercentage === 0 ? { color: "#000" } : undefined}
+                className={`d-flex align-items-center mt-2 ${
+                  averageScorePercentage <= 50
+                    ? "position-relative left-50 mb-2 text-dark"
+                    : ""
+                }`}
               >
-                평균 {myScoreTotalAverage}점
+                평균 5점
               </span>
               <span
-                className="d-flex align-items-center mb-2"
-                style={
-                  averageScorePercentage === 0 ? { color: "#000" } : undefined
-                }
+                className={`d-flex align-items-center mt-2 ${
+                  averageScoreTotalAverage <= 50
+                    ? "position-relative left-50 mb-2 text-dark"
+                    : ""
+                }`}
               >
                 평균 {averageScoreTotalAverage}점
               </span>

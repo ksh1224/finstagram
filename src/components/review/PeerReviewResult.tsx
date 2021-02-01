@@ -64,14 +64,22 @@ const barConfig = (
         backgroundColor: "#1bc5bd",
         borderColor: "#1bc5bd",
         borderWidth: 1,
-        data: [myScore?.average, myScore?.positive, myScore?.negative],
+        data: [
+          myScore?.average.toFixed(1),
+          myScore?.positive.toFixed(1),
+          myScore?.negative.toFixed(1),
+        ],
       },
       {
         label: "사업부 평균",
         backgroundColor: "#ffa800",
         borderColor: "#ffa800",
         borderWidth: 1,
-        data: [totalScore?.average, totalScore?.positive, totalScore?.negative],
+        data: [
+          totalScore?.average.toFixed(1),
+          totalScore?.positive.toFixed(1),
+          totalScore?.negative.toFixed(1),
+        ],
       },
     ],
   };
