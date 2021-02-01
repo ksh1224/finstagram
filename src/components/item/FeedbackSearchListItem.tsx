@@ -27,11 +27,7 @@ export default function SearchListItem({ user }: SearchListItemType) {
   return (
     <>
       <div className="d-flex align-items-center my-5">
-        <div
-          className="avatar symbol symbol-50 cursor-pointer"
-          data-toggle="modal"
-          data-target="#modal_userProfile"
-        >
+        <div className="avatar symbol symbol-50 cursor-pointer">
           <Profile user={user} />
         </div>
         <div className="w-100px flex-grow-1 ml-5">

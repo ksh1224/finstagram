@@ -60,7 +60,11 @@ export default function ReviewCardItem({
     }
 
   return (
-    <div className={`card card-custom ${!removeBottom ? "gutter-b" : ""}`}>
+    <div
+      className={`card card-custom shadow-none ${
+        !removeBottom ? "gutter-b" : ""
+      } ${children ? "border" : "bg-light"}`}
+    >
       <div className="row card-header flex-nowrap align-items-center border-0 mx-0">
         <h4 className="d-block card-title font-weight-bolder text-dark font-size-lg text-truncate">
           {title}

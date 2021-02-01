@@ -119,12 +119,15 @@ export default function MyFeedback() {
                   칭찬 배지
                 </h4>
               </div>
-              <div className="card-body px-0 pt-0">
-                <div className="feedback-icon-group card-spacer-x my-n5 py-5">
-                  <div className="text-nowrap mx-n2">
+              <div className="card-body p-0">
+                <div
+                  className="feedback-icon-group card-spacer-x pb-5"
+                  id="feedback-scroll"
+                >
+                  <div className="d-flex flex-nowrap text-nowrap mx-n2">
                     <div
-                      className="d-inline-block text-center"
-                      style={{ minWidth: "16.2%" }}
+                      className="col-2 text-center p-0"
+                      style={{ minWidth: "78px" }}
                       onClick={() =>
                         feedbackBadgeData?.receivedTotal &&
                         clickBadge({
@@ -137,7 +140,7 @@ export default function MyFeedback() {
                       }
                     >
                       <span
-                        className={`feedback-icon hover-on text-center ${
+                        className={`feedback-icon hover-on${
                           selectBadgeData?.badge?.total ? "on" : ""
                         }`}
                         style={{
@@ -168,15 +171,18 @@ export default function MyFeedback() {
                           <></>
                         )}
                       </span>
+                      <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
+                        합계
+                      </div>
                     </div>
                     {feedbackBadgeData?.badgeList.map((data: any) => (
                       <div
-                        className="d-inline-block text-center"
-                        style={{ minWidth: "16.2%" }}
+                        className="col-2 text-center p-0"
+                        style={{ minWidth: "78px" }}
                         onClick={() => data?.received && clickBadge(data)}
                       >
                         <span
-                          className="feedback-icon hover-on text-center"
+                          className="feedback-icon hover-on"
                           data-toggle="layer"
                           data-target="#layer_myBadgeFeedback"
                           style={{
@@ -216,6 +222,9 @@ export default function MyFeedback() {
                             <></>
                           )}
                         </span>
+                        <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
+                          {data?.badge?.name}
+                        </div>
                       </div>
                     ))}
                   </div>

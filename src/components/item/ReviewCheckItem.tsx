@@ -31,7 +31,7 @@ export default function ReviewCheckItem({
   return (
     // eslint-disable-next-line jsx-a11y/interactive-supports-focus
     <div
-      className="d-flex py-4 border-top border-light-dark justify-content-between"
+      className="d-flex mx-8 py-4 border-top justify-content-between"
       role="button"
       onClick={() => onClick && progress !== "NOT_STARTED" && onClick()}
     >

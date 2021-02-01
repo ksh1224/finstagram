@@ -17,7 +17,7 @@ export default function ReviewListOneItem({
 }: Props) {
   return (
     <div
-      className="d-flex py-4 border-top border-light-dark justify-content-between"
+      className="d-flex mx-8 py-4 border-top justify-content-between"
       role="button"
       onClick={() => onClick && onClick()}
     >
