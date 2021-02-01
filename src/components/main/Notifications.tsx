@@ -5,14 +5,28 @@ import Profile from "components/Profile";
 import { useModal, useNotification } from "hooks/useRedux";
 import useOutsideClick from "hooks/useOutsideClick";
 import Scroll from "components/Scroll";
+import axios from "utils/axiosUtil";
 
 export default function Notifications() {
-  const { data, isFetching, currentPage, totalPages } = useNotification();
-  const { showModal } = useModal();
+  const {
+    data,
+    isFetching,
+    currentPage,
+    totalPages,
+    notiCount,
+    request,
+  } = useNotification();
+  const { showModal, modals } = useModal();
   const [show, setShow] = useState(false);
   const divRef = createRef<HTMLDivElement>();
+
   useOutsideClick(divRef, () => {
-    if (show) setShow(false);
+    if (show && modals.length === 0)
+      setTimeout(async () => {
+        setShow(false);
+        await axios("/noti/read/all", "POST");
+        await request();
+      }, 100);
   });
 
   return (
@@ -20,10 +34,15 @@ export default function Notifications() {
       <div className="topbar-item mr-3">
         <div
           className="btn btn-icon btn-secondary pulse pulse-white"
-          onClick={() => setShow(!show)}
+          onClick={() => !show && setShow(true)}
         >
+          {typeof notiCount === "number" && notiCount !== 0 && (
+            <span className="position-absolute notification-count badge badge-primary rounded-lg px-2">
+              {notiCount}
+            </span>
+          )}
           <span className="svg-icon svg-icon-lg">
-            <SVG name="notification" />
+            <SVG name="notificationOn" />
           </span>
           <span className="pulse-ring" />
         </div>
@@ -44,6 +63,12 @@ export default function Notifications() {
           <Scroll
             className="ps p-8 h-auto max-h-500px"
             style={{ height: "500px", overflow: "hidden" }}
+            callback={() =>
+              totalPages &&
+              currentPage &&
+              totalPages > currentPage &&
+              request(currentPage + 1)
+            }
           >
             <div className="d-flex flex-column flex-center py-10 bg-secondary rounded-top bg-light mt-n8 mx-n8">
               <h4 className="text-dark font-weight-bold">공지사항</h4>
@@ -55,26 +80,28 @@ export default function Notifications() {
               data.map(
                 ({
                   entityId,
-                  user,
                   title,
                   createdAt,
                   sender,
                   targetEntity,
+                  hasRead,
                 }: any) => {
                   return (
                     <div
                       className="d-flex align-items-center cursor-pointer mx-n8 p-8 bg-hover-secondary-o-1 cursor-pointer"
+                      style={
+                        hasRead
+                          ? { opacity: "60%", backgroundColor: "#9991" }
+                          : undefined
+                      }
                       onClick={() => {
                         switch (targetEntity) {
                           case "FEEDBACK":
                             showModal("feedback", entityId);
-                            setShow(false);
                             break;
                           case "KEY_RESULT":
                             showModal("keyResult", entityId);
-                            setShow(false);
                             break;
-
                           default:
                             break;
                         }
@@ -82,7 +109,21 @@ export default function Notifications() {
                     >
                       {sender ? (
                         <div className="avatar symbol symbol-50">
-                          <Profile user={sender} />
+                          <Profile
+                            user={sender}
+                            onClick={() => {
+                              switch (targetEntity) {
+                                case "FEEDBACK":
+                                  showModal("feedback", entityId);
+                                  break;
+                                case "KEY_RESULT":
+                                  showModal("keyResult", entityId);
+                                  break;
+                                default:
+                                  break;
+                              }
+                            }}
+                          />
                           <div className="feedback-icon position-absolute w-30px h-30px bottom-0 right-0">
                             {/* <span className="position-absolute w-100 h-100 bg-light-light rounded-circle" />
                           class="position-relative" svg */}
