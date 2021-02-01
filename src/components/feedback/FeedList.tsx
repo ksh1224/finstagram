@@ -7,6 +7,7 @@ import {
   useFeedReceived,
   useFeedRecent,
   useFeedSent,
+  useMyFeedback,
 } from "hooks/useFeedBackRedux";
 
 import SVG from "utils/SVG";
@@ -17,6 +18,7 @@ const tabName = ["최신 피드백", "내가 받은 피드백", "내가 보낸 �
 
 export default function FeedList() {
   const scrollRef = createRef<HTMLDivElement>();
+  const scrollBadgeRef = createRef<HTMLDivElement>();
   const {
     request: feedRecentRequest,
     data: feedRecentList,
@@ -41,8 +43,12 @@ export default function FeedList() {
   const {
     request: feedBadgeRequest,
     data: feedBadgeList,
+    currentPage: feedBadgeCurrentPage,
+    totalPages: feedBadgeTotalPages,
     isFetching: feedBadgeFetching,
   } = useFeedBadge();
+  const { feedbackStatisticsData } = useMyFeedback();
+  const { year, quarter } = feedbackStatisticsData || {};
   const { cancelBadge, selectBadgeData } = useSelectBadge();
   const [tab, setTab] = useState(0);
 
@@ -59,11 +65,11 @@ export default function FeedList() {
         break;
       case 1:
         if (
-          typeof feedSentTotalPages === "number" &&
-          typeof feedSentCurrentPage === "number" &&
-          feedSentTotalPages > feedSentCurrentPage
+          typeof feedReceivedTotalPages === "number" &&
+          typeof feedReceivedCurrentPage === "number" &&
+          feedReceivedTotalPages > feedReceivedCurrentPage
         ) {
-          feedReceivedRequest(feedSentCurrentPage + 1);
+          feedReceivedRequest(feedReceivedCurrentPage + 1);
         }
         break;
       case 2:
@@ -117,6 +123,10 @@ export default function FeedList() {
     }
     return <></>;
   }
+
+  // useEffect(() => {
+  //   scrollBadgeRef.current?.scrollTo(0, 0);
+  // }, [selectBadgeData]);
 
   return (
     <div className="col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column overflow-hidden section-2">
@@ -203,12 +213,29 @@ export default function FeedList() {
               className="close"
               data-dismiss="layer"
               aria-label="닫기"
-              onClick={() => cancelBadge()}
+              onClick={() => {
+                cancelBadge();
+                scrollBadgeRef.current?.scrollTo(0, 0);
+              }}
             >
               <i aria-hidden="true" className="ki ki-close" />
             </button>
           </div>
-          <div className="modal-body px-7 mx-n7 mb-n7">
+          <Scroll
+            ref={scrollBadgeRef}
+            className="modal-body px-7 mx-n7 mb-n7"
+            callback={() =>
+              typeof feedBadgeTotalPages === "number" &&
+              typeof feedBadgeCurrentPage === "number" &&
+              feedBadgeTotalPages > feedBadgeCurrentPage &&
+              feedBadgeRequest(
+                year,
+                quarter,
+                selectBadgeData?.badge?.id,
+                feedBadgeCurrentPage + 1
+              )
+            }
+          >
             {!!feedBadgeList && feedBadgeList.length !== 0 ? (
               feedBadgeList.map((data: any) => (
                 <FeedListItem key={data.id} {...data} feedType="sent" />
@@ -216,7 +243,7 @@ export default function FeedList() {
             ) : (
               <></>
             )}
-          </div>
+          </Scroll>
         </div>
       </div>
     </div>
