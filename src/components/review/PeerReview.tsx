@@ -80,20 +80,19 @@ export default function PeerReview() {
             header={<></>}
             // removeCenterText
           >
-            <div className="border-top border-light-dark" />
-            <div className="d-flex flex-column bg-light-light pt-8 px-8">
-              <div className="d-flex flex-grow-1 flex-row pb-4">
+            <div className="d-flex flex-column position-relative bg-light-light">
+              <div className="d-flex flex-grow-1 flex-row px-8 py-4 bg-secondary border-top border-light-dark align-items-center">
                 <div className="d-flex w-150px justify-content-center">
                   팀원
                 </div>
-                <div className="d-flex flex-grow-1 flex-row">
+                <div className="d-flex flex-grow-1 flex-row align-items-center">
                   <div className="col-6 p-0 text-center">내용</div>
                   <div className="col-6 p-0 text-center word-keep">
                     Reviewer 선정현황
                   </div>
                 </div>
               </div>
-              <Scroll style={{ maxHeight: "250px" }}>
+              <Scroll style={{ maxHeight: "300px" }}>
                 {peerEvalListData && peerEvalListData.length !== 0 ? (
                   peerEvalListData.map((contents: any) => (
                     <ReviewListItem
@@ -114,10 +113,8 @@ export default function PeerReview() {
                     />
                   ))
                 ) : (
-                  <div className="d-flex py-4 border-top border-light-dark">
-                    <div className="w-100 py-8 text-center word-keep">
-                      리뷰 가능한 팀원이 없습니다.
-                    </div>
+                  <div className="w-100 py-8 text-center word-keep">
+                    리뷰 가능한 팀원이 없습니다.
                   </div>
                 )}
               </Scroll>
@@ -164,16 +161,15 @@ export default function PeerReview() {
             </div>
           }
         >
-          <div className="border-top border-light-dark" />
-          <div className="d-flex flex-column position-relative bg-light-light p-8">
-            <div className="d-flex flex-grow-1 flex-row pb-4">
+          <div className="d-flex flex-column position-relative bg-light-light">
+            <div className="d-flex flex-grow-1 flex-row py-4 px-8 bg-secondary border-top border-light-dark">
               <div className="d-flex w-150px justify-content-center">동료</div>
               <div className="d-flex flex-grow-1 flex-row">
                 <div className="col-6 p-0 text-center">내용</div>
                 <div className="col-6 p-0 text-center">비고</div>
               </div>
             </div>
-            <Scroll style={{ maxHeight: "250px" }}>
+            <Scroll style={{ maxHeight: "300px" }}>
               {findList && findList.length !== 0 ? (
                 findList.map((contents: any) => (
                   <ReviewListItem
@@ -198,10 +194,8 @@ export default function PeerReview() {
                   />
                 ))
               ) : (
-                <div className="d-flex py-4 border-top border-light-dark">
-                  <div className="w-100 py-8 text-center word-keep">
-                    리뷰 가능한 팀원이 없습니다.
-                  </div>
+                <div className="w-100 py-8 text-center word-keep">
+                  리뷰 가능한 팀원이 없습니다.
                 </div>
               )}
             </Scroll>

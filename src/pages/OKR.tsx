@@ -8,10 +8,12 @@ export default function OKR() {
   const { request: teamOKRRequest } = useTeamOKR();
   const { request: myOKRRequest } = useMyOKR();
   const { data } = useUserOKR();
+
   useEffect(() => {
     teamOKRRequest();
     myOKRRequest();
   }, []);
+
   return (
     <div
       className="content container-fluid tab-pane pb-0 active"

@@ -123,10 +123,10 @@ export default function TeamReview() {
               header={<></>}
               removeCenterText={leaderPeriod !== "END"}
             >
-              <Scroll style={{ maxHeight: "250px" }}>
+              <Scroll className="card-body pt-2" style={{ maxHeight: "250px" }}>
                 {progress.leadership.length !== 0 ? (
                   progress.leadership.map(({ user, finished }: any) => (
-                    <div className="card card-custom gutter-b">
+                    <div className="card card-custom shadow-none border bg-light">
                       <div className="card-body">
                         <div className="d-flex border-light-dark">
                           <div className="d-flex w-150px align-items-center">
@@ -237,9 +237,8 @@ export default function TeamReview() {
               </div>
             }
           >
-            <div className="border-top border-light-dark" />
-            <div className="d-flex flex-column position-relative bg-light-light p-8">
-              <div className="d-flex flex-grow-1 flex-row pb-4">
+            <div className="d-flex flex-column position-relative bg-light-light">
+              <div className="d-flex flex-grow-1 flex-row py-4 px-8 bg-secondary border-top border-light-dark">
                 <div className="d-flex w-150px justify-content-center">
                   구성원
                 </div>
@@ -250,7 +249,7 @@ export default function TeamReview() {
                   <div className="col-3 p-0 text-center">Final</div>
                 </div>
               </div>
-              <Scroll style={{ maxHeight: "250px" }}>
+              <Scroll style={{ maxHeight: "300px" }}>
                 {findList && findList.length !== 0 ? (
                   findList.map((peer: any) => {
                     if (!isPosible || peer?.progress === "IN_PROGRESS")
@@ -265,7 +264,7 @@ export default function TeamReview() {
                     return <></>;
                   })
                 ) : (
-                  <div className="d-flex py-4 border-top border-light-dark">
+                  <div className="d-flex py-4 border-top">
                     <div className="w-100 py-8 text-center word-keep">
                       리뷰 가능한 팀원이 없습니다.
                     </div>
@@ -333,57 +332,59 @@ export default function TeamReview() {
               </div>
             }
           >
-            <div className="border-top border-light-dark" />
-            <div className="d-flex flex-column position-relative bg-light-light p-8">
-              <div className="d-flex flex-grow-1 flex-row pb-4 justify-content-between">
+            <div className="d-flex flex-column position-relative bg-light-light">
+              <div className="d-flex flex-grow-1 flex-row px-8 py-4 bg-secondary border-top border-light-dark justify-content-between">
                 <div className="d-flex w-150px justify-content-center">
                   대상자
                 </div>
                 <div className="w-100px p-0 text-center">현황</div>
               </div>
-              {findOKRList && findOKRList.length !== 0 ? (
-                findOKRList.map((peer: any) => {
-                  if (!isOKRPosible || peer?.progress === "IN_PROGRESS")
-                    return (
-                      <ReviewListOneItem
-                        contents={peer.user}
-                        buttonText={(() => {
-                          switch (peer.progress) {
-                            case "PENDING":
-                              if (okrEvalPeriod === "END") return "미작성";
-                              return "Review 하기";
-                            case "COMPLETE":
-                              return "완료";
-                            default:
-                              return "자기 Review 미작성";
+              <Scroll style={{ maxHeight: "300px" }}>
+                {findOKRList && findOKRList.length !== 0 ? (
+                  findOKRList.map((peer: any) => {
+                    if (!isOKRPosible || peer?.progress === "IN_PROGRESS")
+                      return (
+                        <ReviewListOneItem
+                          contents={peer.user}
+                          buttonText={(() => {
+                            switch (peer.progress) {
+                              case "PENDING":
+                                if (okrEvalPeriod === "END") return "미작성";
+                                return "Review 하기";
+                              case "COMPLETE":
+                                return "완료";
+                              default:
+                                return "자기 Review 미작성";
+                            }
+                          })()}
+                          onClick={() =>
+                            peer.progress !== "NOT_STARTED" &&
+                            !(
+                              peer.progress === "PENDING" &&
+                              okrEvalPeriod === "END"
+                            ) &&
+                            showModal("okrTeamReview", {
+                              meta,
+                              user: peer.user,
+                              finished: peer.progress === "COMPLETE",
+                            })
                           }
-                        })()}
-                        onClick={() =>
-                          peer.progress !== "NOT_STARTED" &&
-                          !(
+                          action={
                             peer.progress === "PENDING" &&
-                            okrEvalPeriod === "END"
-                          ) &&
-                          showModal("okrTeamReview", {
-                            meta,
-                            user: peer.user,
-                            finished: peer.progress === "COMPLETE",
-                          })
-                        }
-                        action={
-                          peer.progress === "PENDING" && okrEvalPeriod !== "END"
-                        }
-                      />
-                    );
-                  return <></>;
-                })
-              ) : (
-                <div className="d-flex py-4 border-top border-light-dark">
-                  <div className="w-100 py-8 text-center word-keep">
-                    리뷰 가능한 팀원이 없습니다.
+                            okrEvalPeriod !== "END"
+                          }
+                        />
+                      );
+                    return <></>;
+                  })
+                ) : (
+                  <div className="d-flex py-4 border-top">
+                    <div className="w-100 py-8 text-center word-keep">
+                      리뷰 가능한 팀원이 없습니다.
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </Scroll>
             </div>
           </ReviewCardItem>
         ) : (
