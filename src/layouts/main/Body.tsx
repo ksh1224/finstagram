@@ -60,7 +60,7 @@ export default function Body({ children }: LayoutType) {
             aria-expanded="false"
           >
             <a
-              className="d-flex btn bg-secondary border-top border-light-dark w-100 h-100 p-0 align-items-center justify-content-center"
+              className="d-flex btn bg-secondary border-top w-100 h-100 p-0 align-items-center justify-content-center"
               data-toggle="tooltip"
               data-placement="top"
               data-theme="dark"
