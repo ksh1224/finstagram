@@ -296,7 +296,7 @@ export default function FeedListItem(feed: DataType) {
                   style={{
                     overflow: "hidden",
                     overflowWrap: "break-word",
-                    height: "19px",
+                    height: "30px",
                   }}
                   rows={1}
                   value={text}
