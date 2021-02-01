@@ -12,7 +12,7 @@ import CommentItem, { CommentDataType } from "components/item/CommentItem";
 import Profile from "components/Profile";
 
 export default function FeedbackModal() {
-  const { modals, closeModal } = useModal();
+  const { modals, closeModal, showModal } = useModal();
   const feedbackModal = modals.find((modal) => modal.name === "feedback");
   const id = feedbackModal?.param;
   const { user: my } = useAuth();
@@ -34,6 +34,7 @@ export default function FeedbackModal() {
     liked,
     feedbackComment,
     fileUrl,
+    statusType,
   } = feedback;
 
   function close() {
@@ -163,7 +164,7 @@ export default function FeedbackModal() {
               </div>
               <div className="separator separator-solid mt-6 mb-2" />
 
-              <div className="d-flex align-items-center mb-n2">
+              <div className="d-flex align-items-center">
                 <button
                   type="button"
                   className={`btn btn-hover-text-primary btn-hover-icon-primary btn-sm btn-text-dark-50 rounded font-weight-bolder font-size-sm p-2 mr-2 ${
@@ -185,7 +186,7 @@ export default function FeedbackModal() {
                 </button>
                 <button
                   type="button"
-                  className="btn btn-sm btn-text-dark-50 btn-hover-icon-danger btn-hover-text-danger bg-hover-light-danger font-weight-bolder rounded font-size-sm p-2"
+                  className="btn btn-sm btn-text-dark-50 btn-hover-icon-danger btn-hover-text-danger bg-hover-light-danger font-weight-bolder rounded font-size-sm p-2 mr-2"
                   onClick={() => clickLike()}
                 >
                   <span
@@ -197,12 +198,24 @@ export default function FeedbackModal() {
                   </span>
                   {likeCount}
                 </button>
+                {statusType && statusType.includes("요청한 피드백") && (
+                  <button
+                    type="button"
+                    className="btn btn-hover-text-primary btn-hover-icon-primary btn-sm btn-text-dark-50 rounded font-weight-bolder font-size-sm p-2 mr-2"
+                    onClick={() => showModal("sendFeedback", sendUser)}
+                  >
+                    <span className="svg-icon svg-icon-md pr-1">
+                      <SVG name="sendMessage" />
+                    </span>
+                    답변하기
+                  </button>
+                )}
                 <span className="w-100px flex-grow-1 text-right text-dark-50 font-size-sm">
                   {createdAt?.split("T").join(" ").substr(0, 16)}
                 </span>
               </div>
               <div
-                className="pt-5 collapse"
+                className="pt-3 collapse"
                 id={`cmt-feedback-feedback-${`${feedType}${id}`}`}
               >
                 {!!feedbackComment &&
