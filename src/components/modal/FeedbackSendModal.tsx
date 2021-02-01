@@ -186,6 +186,9 @@ export default function FeedbackSendModal() {
                             }}
                           />
                         </span>
+                        <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
+                          {badge?.name}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -230,8 +233,8 @@ export default function FeedbackSendModal() {
 
                 <div className="d-flex justify-content-between">
                   <p>
-                    &apos;협업&apos;또는 &apos;성과추진활동&apos;과 관련해
-                    제안해주고 싶은 내용을 작성해주세요.
+                    &#39;협업&#39; 또는 &#39;성과추진활동&#39;과 관련해 동료가
+                    보완하면 좋을 내용에 대해 구체적 / 건설적으로 제안해주세요.
                   </p>
                   <span className="text-muted font-size-sm">{`${contents.length}/${textLimit}`}</span>
                 </div>
@@ -254,14 +257,7 @@ export default function FeedbackSendModal() {
                   className="p-0 mt-2 mb-0 font-size-sm text-black-50"
                   style={{ listStylePosition: "inside" }}
                 >
-                  <li>
-                    구체적인 행동(관찰 능한 행동)에 초점을 맞추어 제안해 주세요.
-                  </li>
-                  <li>
-                    제안하고 싶은 내용을 건설적으로 제안해 주세요.
-                    <br />
-                    *Feedback 내용은 선택하신 동료만 확인 가능합니다.
-                  </li>
+                  *Feedback 내용은 선택하신 동료만 확인 가능합니다.
                 </ol>
                 <input
                   ref={fileRef}
