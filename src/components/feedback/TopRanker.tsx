@@ -94,6 +94,9 @@ export default function TopRanker() {
                                   rank={rank}
                                   feedbackReceived={feedbackReceived}
                                   user={user}
+                                  topFeedbackReceived={
+                                    rankerData[0].feedbackReceived
+                                  }
                                 />
                               )
                             )}
@@ -124,6 +127,9 @@ export default function TopRanker() {
                                   rank={rank}
                                   feedbackReceived={feedbackReceived}
                                   user={user}
+                                  topFeedbackReceived={
+                                    rankerData[0].feedbackReceived
+                                  }
                                 />
                               )
                             )}

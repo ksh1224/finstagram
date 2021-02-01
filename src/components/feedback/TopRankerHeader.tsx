@@ -61,13 +61,12 @@ export default function TopRankerHeader({
           </button>
         </div>
       </div>
-      <div className="d-flex justify-content-between align-items-center w-100">
-        <ul className="nav nav-tabs nav-tabs-line border-0 w-100px flex-grow-1">
+      <div className="d-flex justify-content-between align-items-center w-100 flex-wrap">
+        <ul className="nav nav-tabs nav-tabs-line border-0 flex-grow-1">
           {isQuerter
             ? AllGroup?.map(({ orgGroup }) => (
                 <li className="nav-item">
                   <a
-                    href="javascript:;"
                     className={`nav-link border-0 ${
                       orgGroup.id === orgGroupId ? "active" : ""
                     }`}
