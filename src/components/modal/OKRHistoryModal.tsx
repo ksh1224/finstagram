@@ -13,6 +13,14 @@ export default function OKRHistoryModal() {
   const okrHistoryModal = modals.find(
     (modal: any) => modal.name === "okrHistory"
   );
+
+  const [history, setHistory] = useState<any>(null);
+
+  useEffect(() => {
+    if (okrHistoryModal?.param) {
+      setHistory(okrHistoryModal.param);
+    } else setTimeout(() => setHistory(null), 300);
+  }, [okrHistoryModal]);
   return (
     <Modal
       show={!!okrHistoryModal}
@@ -45,8 +53,8 @@ export default function OKRHistoryModal() {
               </tr>
             </thead>
             <tbody>
-              {okrHistoryModal?.param &&
-                okrHistoryModal?.param.map((obj: any) => {
+              {history &&
+                history.map((obj: any) => {
                   let className = "text-danger";
                   if (obj?.progress > 0.6) className = "text-success";
                   else if (obj?.progress > 0.3) className = " text-warning";

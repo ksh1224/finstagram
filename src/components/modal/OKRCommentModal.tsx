@@ -11,6 +11,7 @@ export default function OKRCommentModal() {
   const { user: my } = useAuth();
   const { modals, closeModal } = useModal();
   const { refreshOKRData } = useRefreshOKRData();
+  const [keyResult, setKeyResult] = useState<any>(null);
   const [comments, setComments] = useState<
     | {
         user: any;
@@ -30,20 +31,23 @@ export default function OKRCommentModal() {
     (modal: any) => modal.name === "okrComment"
   );
 
-  const { id, description, progress, status, onUpdate } =
-    okrCommentModal?.param || {};
+  const { id, description, progress, status, onUpdate } = keyResult || {};
 
   function close() {
     closeModal("okrComment");
     setTimeout(() => {
       setComments(null);
+      setKeyResult(null);
       setText("");
     }, 300);
   }
 
   const getComments = async () => {
     try {
-      const res = await axios(`/okr/comment/${id}?user_id=${my.id}`, "GET");
+      const res = await axios(
+        `/okr/comment/${okrCommentModal?.param?.id}?user_id=${my.id}`,
+        "GET"
+      );
       if (res.responseCode === "SUCCESS") {
         setComments(res.data);
       }
@@ -92,16 +96,12 @@ export default function OKRCommentModal() {
   useEffect(() => {
     if (okrCommentModal) {
       getComments();
+      setKeyResult(okrCommentModal?.param);
     }
   }, [okrCommentModal]);
 
   return (
-    <Modal
-      show={!!okrCommentModal && comments}
-      animation
-      centered
-      onHide={() => close()}
-    >
+    <Modal show={!!okrCommentModal} animation centered onHide={() => close()}>
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title font-size-h6">
