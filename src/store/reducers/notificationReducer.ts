@@ -6,6 +6,7 @@ type State = {
   currentPage: number | null;
   totalPages: number | null;
   totalCount: number | null;
+  notiCount: number | null;
   isFetching: boolean;
   error: AxiosError | undefined;
 };
@@ -15,6 +16,7 @@ const initialState = {
   currentPage: null,
   totalPages: null,
   totalCount: null,
+  notiCount: null,
   isFetching: false,
   error: undefined,
 };
@@ -31,6 +33,7 @@ export default createReducer<State, Actions>(initialState, {
     currentPage: action.payload.currentPage,
     totalPages: action.payload.totalPages,
     totalCount: action.payload.totalCount,
+    notiCount: action.payload.notiCount,
     isFetching: false,
     error: undefined,
   }),

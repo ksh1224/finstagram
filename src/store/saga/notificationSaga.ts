@@ -12,7 +12,8 @@ export default function* notificationSaga(
       `/noti${page ? `?page=${page}` : ""}`,
       "GET"
     );
-    yield put(notificationActionAsync.success(data));
+    const { data: notiCount } = yield call(axios, `/noti/count`, "GET");
+    yield put(notificationActionAsync.success({ ...data, notiCount }));
   } catch (error) {
     yield put(notificationActionAsync.failure(error));
   }

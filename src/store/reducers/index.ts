@@ -1,6 +1,5 @@
 import { combineReducers } from "redux";
 
-import Auth from "./AuthReducer";
 import APIAuth from "./APIAuthReducer";
 
 import topRanker from "./feedback/topRankerReducer";

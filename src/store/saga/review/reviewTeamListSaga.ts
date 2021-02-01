@@ -12,7 +12,6 @@ export default function* reviewTeamListSaga(
       `/review/self/team/list?metaId=${metaId}`,
       "GET"
     );
-    
     yield put(reviewTeamListActionAsync.success(data));
   } catch (error) {
     yield put(reviewTeamListActionAsync.failure(error));
