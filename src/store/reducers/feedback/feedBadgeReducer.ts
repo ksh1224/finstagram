@@ -17,7 +17,7 @@ const initialState = {
   error: undefined,
 };
 
-export default createReducer<DefaultState, Actions>(initialState, {
+export default createReducer<State, Actions>(initialState, {
   FEED_BADGE_REQUEST: (state) => ({
     ...state,
     isFetching: true,

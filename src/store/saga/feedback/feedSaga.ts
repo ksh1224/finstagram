@@ -108,18 +108,38 @@ export function* feedSentSaga(page?: number): Generator<any, void, ObjectType> {
 export function* feedBadgeSaga(
   year: number,
   quarter: number,
-  badgeId?: number
+  badgeId?: number,
+  page?: number
 ): Generator<any, void, ObjectType> {
   try {
     const { user } = yield select((state: RootState) => state.APIAuth);
-    const data = yield call(
-      axios,
-      `/feedbacks/recent/${user.id}?year=${year}&quarter=${quarter}${
-        badgeId ? `&badge_id=${badgeId}` : ""
-      }`,
-      "GET"
+    const { data: prevData = [] } = yield select(
+      (state: RootState) => state.feedBadge
     );
-    yield put(feedBadgeActionAsync.success(data));
+    if (page) {
+      const data = yield call(
+        axios,
+        `/feedbacks/recent/${user.id}?year=${year}&quarter=${quarter}${
+          badgeId ? `&badge_id=${badgeId}` : ""
+        }${page ? `&page=${page}` : ""}`,
+        "GET"
+      );
+      yield put(
+        feedBadgeActionAsync.success({
+          ...data,
+          data: [...prevData, ...data?.data],
+        })
+      );
+    } else {
+      const data = yield call(
+        axios,
+        `/feedbacks/recent/${user.id}?year=${year}&quarter=${quarter}${
+          badgeId ? `&badge_id=${badgeId}` : ""
+        }`,
+        "GET"
+      );
+      yield put(feedBadgeActionAsync.success(data));
+    }
   } catch (error) {
     yield put(feedBadgeActionAsync.failure(error));
   }

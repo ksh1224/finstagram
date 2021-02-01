@@ -51,7 +51,12 @@ export default function* watchFeedback() {
   yield takeEvery(
     feedBadgeActionTypes.FEED_BADGE_REQUEST,
     ({ payload }: { type: string; payload: ObjectType }) =>
-      feedBadgeSaga(payload?.year, payload?.quarter, payload?.badgeId)
+      feedBadgeSaga(
+        payload?.year,
+        payload?.quarter,
+        payload?.badgeId,
+        payload?.page
+      )
   );
   yield takeEvery(
     feedbackSendActionTypes.FEEDBACK_SEND_REQUEST,
