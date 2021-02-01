@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useAuth, useModal } from "hooks/useRedux";
 import React from "react";
+import SVG from "utils/SVG";
 
 type ProfileType = {
   user?: {
@@ -52,14 +53,24 @@ export default function Profile({
       }
     >
       <span className="symbol-label position-relative bg-transparent">
-        <img
-          className="rounded-circle object-fit-cover"
-          src={
-            user?.profileImageUrl ||
-            "https://pds.joins.com/news/component/htmlphoto_mmdata/202001/15/73d1ac33-95b5-4d41-9fe4-9f8c4490d2d7.jpg"
-          }
-          alt=""
-        />
+        {user?.profileImageUrl ? (
+          <img
+            className="rounded-circle object-fit-cover"
+            src={
+              user?.profileImageUrl ||
+              "https://pds.joins.com/news/component/htmlphoto_mmdata/202001/15/73d1ac33-95b5-4d41-9fe4-9f8c4490d2d7.jpg"
+            }
+            alt=""
+          />
+        ) : (
+          <div
+            className="d-flex w-100 h-100 rounded-circle object-fit-cover align-items-center justify-content-center svg-icon"
+            style={{ backgroundColor: "#9992" }}
+          >
+            <SVG style={{ height: "80%", width: "80%" }} name="user" />
+          </div>
+        )}
+
         <svg
           className="circle-chart position-absolute top-0 left-0 w-100 h-100"
           viewBox="0 0 33.83098862 33.83098862"

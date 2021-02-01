@@ -7,14 +7,18 @@ type Props = {
   style?: React.CSSProperties;
   isFetching?: boolean;
   callback?: () => void;
+  onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
 
 export default forwardRef<HTMLDivElement, Props>(
-  ({ className, children, style, callback, isFetching }: Props, ref) => {
+  (
+    { className, children, style, callback, isFetching, onScroll }: Props,
+    ref
+  ) => {
     const safeRef = useForwardedRef<HTMLDivElement>(ref);
     const [isEnd, setIsEnd] = useState(false);
 
-    const onScroll = () => {
+    const onScrollEnd = () => {
       if (
         safeRef.current &&
         safeRef.current.scrollTop + safeRef.current.clientHeight ===
@@ -35,7 +39,10 @@ export default forwardRef<HTMLDivElement, Props>(
         className={`overflow-hidden overflow-y-auto ${className || ""}`}
         ref={safeRef}
         style={style}
-        onScroll={({ target }) => onScroll()}
+        onScroll={(e) => {
+          onScrollEnd();
+          if (onScroll) onScroll(e);
+        }}
       >
         {children}
       </div>
