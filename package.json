@@ -40,7 +40,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
-    "deploy": "npm run build && aws s3 sync ./build s3://fin.fnf.co.kr"
+    "deploy": "npm run build && aws s3 sync ./build s3://fin.fnf.co.kr",
+    "dev": "npm run build && aws s3 sync ./build s3://fin-dev.fnf.co.kr"
   },
   "eslintConfig": {
     "extends": "react-app"
