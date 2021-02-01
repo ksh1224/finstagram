@@ -85,7 +85,6 @@ export default function App(): JSX.Element {
         <TopRankerDetailModal />
         <KeyResultModal />
         <OKRHistoryModal />
-        <OKRHistoryModal />
         <OKRUpateModal />
         <OKRCommentModal />
         <UserProfileModal />

@@ -77,8 +77,6 @@ export default function KeyResultModal() {
               <button
                 type="button"
                 className="btn label label-light-dark label-inline btn-hover-light-primary"
-                data-toggle="modal"
-                data-target="#modal_krHistory"
                 onClick={() => showModal("okrHistory", keyResultHistory)}
               >
                 History
