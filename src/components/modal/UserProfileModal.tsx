@@ -119,6 +119,7 @@ export default function UserProfileModal() {
       animation
       centered
       onHide={() => close()}
+      id="modal_userProfile"
     >
       <div className="modal-content">
         <div className="modal-header border-0">
@@ -141,7 +142,7 @@ export default function UserProfileModal() {
             <i aria-hidden="true" className="ki ki-close" />
           </button>
         </div>
-        <div className="modal-body">
+        <Scroll className="modal-body" style={{ maxHeight: "90vh" }}>
           <div className="d-flex flex-column align-items-center">
             <Profile user={user} width={80} />
             <div className="font-weight-bolder text-dark-75 font-size-h4 m-0 pt-3">
@@ -174,10 +175,8 @@ export default function UserProfileModal() {
             </a>
           </div>
           <div className="d-flex flex-row flex-wrap align-items-stretch mt-5">
-            {/*  */}
-
             <div className="col-auto w-100px flex-grow-1 section-1">
-              <div className="card card-custom ">
+              <div className="card card-custom card-stretch">
                 <div className="card-header flex-nowrap align-items-center border-0">
                   <h3 className="card-title align-items-start flex-column">
                     <span className="font-weight-bolder text-dark">
@@ -188,57 +187,75 @@ export default function UserProfileModal() {
                 <div>
                   {/* <!--begin::Feedback Badge--> */}
                   <div className="card-body pt-2">
-                    <div className="card-spacer-x overflow-x-auto mx-n9 px-9 pb-2">
-                      <div className="text-nowrap d-flex justify-content-between mx-n2">
+                    <div className="overflow-x-auto pb-2 px-0 badge-scroll">
+                      <div className="text-nowrap d-flex justify-content-between">
                         <div
-                          className={`feedback-icon hover-on ${
-                            selectBadgeId === -1 ? "on" : ""
-                          }`}
-                          onClick={() => setSelectBadgeId(-1)}
+                          className="text-center px-2"
+                          style={{ minWidth: "86px" }}
                         >
-                          <SVG
-                            className="w-55px h-55px bg-white border border-light-dark rounded-circle"
-                            xmlns="http://www.w3.org/2000/svg"
-                            name="total"
-                            viewBox="0 0 90 90"
-                          />
-                          {!!feedbackBadge?.receivedTotal &&
-                            feedbackBadge?.receivedTotal !== 0 && (
-                              <span className="badge label label-lg">
-                                {feedbackBadge?.receivedTotal}
-                              </span>
-                            )}
+                          <div
+                            className={`feedback-icon hover-on ${
+                              selectBadgeId === -1 ? "on" : ""
+                            }`}
+                            onClick={() => setSelectBadgeId(-1)}
+                          >
+                            <SVG
+                              className="w-55px h-55px bg-white border border-light-dark rounded-circle"
+                              xmlns="http://www.w3.org/2000/svg"
+                              name="total"
+                              viewBox="0 0 90 90"
+                            />
+                            {!!feedbackBadge?.receivedTotal &&
+                              feedbackBadge?.receivedTotal !== 0 && (
+                                <span className="badge label label-lg">
+                                  {feedbackBadge?.receivedTotal}
+                                </span>
+                              )}
+                          </div>
+                          <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
+                            합계
+                          </div>
                         </div>
                         {feedbackBadge &&
                           feedbackBadge?.badgeList?.map((data: any) => (
                             <div
-                              className="feedback-icon hover-on on"
-                              onClick={() => setSelectBadgeId(data?.badge?.id)}
+                              className="text-center px-2"
+                              style={{ minWidth: "86px" }}
                             >
-                              <img
-                                className="w-55px h-55px"
-                                style={{
-                                  width: "65px",
-                                  height: "65px",
-                                  borderRadius: "33px",
-                                  border: `1.5px solid ${
-                                    selectBadgeId === data?.badge?.id
-                                      ? "#000"
-                                      : "#5555"
-                                  }`,
-                                }}
-                                src={
-                                  selectBadgeId === data?.badge?.id
-                                    ? data?.badge?.selectedFileUrlHttps
-                                    : data?.badge?.fileUrlHttps
+                              <div
+                                className="feedback-icon hover-on on"
+                                onClick={() =>
+                                  setSelectBadgeId(data?.badge?.id)
                                 }
-                                alt=""
-                              />
-                              {!!data?.received && data?.received !== 0 && (
-                                <span className="badge label label-lg">
-                                  {data?.received}
-                                </span>
-                              )}
+                              >
+                                <img
+                                  className="w-55px h-55px"
+                                  style={{
+                                    width: "65px",
+                                    height: "65px",
+                                    borderRadius: "33px",
+                                    border: `1.5px solid ${
+                                      selectBadgeId === data?.badge?.id
+                                        ? "#000"
+                                        : "#5555"
+                                    }`,
+                                  }}
+                                  src={
+                                    selectBadgeId === data?.badge?.id
+                                      ? data?.badge?.selectedFileUrlHttps
+                                      : data?.badge?.fileUrlHttps
+                                  }
+                                  alt=""
+                                />
+                                {!!data?.received && data?.received !== 0 && (
+                                  <span className="badge label label-lg">
+                                    {data?.received}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
+                                {data?.badge?.name}
+                              </div>
                             </div>
                           ))}
                       </div>
@@ -273,7 +290,7 @@ export default function UserProfileModal() {
               </div>
             </div>
             <div className="col-auto w-100px flex-grow-1 section-2">
-              <div className="card card-custom ">
+              <div className="card card-custom card-stretch">
                 <div className="card-header flex-nowrap align-items-center border-0">
                   <h3 className="card-title align-items-start flex-column">
                     <span className="font-weight-bolder text-dark">OKR</span>
@@ -304,7 +321,7 @@ export default function UserProfileModal() {
               </div>
             </div>
           </div>
-        </div>
+        </Scroll>
       </div>
     </Modal>
   );

@@ -228,7 +228,7 @@ export default function UserOKR({ isMy }: UserOKRType) {
                 {isMy && (isWrite || isModifiable) && (
                   <div className="text-center mt-n4">
                     <a
-                      className="svg-icon svg-icon-primary svg-icon-xxl"
+                      className="svg-icon svg-icon-primary svg-icon-xxl cursor-pointer"
                       onClick={() => {
                         setOkrWriteType("add");
                         setIsWriteOpen(true);
