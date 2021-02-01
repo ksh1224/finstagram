@@ -13,6 +13,9 @@
 .avatar .circle-chart__bar.animate{
     /* animation: circle-chart-fill 1s reverse; */
 }
+.avatar .circle-chart {
+  display: none;
+}
 @keyframes circle-chart-fill {
   to { stroke-dasharray: 0 100; }
 }
@@ -375,7 +378,6 @@
 
 .modal-header {
   padding: 20px 1.25rem !important;
-  height: 91px !important;
 }
 
 /* 헤더 고정 modal */
@@ -568,6 +570,18 @@
     }
 }
 
+@media (max-width: 1365px) {
+  #content_tab_feedback .section-group-1 .section-1 {
+    width: 330px !important;
+  }
+  #content_tab_feedback .section-group-1 .section-2 .nav .nav-link {
+    margin: 0 0.5rem;
+  }
+  #content_tab_feedback .section-group-1 .section-2 .nav .nav-item:first-child .nav-link {
+    margin-left: 0;
+  }
+}
+
 /* rwd */
 #kt_aside_mobile_toggle {
   display: none;
@@ -598,7 +612,7 @@
 }
 #content_tab_feedback .section-group-1 {
   flex-direction: row !important;
-  width: 60% !important;
+  width: 62% !important;
 }
 #content_tab_feedback .section-group-1 .section-1 .nav-tabs .nav-link {
   margin: 0 0.5rem !important;
@@ -660,6 +674,9 @@
     width: 40px !important;
     height: 40px !important;
   }
+  #content_tab_review .section-review .section-group-2 .section-1 {
+    width: 50%;
+  }
 }
 
 @media (max-width: 1194px) {
@@ -676,6 +693,9 @@
   .card.card-custom > .card-body,
   .card.card-custom > .card-body .card-spacer-x {
     padding: 1rem !important;
+  }
+  .card.card-custom > .card-body .d-flex.w-150px.pl-8 {
+    padding-left: 1rem !important;
   }
   .d-flex.w-150px {
     width: 125px !important;
@@ -701,6 +721,12 @@
   #content_tab_feedback .section-group-1 .section-1 .position-relative.h-100px {
     padding-bottom: 25px;
   }
+  #content_tab_feedback .section-group-3 .card.card-custom > .card-body .card-spacer-x {
+    padding-top:0 !important;
+  }
+  #content_tab_feedback .section-group-3 .card.card-custom .card-body.p-0 {
+    padding: 0 !important;
+  }
   #content_tab_review .section-1.w-400px {
     width: 300px !important;
   }
@@ -725,6 +751,10 @@
   }
   #content_tab_review .d-flex.bg-light-light.pt-8 {
     padding-top: 1rem !important;
+  }
+  #modal_userProfile .feedback-icon .w-55px {
+    width: 50px !important;
+    height: 50px !important;
   }
 }
 
@@ -782,6 +812,36 @@
   }
   #kt_header + .container-fluid {
     padding:100px 0 0 !important;
+  }
+  #content_tab_feedback .section-group-1 {
+    flex-direction: column !important;
+    width: 50% !important;
+    transform: translate(0);
+  }
+  #content_tab_feedback .section-group-3 .d-flex.min-h-60px {
+    flex-direction: row;
+  }
+  #content_tab_feedback .section-group-3 .d-flex.min-h-60px > .flex-grow-1 {
+    margin-top: 0px;
+    margin-left: 1.25rem !important;
+  }
+  #content_tab_feedback .section-group-1 .h-100,
+  #content_tab_feedback .section-group-1 .h-100px,
+  #content_tab_feedback .section-group-1 .h-sm-100 {
+    height: auto !important;
+  }
+  #content_tab_feedback .section-group-1 .section-1 {
+    width: 100% !important;
+  }
+  #content_tab_feedback .section-group-1 .section-1 .position-relative.h-100px {
+    padding-bottom: 25px;
+  }
+  #content_tab_feedback .section-group-1 .section-2 {
+    width: 100% !important;
+  }
+  #content_tab_feedback #layer_myBadgeFeedback {
+    position: fixed !important;
+    z-index: 100;
   }
   #content_tab_okr .section-group-1 {
     min-width: 50%;
@@ -848,6 +908,7 @@
     -webkit-box-flex: 0;
     -ms-flex: 0 !important;
     flex: 0 !important;
+    width: 100% !important;
     max-width: 100%;
     height: auto !important;
     padding: 0;
@@ -957,29 +1018,6 @@
   .h-65px {
     height: 50px !important;
   }
-  #content_tab_feedback .section-group-1 {
-    flex-direction: column !important;
-    width: 50% !important;
-    transform: translate(0);
-  }
-  #content_tab_feedback .section-group-1 .h-100,
-  #content_tab_feedback .section-group-1 .h-100px,
-  #content_tab_feedback .section-group-1 .h-sm-100 {
-    height: auto !important;
-  }
-  #content_tab_feedback .section-group-1 .section-1 {
-    width: 100% !important;
-  }
-  #content_tab_feedback .section-group-1 .section-1 .position-relative.h-100px {
-    padding-bottom: 25px;
-  }
-  #content_tab_feedback .section-group-1 .section-2 {
-    width: 100% !important;
-  }
-  #content_tab_feedback #layer_myBadgeFeedback {
-    position: fixed !important;
-    z-index: 100;
-  }
   #content_tab_review #tab-review > div {
     padding: 0;
   }
@@ -1017,7 +1055,6 @@
   }
   .modal-header {
     padding: 12px 1.25rem !important;
-    height: 65px !important;
   }
   .modal-header .symbol-50 {
     width: 40px !important;
@@ -1079,7 +1116,7 @@
     display: flex !important;
     position: sticky;
     top: 100px;
-    z-index: 96;
+    z-index: 111;
     margin: 0 -15px !important;
     padding-top: 15px !important;
     background-color: #fff;
@@ -1157,11 +1194,6 @@
   }
 }
 
-/* Review */
-.card-footer .btn {
-  border-radius: 0 0 0.42rem 0.42rem;
-}
-
 /* help */
 #modal_helpCategory .modal-header {
   height: auto !important;
@@ -1203,4 +1235,18 @@
   background: #E4E6EF;
   opacity: 0.5;
 }
-/* style="scrollbar-width: thin !important; scrollbar-color: dark !important" */
+.badge-scroll::-webkit-scrollbar {
+  display: block !important;
+  height: 8px;
+}
+.badge-scroll::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: #E4E6EF;
+  opacity: 0.5;
+}
+.accordion.accordion-toggle-arrow .card .card-header .card-title.collapsed::after {
+  transform: rotate(0deg);
+}
+.accordion.accordion-toggle-arrow .card .card-header .card-title::after {
+  transform: rotate(-180deg);
+}
