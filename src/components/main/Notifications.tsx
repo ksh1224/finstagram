@@ -33,7 +33,11 @@ export default function Notifications() {
     <div className="dropdown">
       <div className="topbar-item mr-3">
         <div
-          className="btn btn-icon btn-secondary pulse pulse-white"
+          className={`btn btn-icon btn-secondary ${
+            typeof notiCount === "number" && notiCount !== 0
+              ? "pulse pulse-white"
+              : ""
+          }`}
           onClick={() => !show && setShow(true)}
         >
           {typeof notiCount === "number" && notiCount !== 0 && (
@@ -42,7 +46,7 @@ export default function Notifications() {
             </span>
           )}
           <span className="svg-icon svg-icon-lg">
-            <SVG name="notificationOn" />
+            <SVG name="notification" />
           </span>
           <span className="pulse-ring" />
         </div>
