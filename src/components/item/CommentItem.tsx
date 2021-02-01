@@ -107,7 +107,13 @@ export default function CommentItem({
                 <a
                   className="ml-3"
                   href="javascript:;"
-                  onClick={() => id && onDelete && onDelete(id)}
+                  onClick={() =>
+                    showModal("confirm", {
+                      onConfirm: () => id && onDelete && onDelete(id),
+                      isCancel: true,
+                      text: "삭제하시겠습니까?",
+                    })
+                  }
                 >
                   삭제
                 </a>

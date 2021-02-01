@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/control-has-associated-label */
@@ -34,19 +35,20 @@ export default function TopRankerDetailModal() {
 
   useEffect(() => {
     const { year, quarter } = selectDate;
-    if (year && quarter && orgGroupIndex && availableOptions)
+    if (year && quarter && orgGroupIndex !== null && availableOptions)
       request(availableOptions[orgGroupIndex].id, year, quarter);
   }, [selectDate]);
 
   useEffect(() => {
     if (
       availableOptions &&
-      !orgGroupIndex &&
+      orgGroupIndex === null &&
       sendFeedbackModal?.param.orgGroupId
     ) {
       availableOptions.forEach((option: any, i: number) => {
-        if (option.id === sendFeedbackModal?.param.orgGroupId)
+        if (option.id === sendFeedbackModal?.param.orgGroupId) {
           setOrgGroupIndex(i);
+        }
       });
     }
   }, [availableOptions]);
@@ -58,7 +60,12 @@ export default function TopRankerDetailModal() {
   }
 
   return (
-    <Modal show={!!sendFeedbackModal} animation centered onHide={() => close()}>
+    <Modal
+      show={!!sendFeedbackModal && orgGroupIndex !== null}
+      animation
+      centered
+      onHide={() => close()}
+    >
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">칭찬 배지 Top Ranker</h5>
@@ -77,7 +84,9 @@ export default function TopRankerDetailModal() {
             onChange={({ target }) => {
               request(target.value, selectDate.year, selectDate.quarter);
               availableOptions.forEach((option: any, i: number) => {
-                if (option.id === target.value) setOrgGroupIndex(i);
+                if (option.id === Number(target.value)) {
+                  setOrgGroupIndex(i);
+                }
               });
             }}
             className="custom-select form-control w-auto"
@@ -154,23 +163,47 @@ export default function TopRankerDetailModal() {
             style={{ maxHeight: "300px" }}
             className="overflow-hidden overflow-y-auto"
           >
-            {selectIndex === 0
-              ? extraData &&
+            {selectIndex === 0 ? (
+              extraData && extraData.length !== 0 ? (
                 extraData.map(({ count, user, rank }: any) => (
                   <TopRankerItem
                     rank={rank}
                     feedbackReceived={count}
                     user={user}
+                    topFeedbackReceived={extraData[0]?.count}
                   />
                 ))
-              : data &&
-                data[selectIndex]?.data?.map(({ count, user, rank }: any) => (
-                  <TopRankerItem
-                    rank={rank}
-                    feedbackReceived={count}
-                    user={user}
-                  />
-                ))}
+              ) : (
+                <div
+                  className="d-flex align-items-center justify-content-center"
+                  style={{ height: "200px" }}
+                >
+                  <div className="w-100 py-8 text-center word-keep">
+                    Top Ranker가 없습니다.
+                  </div>
+                </div>
+              )
+            ) : data &&
+              data[selectIndex]?.data &&
+              data[selectIndex].data.length !== 0 ? (
+              data[selectIndex].data.map(({ count, user, rank }: any) => (
+                <TopRankerItem
+                  rank={rank}
+                  feedbackReceived={count}
+                  user={user}
+                  topFeedbackReceived={data[selectIndex]?.data[0]?.count}
+                />
+              ))
+            ) : (
+              <div
+                className="d-flex align-items-center justify-content-center"
+                style={{ height: "200px" }}
+              >
+                <div className="w-100 py-8 text-center word-keep">
+                  Top Ranker가 없습니다.
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

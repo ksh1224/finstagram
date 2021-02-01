@@ -167,7 +167,7 @@ export default function FeedListItem(feed: DataType) {
             </div>
             <div className="separator separator-solid mt-6 mb-2" />
 
-            <div className="d-flex align-items-center mb-n2">
+            <div className="d-flex align-items-center">
               <button
                 type="button"
                 className={`btn btn-hover-text-primary btn-hover-icon-primary btn-sm btn-text-dark-50 rounded font-weight-bolder font-size-sm p-2 mr-2 ${
@@ -242,7 +242,13 @@ export default function FeedListItem(feed: DataType) {
                     <a
                       className="dropdown-item"
                       href="javascript:;"
-                      onClick={() => id && deleteFeed(id)}
+                      onClick={() =>
+                        showModal("confirm", {
+                          onConfirm: () => id && deleteFeed(id),
+                          isCancel: true,
+                          text: "삭제하시겠습니까?",
+                        })
+                      }
                     >
                       삭제하기
                     </a>
@@ -265,11 +271,10 @@ export default function FeedListItem(feed: DataType) {
               </span>
             </div>
             <div
-              className="pt-5 collapse"
+              className="pt-3 collapse"
               id={`cmt-feedback-feedback-${`${feedType}${id}`}`}
             >
-              {!!feedbackComment &&
-                feedbackComment.length !== 0 &&
+              {!!feedbackComment && feedbackComment.length !== 0 ? (
                 feedbackComment.map((comment: CommentDataType) => (
                   <CommentItem
                     key={`${feedType}_${comment?.id}`}
@@ -277,7 +282,12 @@ export default function FeedListItem(feed: DataType) {
                     onUpdate={() => update(id)}
                     onDelete={() => comment?.id && deleteComment(comment?.id)}
                   />
-                ))}
+                ))
+              ) : (
+                <div className="d-flex align-items-center justify-content-center min-h-50px font-size-sm">
+                  댓글이 없습니다.
+                </div>
+              )}
               <div className="separator separator-solid mt-5 mb-4" />
               <form className="position-relative">
                 <textarea
