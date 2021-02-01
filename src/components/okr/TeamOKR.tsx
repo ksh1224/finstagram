@@ -1,7 +1,7 @@
 import Profile from "components/Profile";
 import { useAuth } from "hooks/useRedux";
 import { useTeamOKR } from "hooks/useOKRRedux";
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import DataValidationContainer from "layouts/DataValidationContainer";
 import OKRAccordion from "./OKRAccordion";
 import OKRGraph from "./OKRGraph";
@@ -19,10 +19,21 @@ export default function TeamOKR() {
   const memberData = data?.data;
   const { user: my } = useAuth();
   const [show, setShow] = useState(false);
+  const scrollRef = createRef<HTMLDivElement>();
+
+  const teamOKRScrollToTop = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo(0, 0);
+    }
+  };
 
   useEffect(() => {
     setShow(true);
   }, []);
+
+  useEffect(() => {
+    if (!isFetching) teamOKRScrollToTop();
+  }, [isFetching]);
 
   function changeDate(changeYear: number, changeQuarter: number) {
     setShow(false);
@@ -59,7 +70,7 @@ export default function TeamOKR() {
             </select>
           </div>
         </div>
-        <div className="card-body pt-2 overflow-y-auto">
+        <div className="card-body pt-2 overflow-y-auto" ref={scrollRef}>
           <DataValidationContainer isFetching={!availableDates && isFetching}>
             <div className="gutter-t mb-10">
               <div className="d-flex justify-content-between align-items-center">

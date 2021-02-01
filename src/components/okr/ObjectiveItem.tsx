@@ -66,7 +66,7 @@ export default function ObjectiveItem({
               <div className="d-flex w-100 font-size-base">
                 <div className="w-100px">{`objective ${objectIndex + 1}`}</div>
                 <div className="w-100px flex-grow-1 mr-10">{description}</div>
-                <div>{statusToKo[status]}</div>
+                <div className="w-50px">{statusToKo[status]}</div>
                 <div
                   className="w-50px text-right"
                   style={{ color: statusColor }}

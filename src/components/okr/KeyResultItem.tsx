@@ -61,7 +61,7 @@ export default function KeyResultItem({
             {commentCount}
           </a>
           <div className="flex-grow-1" />
-          <div>{statusToKo[status]}</div>
+          <div className="w-50px">{statusToKo[status]}</div>
           <div className="w-50px text-right" style={{ color: statusColor }}>
             {progress}
           </div>
