@@ -7,6 +7,7 @@ import {
   notificationActionAsync,
   searchUserActionAsync,
 } from "store/actions";
+import * as Sentry from "@sentry/react";
 
 export default function* APIAuthSaga(
   accessToken: string
@@ -22,6 +23,22 @@ export default function* APIAuthSaga(
     if (!!token && typeof token === "string") {
       yield localStorage.setItem("token", token);
       const { data: user } = yield call(axios, "/user/login", "POST");
+      const {
+        name,
+        positionName,
+        username,
+        email,
+        employeeNumber,
+        organization,
+      } = user || {};
+      yield Sentry.setUser({
+        name,
+        positionName,
+        username,
+        email,
+        employeeNumber,
+        organization,
+      });
       yield put(APILogInActionAsync.success(user));
       yield put(searchUserActionAsync.request());
       yield put(notificationActionAsync.request(null));
