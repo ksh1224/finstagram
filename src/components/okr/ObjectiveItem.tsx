@@ -112,6 +112,7 @@ export default function ObjectiveItem({
               data?.status &&
               data?.status !== statusType.CANCEL && (
                 <KeyResultItem
+                  key={data?.id}
                   objectIndex={objectIndex}
                   keyResult={data}
                   lastIndex={keyResult.length - 1 === index}

@@ -99,6 +99,7 @@ export default function Notifications() {
                 }: any) => {
                   return (
                     <div
+                      key={entityId}
                       className="d-flex align-items-center cursor-pointer mx-n8 p-8 bg-hover-secondary-o-1 cursor-pointer"
                       style={
                         hasRead

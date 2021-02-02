@@ -60,6 +60,7 @@ export default function TeamOKR() {
                 availableDates.map(
                   ({ year: selectYear, quarter: selectQuarter }: any) => (
                     <option
+                      key={`${selectYear}_${selectQuarter}`}
                       selected={
                         selectYear === year && selectQuarter === quarter
                       }
@@ -96,7 +97,7 @@ export default function TeamOKR() {
             )}
             {memberData &&
               memberData.map((member: any) => (
-                <>
+                <div key={member?.user?.id}>
                   <div className="d-flex align-items-center w-100 mb-3">
                     <Profile user={member?.user} />
                     <div className="font-weight-bolder text-dark font-size-lg ml-3">
@@ -112,7 +113,7 @@ export default function TeamOKR() {
                     objectives={member?.objective}
                     user={member?.user}
                   />
-                </>
+                </div>
               ))}
           </DataValidationContainer>
         </div>

@@ -166,6 +166,7 @@ export default function UserOKR({ isMy }: UserOKRType) {
                 availableDates.map(
                   ({ year: selectYear, quarter: selectQuarter }: any) => (
                     <option
+                      key={`${selectYear}_${selectQuarter}`}
                       selected={
                         selectYear === year && selectQuarter === quarter
                       }
