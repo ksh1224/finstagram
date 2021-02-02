@@ -23,6 +23,10 @@ export default function* APIAuthSaga(
     if (!!token && typeof token === "string") {
       yield localStorage.setItem("token", token);
       const { data: user } = yield call(axios, "/user/login", "POST");
+      if (!user) {
+        CustomError(user);
+        throw new Error("유저 정보가 없습니다");
+      }
       const {
         name,
         positionName,
