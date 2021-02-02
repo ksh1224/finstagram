@@ -29,4 +29,9 @@ export default createReducer<State, Actions>(initialState, {
     error: action.payload,
     isFetching: false,
   }),
+  API_LOGOUT: () => ({
+    user: undefined,
+    isFetching: false,
+    error: undefined,
+  }),
 });

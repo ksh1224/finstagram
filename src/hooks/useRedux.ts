@@ -15,7 +15,9 @@ import {
 export function useAuth() {
   // const Auth = useSelector((state: RootState) => state.Auth);
 
-  const { user, error } = useSelector((state: RootState) => state.APIAuth);
+  const { user, error, isFetching } = useSelector(
+    (state: RootState) => state.APIAuth
+  );
 
   const dispatch = useDispatch();
 
@@ -24,10 +26,16 @@ export function useAuth() {
     [dispatch]
   );
 
+  const logOut = useCallback(() => dispatch(APILogInActionAsync.cancel()), [
+    dispatch,
+  ]);
+
   return {
     user,
     error,
+    isFetching,
     request,
+    logOut,
   };
 }
 

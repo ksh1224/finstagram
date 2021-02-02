@@ -41,19 +41,17 @@ import { InteractionType } from "@azure/msal-browser";
 import KeyResultModal from "components/modal/KeyResultModal";
 
 export default function App(): JSX.Element {
-  const { request, user, error } = useAuth();
+  const { request, user, error, isFetching } = useAuth();
   const { instance, accounts } = useMsal();
-  const { result: authResult, error: authError } = useMsalAuthentication(
-    InteractionType.Redirect
-  );
+  const { error: authError } = useMsalAuthentication(InteractionType.Redirect);
   const account = useAccount(accounts[0] || {});
   const isAuthenticated = useIsAuthenticated(accounts[0]);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (accounts.length === 0)
-      instance.loginRedirect(msalConfig.redirectRequestConfig);
-  }, [accounts]);
+  // useEffect(() => {
+  //   if (accounts.length === 0) {
+  //     instance.loginRedirect(msalConfig.redirectRequestConfig);
+  //   }
+  // }, [accounts]);
 
   useEffect(() => {
     if (account && isAuthenticated)
@@ -67,7 +65,7 @@ export default function App(): JSX.Element {
         });
   }, [account, isAuthenticated]);
 
-  if (user && account && isAuthenticated)
+  if (user && account && isAuthenticated && !isFetching)
     return (
       <>
         <Body>
