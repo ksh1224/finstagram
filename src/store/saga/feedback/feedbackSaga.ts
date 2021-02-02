@@ -9,6 +9,7 @@ import {
   feedbackRequestActionAsync,
   topRankerActionAsync,
   showModalAction,
+  feedbackStatisticsActionAsync,
 } from "store/actions";
 
 export function* feedbackSendSaga(
@@ -21,6 +22,10 @@ export function* feedbackSendSaga(
 ): Generator<any, void, ObjectType> {
   try {
     const { user } = yield select((state: RootState) => state.APIAuth);
+    const feedbackStatistics = yield select(
+      (state: RootState) => state.feedbackStatistics
+    );
+    const { year, quarter } = feedbackStatistics?.data || {};
 
     const formData = new FormData();
     if (type === "PRAISE") formData.append("feedbackBadge_id", badge.id);
@@ -45,11 +50,13 @@ export function* feedbackSendSaga(
       "POST",
       formData
     );
+
     yield put(
       showModalAction("confirm", {
         text: id ? "피드백을 수정했습니다." : "피드백을 보냈습니다.",
       })
     );
+    yield put(feedbackStatisticsActionAsync.request({ year, quarter }));
     yield put(feedRecentActionAsync.request(null));
     yield put(feedRecivedActionAsync.request(null));
     yield put(feedSentActionAsync.request(null));
@@ -68,6 +75,10 @@ export function* feedbackRequestSaga(
 ): Generator<any, void, ObjectType> {
   try {
     const { user } = yield select((state: RootState) => state.APIAuth);
+    const feedbackStatistics = yield select(
+      (state: RootState) => state.feedbackStatistics
+    );
+    const { year, quarter } = feedbackStatistics?.data || {};
 
     const formData = new FormData();
     if (id) {
@@ -96,6 +107,7 @@ export function* feedbackRequestSaga(
         text: id ? "피드백 요청을 수정했습니다." : "피드백을 요청했습니다.",
       })
     );
+    yield put(feedbackStatisticsActionAsync.request({ year, quarter }));
     yield put(feedRecentActionAsync.request(null));
     yield put(feedRecivedActionAsync.request(null));
     yield put(feedSentActionAsync.request(null));

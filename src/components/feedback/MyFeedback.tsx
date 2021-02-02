@@ -50,7 +50,6 @@ export default function MyFeedback() {
       const { year, quarter } = feedbackStatisticsData;
       cancelBadge();
       feedbackBadgeRequest(year, quarter);
-      feedbackStatisticsRequest(year, quarter);
       feedBadgeRequest(year, quarter, selectBadgeData?.badge?.id);
       selectBadge(selectBadgeData);
     }
@@ -100,12 +99,9 @@ export default function MyFeedback() {
         <div className="card-body pt-2 overflow-y-auto">
           <div className="d-flex flex-column flex-center">
             <Profile user={user} width={120} />
-            <a
-              href="#"
-              className="card-title font-weight-bolder text-dark-75 text-hover-primary font-size-h4 m-0 pt-4 pb-7"
-            >
+            <div className="card-title font-weight-bolder text-dark-75 font-size-h4 m-0 pt-4 pb-7">
               {user?.organization?.name} {user?.name}
-            </a>
+            </div>
           </div>
           <DataValidationContainer
             isFetching={
