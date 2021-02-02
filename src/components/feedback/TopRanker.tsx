@@ -47,9 +47,15 @@ export default function TopRanker() {
 
   useEffect(() => {
     if (!orgGroupId && data?.bestCommunicatorByGroup) {
+      let isNotSelect = true;
       data?.bestCommunicatorByGroup.forEach((obj: any) => {
-        if (obj.userIsMember) setOrgGroupId(obj.orgGroup.id);
+        if (obj.userIsMember) {
+          setOrgGroupId(obj.orgGroup.id);
+          isNotSelect = false;
+        }
       });
+      if (isNotSelect)
+        setOrgGroupId(data?.bestCommunicatorByGroup[0].orgGroup.id);
     }
   }, [data]);
 
