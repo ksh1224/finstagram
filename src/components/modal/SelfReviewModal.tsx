@@ -9,6 +9,7 @@ import FeedListItem from "components/item/FeedListItem";
 import Scroll from "components/Scroll";
 import { useReviewMain } from "hooks/useReview";
 import { useMyFeedback } from "hooks/useFeedBackRedux";
+import DataValidationContainer from "layouts/DataValidationContainer";
 
 export default function SelfReviewModal() {
   const { modals, closeModal, showModal } = useModal();
@@ -330,8 +331,14 @@ export default function SelfReviewModal() {
                     className="card card-custom gutter-t"
                     style={{ maxHeight: "25vh" }}
                   >
-                    {feedbackListData &&
-                      feedbackListData.map((feedback) => {
+                    <DataValidationContainer
+                      noDataView={
+                        <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
+                          피드백이 없습니다.
+                        </div>
+                      }
+                    >
+                      {feedbackListData?.map((feedback) => {
                         return (
                           <FeedListItem
                             key={feedback.id}
@@ -346,6 +353,7 @@ export default function SelfReviewModal() {
                           />
                         );
                       })}
+                    </DataValidationContainer>
                   </Scroll>
                 </div>
                 <div className="flex-nowrap align-items-center border-0 mt-12">

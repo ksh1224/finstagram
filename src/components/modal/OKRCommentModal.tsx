@@ -6,6 +6,7 @@ import { useRefreshOKRData } from "hooks/useOKRRedux";
 import SVG from "utils/SVG";
 import axios from "utils/axiosUtil";
 import CommentItem from "components/item/CommentItem";
+import DataValidationContainer from "layouts/DataValidationContainer";
 
 export default function OKRCommentModal() {
   const { user: my } = useAuth();
@@ -126,8 +127,14 @@ export default function OKRCommentModal() {
             style={{ maxHeight: "300px" }}
             className="overflow-hidden overflow-y-auto"
           >
-            {comments &&
-              comments.map((props) => (
+            <DataValidationContainer
+              noDataView={
+                <div className="d-flex align-items-center justify-content-center min-h-50px font-size-sm">
+                  댓글이 없습니다.
+                </div>
+              }
+            >
+              {comments?.map((props) => (
                 <CommentItem
                   type="okr"
                   {...props}
@@ -135,6 +142,7 @@ export default function OKRCommentModal() {
                   onDelete={deleteComment}
                 />
               ))}
+            </DataValidationContainer>
           </div>
 
           <div className="separator separator-solid my-5" />

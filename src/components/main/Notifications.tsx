@@ -6,6 +6,7 @@ import { useModal, useNotification } from "hooks/useRedux";
 import useOutsideClick from "hooks/useOutsideClick";
 import Scroll from "components/Scroll";
 import axios from "utils/axiosUtil";
+import DataValidationContainer from "layouts/DataValidationContainer";
 
 export default function Notifications() {
   const {
@@ -80,8 +81,14 @@ export default function Notifications() {
                 확인하기
               </span>
             </div>
-            {data && data.length !== 0 ? (
-              data.map(
+            <DataValidationContainer
+              noDataView={
+                <div className="d-flex align-items-center mx-n8 p-8 mt-8 justify-content-center">
+                  <div className="text-dark-50 mb-1">알람이 없습니다</div>
+                </div>
+              }
+            >
+              {data?.map(
                 ({
                   entityId,
                   title,
@@ -145,12 +152,8 @@ export default function Notifications() {
                     </div>
                   );
                 }
-              )
-            ) : (
-              <div className="d-flex align-items-center mx-n8 p-8 mt-8 justify-content-center">
-                <div className="text-dark-50 mb-1">알람이 없습니다</div>
-              </div>
-            )}
+              )}
+            </DataValidationContainer>
 
             <div className="ps__rail-x" style={{ left: "0px", bottom: "0px" }}>
               <div

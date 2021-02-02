@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import axios from "utils/axiosUtil";
 import { useAuth, useModal } from "hooks/useRedux";
 import { useFeedOne } from "hooks/useFeedBackRedux";
+import DataValidationContainer from "layouts/DataValidationContainer";
 import CommentItem, { CommentDataType } from "./CommentItem";
 
 export type DataType = {
@@ -274,20 +275,22 @@ export default function FeedListItem(feed: DataType) {
               className="pt-3 collapse"
               id={`cmt-feedback-feedback-${`${feedType}${id}`}`}
             >
-              {!!feedbackComment && feedbackComment.length !== 0 ? (
-                feedbackComment.map((comment: CommentDataType) => (
+              <DataValidationContainer
+                noDataView={
+                  <div className="d-flex align-items-center justify-content-center min-h-50px font-size-sm">
+                    댓글이 없습니다.
+                  </div>
+                }
+              >
+                {feedbackComment?.map((comment: CommentDataType) => (
                   <CommentItem
                     key={`${feedType}_${comment?.id}`}
                     {...comment}
                     onUpdate={() => update(id)}
                     onDelete={() => comment?.id && deleteComment(comment?.id)}
                   />
-                ))
-              ) : (
-                <div className="d-flex align-items-center justify-content-center min-h-50px font-size-sm">
-                  댓글이 없습니다.
-                </div>
-              )}
+                ))}
+              </DataValidationContainer>
               <div className="separator separator-solid mt-5 mb-4" />
               <form className="position-relative">
                 <textarea

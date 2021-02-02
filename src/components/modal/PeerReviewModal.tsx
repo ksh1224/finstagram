@@ -11,6 +11,7 @@ import Scroll from "components/Scroll";
 import { useReviewMain } from "hooks/useReview";
 import Profile from "components/Profile";
 import { useMyFeedback } from "hooks/useFeedBackRedux";
+import DataValidationContainer from "layouts/DataValidationContainer";
 
 const selectArray = [
   "매우 동의하지 않음",
@@ -439,8 +440,14 @@ export default function PeerReviewModal() {
                     className="card card-custom gutter-t"
                     style={{ maxHeight: "25vh" }}
                   >
-                    {feedbackListData &&
-                      feedbackListData.map((feedback) => {
+                    <DataValidationContainer
+                      noDataView={
+                        <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
+                          피드백이 없습니다.
+                        </div>
+                      }
+                    >
+                      {feedbackListData?.map((feedback) => {
                         return (
                           <FeedListItem
                             key={feedback.id}
@@ -455,6 +462,7 @@ export default function PeerReviewModal() {
                           />
                         );
                       })}
+                    </DataValidationContainer>
                   </Scroll>
                 </div>
                 <div className="flex-nowrap align-items-center border-0 mt-12">

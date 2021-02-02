@@ -50,6 +50,7 @@ export default function FeedList() {
   const { feedbackStatisticsData } = useMyFeedback();
   const { year, quarter } = feedbackStatisticsData || {};
   const { cancelBadge, selectBadgeData } = useSelectBadge();
+  const [selectBadge, setSelectBadge] = useState<any>();
   const [tab, setTab] = useState(0);
 
   const pagination = () => {
@@ -96,27 +97,47 @@ export default function FeedList() {
     switch (name) {
       case "최신 피드백":
         return (
-          !!feedRecentList &&
-          feedRecentList.length !== 0 &&
-          feedRecentList.map((data: DataType) => (
-            <FeedListItem key={data.id} {...data} feedType="recent" />
-          ))
+          <DataValidationContainer
+            noDataView={
+              <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
+                피드백이 없습니다.
+              </div>
+            }
+          >
+            {feedRecentList?.map((data: DataType) => (
+              <FeedListItem key={data.id} {...data} feedType="recent" />
+            ))}
+          </DataValidationContainer>
         );
       case "내가 받은 피드백":
         return (
-          !!feedReceivedList &&
-          feedReceivedList.length !== 0 &&
-          feedReceivedList.map((data: DataType) => {
-            return <FeedListItem key={data.id} {...data} feedType="received" />;
-          })
+          <DataValidationContainer
+            noDataView={
+              <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
+                피드백이 없습니다.
+              </div>
+            }
+          >
+            {feedReceivedList?.map((data: DataType) => {
+              return (
+                <FeedListItem key={data.id} {...data} feedType="received" />
+              );
+            })}
+          </DataValidationContainer>
         );
       case "내가 보낸 피드백":
         return (
-          !!feedSentList &&
-          feedSentList.length !== 0 &&
-          feedSentList.map((data: DataType) => {
-            return <FeedListItem key={data.id} {...data} feedType="sent" />;
-          })
+          <DataValidationContainer
+            noDataView={
+              <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
+                피드백이 없습니다.
+              </div>
+            }
+          >
+            {feedSentList?.map((data: DataType) => {
+              return <FeedListItem key={data.id} {...data} feedType="sent" />;
+            })}
+          </DataValidationContainer>
         );
       default:
         break;
@@ -124,9 +145,9 @@ export default function FeedList() {
     return <></>;
   }
 
-  // useEffect(() => {
-  //   scrollBadgeRef.current?.scrollTo(0, 0);
-  // }, [selectBadgeData]);
+  useEffect(() => {
+    if (selectBadgeData) setSelectBadge(selectBadgeData?.badge);
+  }, [selectBadgeData]);
 
   return (
     <div className="col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column overflow-hidden section-2">
@@ -181,7 +202,7 @@ export default function FeedList() {
               <span className="font-weight-bolder">배지 Feedback</span>
               <span className="feedback-icon-group">
                 <span className="feedback-icon on">
-                  {selectBadgeData?.badge.total ? (
+                  {selectBadge?.total ? (
                     <SVG
                       className="w-50px h-50px"
                       xmlns="http://www.w3.org/2000/svg"
@@ -189,7 +210,7 @@ export default function FeedList() {
                       name="total"
                     />
                   ) : (
-                    !!selectBadgeData?.badge?.selectedFileUrlHttps && (
+                    !!selectBadge?.selectedFileUrlHttps && (
                       <img
                         style={{
                           width: "50px",
@@ -197,7 +218,7 @@ export default function FeedList() {
                           borderRadius: "25px",
                           border: `1.5px solid #5555`,
                         }}
-                        src={selectBadgeData?.badge?.selectedFileUrlHttps}
+                        src={selectBadge.selectedFileUrlHttps}
                         alt=""
                       />
                     )
@@ -236,13 +257,17 @@ export default function FeedList() {
               )
             }
           >
-            {!!feedBadgeList && feedBadgeList.length !== 0 ? (
-              feedBadgeList.map((data: any) => (
+            <DataValidationContainer
+              noDataView={
+                <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
+                  피드백이 없습니다.
+                </div>
+              }
+            >
+              {feedBadgeList?.map((data: any) => (
                 <FeedListItem key={data.id} {...data} feedType="sent" />
-              ))
-            ) : (
-              <></>
-            )}
+              ))}
+            </DataValidationContainer>
           </Scroll>
         </div>
       </div>

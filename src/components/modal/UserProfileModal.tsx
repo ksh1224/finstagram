@@ -10,6 +10,7 @@ import { useMyFeedback } from "hooks/useFeedBackRedux";
 import OKRAccordion from "components/okr/OKRAccordion";
 import FeedListItem from "components/item/FeedListItem";
 import Scroll from "components/Scroll";
+import DataValidationContainer from "layouts/DataValidationContainer";
 
 export default function UserProfileModal() {
   const { modals, closeModal, showModal } = useModal();
@@ -32,6 +33,7 @@ export default function UserProfileModal() {
   function close() {
     setUserShowMoal(false);
     setTimeout(() => {
+      setSelectBadgeId(-1);
       closeModal("userProfile");
     }, 300);
   }
@@ -185,7 +187,6 @@ export default function UserProfileModal() {
                   </h3>
                 </div>
                 <div>
-                  {/* <!--begin::Feedback Badge--> */}
                   <div className="card-body pt-2">
                     <div className="overflow-x-auto pb-2 px-0 badge-scroll">
                       <div className="text-nowrap d-flex justify-content-between">
@@ -261,15 +262,19 @@ export default function UserProfileModal() {
                       </div>
                     </div>
                   </div>
-                  {/* <!--end::Feedback Badge--> */}
-                  {/* <!--begin::Feedback item--> */}
 
                   <Scroll
                     className="card-body pt-2"
                     style={{ maxHeight: "25vh" }}
                   >
-                    {feedbackListData &&
-                      feedbackListData.map((feedback) => {
+                    <DataValidationContainer
+                      noDataView={
+                        <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
+                          피드백이 없습니다.
+                        </div>
+                      }
+                    >
+                      {feedbackListData?.map((feedback) => {
                         return (
                           <FeedListItem
                             key={feedback.id}
@@ -284,8 +289,8 @@ export default function UserProfileModal() {
                           />
                         );
                       })}
+                    </DataValidationContainer>
                   </Scroll>
-                  {/* <!--end::Feedback item--> */}
                 </div>
               </div>
             </div>

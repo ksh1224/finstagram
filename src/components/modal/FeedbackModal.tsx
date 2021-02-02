@@ -10,6 +10,7 @@ import axios from "utils/axiosUtil";
 import { DataType } from "components/item/FeedListItem";
 import CommentItem, { CommentDataType } from "components/item/CommentItem";
 import Profile from "components/Profile";
+import DataValidationContainer from "layouts/DataValidationContainer";
 
 export default function FeedbackModal() {
   const { modals, closeModal, showModal } = useModal();
@@ -218,9 +219,14 @@ export default function FeedbackModal() {
                 className="pt-3 collapse"
                 id={`cmt-feedback-feedback-${`${feedType}${id}`}`}
               >
-                {!!feedbackComment &&
-                  feedbackComment.length !== 0 &&
-                  feedbackComment.map((comment: CommentDataType) => (
+                <DataValidationContainer
+                  noDataView={
+                    <div className="d-flex align-items-center justify-content-center min-h-50px font-size-sm">
+                      댓글이 없습니다.
+                    </div>
+                  }
+                >
+                  {feedbackComment?.map((comment: CommentDataType) => (
                     <CommentItem
                       key={`${feedType}_${comment?.id}`}
                       {...comment}
@@ -228,6 +234,7 @@ export default function FeedbackModal() {
                       onDelete={() => comment?.id && deleteComment(comment?.id)}
                     />
                   ))}
+                </DataValidationContainer>
                 <div className="separator separator-solid mt-5 mb-4" />
                 <form className="position-relative">
                   <textarea
