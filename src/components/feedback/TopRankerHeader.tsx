@@ -65,7 +65,7 @@ export default function TopRankerHeader({
         <ul className="nav nav-tabs nav-tabs-line border-0 flex-grow-1">
           {isQuerter
             ? AllGroup?.map(({ orgGroup }) => (
-                <li className="nav-item">
+                <li key={orgGroup.id} className="nav-item">
                   <a
                     className={`nav-link border-0 ${
                       orgGroup.id === orgGroupId ? "active" : ""
@@ -77,7 +77,7 @@ export default function TopRankerHeader({
                 </li>
               ))
             : QuerterGroup?.map(({ orgGroup }) => (
-                <li className="nav-item">
+                <li key={orgGroup.id} className="nav-item">
                   <a
                     href="javascript:;"
                     className={`nav-link border-0 ${

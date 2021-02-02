@@ -249,6 +249,7 @@ export default function SelfReviewModal() {
                         {feedbackStatisticsData?.availableDates?.map(
                           ({ year, quarter }: any) => (
                             <option
+                              key={`${year}_${quarter}`}
                               selected={
                                 feedbackStatisticsData?.year === year &&
                                 feedbackStatisticsData?.quarter === quarter
@@ -290,7 +291,10 @@ export default function SelfReviewModal() {
                       </div>
                       {feedbackBadge &&
                         feedbackBadge?.badgeList?.map((data: any) => (
-                          <div className="text-center px-2">
+                          <div
+                            key={data?.badge?.id}
+                            className="text-center px-2"
+                          >
                             <div
                               className="feedback-icon hover-on on"
                               onClick={() => setSelectBadgeId(data?.badge?.id)}
@@ -405,7 +409,8 @@ export default function SelfReviewModal() {
                 <>
                   {textArr.map((text, index) =>
                     isSubmitted ? (
-                      <div className="pl-2 mt-3">
+                      // eslint-disable-next-line react/no-array-index-key
+                      <div key={index} className="pl-2 mt-3">
                         {index + 1}. {text}
                       </div>
                     ) : (

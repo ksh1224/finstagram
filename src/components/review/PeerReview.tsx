@@ -9,14 +9,14 @@ import {
 } from "hooks/useReview";
 import React, { useEffect, useState } from "react";
 import { getWriteDate } from "utils/dateUtil";
-import { search, searchList } from "utils/searchUtil";
+import { searchList } from "utils/searchUtil";
 import SVG from "utils/SVG";
 
 export default function PeerReview() {
   const { showModal } = useModal();
   const { data: mainData = {} } = useReviewMain();
   const { user: my } = useAuth();
-  const { meta = {}, date, progress, reviewPeerIncluded } = mainData;
+  const { meta = {}, date, progress } = mainData;
   const { data: peerListData, request: peerListRequest } = useReviewPeerList();
   const {
     data: peerEvalListData,
@@ -36,16 +36,16 @@ export default function PeerReview() {
   const {
     dateReviewPeerStart,
     dateReviewPeerEnd,
-    dateReviewerChangeStart,
-    dateReviewerChangeEnd,
+    // dateReviewerChangeStart,
+    // dateReviewerChangeEnd,
     dateReviewerChangeByEvaluatorStart,
     dateReviewerChangeByEvaluatorEnd,
   } = date;
 
-  const {
-    period: peerSelectPeriod,
-    periodText: peerSelectPeriodText,
-  } = getWriteDate(dateReviewerChangeStart, dateReviewerChangeEnd);
+  // const {
+  //   period: peerSelectPeriod,
+  //   periodText: peerSelectPeriodText,
+  // } = getWriteDate(dateReviewerChangeStart, dateReviewerChangeEnd);
 
   const {
     period: peerSelectEvalPeriod,

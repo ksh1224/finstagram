@@ -132,6 +132,7 @@ export default function UserProfileModal() {
             {feedbackStatisticsData?.availableDates?.map(
               ({ year, quarter }: any) => (
                 <option
+                  key={`${year}_${quarter}`}
                   selected={
                     selectDate?.year === year && selectDate?.quarter === quarter
                   }
@@ -220,6 +221,7 @@ export default function UserProfileModal() {
                         {feedbackBadge &&
                           feedbackBadge?.badgeList?.map((data: any) => (
                             <div
+                              key={data?.badge?.id}
                               className="text-center px-2"
                               style={{ minWidth: "86px" }}
                             >

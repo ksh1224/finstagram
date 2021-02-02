@@ -82,6 +82,7 @@ export default function TopRanker() {
                   ? AllGroup?.map(({ data: rankerData, orgGroup }) => {
                       return (
                         <div
+                          key={orgGroup?.id}
                           className={`tab-pane fade show ${
                             orgGroupId === orgGroup.id ? "active" : ""
                           }`}
@@ -97,6 +98,7 @@ export default function TopRanker() {
                             {rankerData?.map(
                               ({ feedbackReceived, user, rank }) => (
                                 <TopRankerItem
+                                  key={user?.id}
                                   rank={rank}
                                   feedbackReceived={feedbackReceived}
                                   user={user}
@@ -113,6 +115,7 @@ export default function TopRanker() {
                   : QuerterGroup?.map(({ data: rankerData, orgGroup }) => {
                       return (
                         <div
+                          key={orgGroup?.id}
                           className={`tab-pane fade show ${
                             orgGroupId === orgGroup.id ? " active" : ""
                           }`}
@@ -130,6 +133,7 @@ export default function TopRanker() {
                             {rankerData?.map(
                               ({ feedbackReceived, user, rank }) => (
                                 <TopRankerItem
+                                  key={user?.id}
                                   rank={rank}
                                   feedbackReceived={feedbackReceived}
                                   user={user}

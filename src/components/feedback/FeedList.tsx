@@ -153,7 +153,7 @@ export default function FeedList() {
     <div className="col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column overflow-hidden section-2">
       <ul className="nav nav-tabs nav-tabs-line gutter-b border-light-dark">
         {tabName.map((name, i) => (
-          <li className="nav-item">
+          <li key={name} className="nav-item">
             <a
               href="javascript:;"
               className={`nav-link pt-1 pb-5 font-weight-bolder ${
@@ -183,7 +183,10 @@ export default function FeedList() {
           }
         >
           {tabName?.map((name, i) => (
-            <div className={`tab-pane fade ${i === tab && "show active"}`}>
+            <div
+              key={name}
+              className={`tab-pane fade ${i === tab && "show active"}`}
+            >
               {feedList(name)}
               {scollFetching && (
                 <div className="spinner spinner-primary spinner-lg spinner-center w-100 h-50px" />

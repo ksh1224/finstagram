@@ -358,6 +358,7 @@ export default function PeerReviewModal() {
                         {feedbackStatisticsData?.availableDates?.map(
                           ({ year, quarter }: any) => (
                             <option
+                              key={`${year}_${quarter}`}
                               selected={
                                 feedbackStatisticsData?.year === year &&
                                 feedbackStatisticsData?.quarter === quarter
@@ -399,7 +400,10 @@ export default function PeerReviewModal() {
                       </div>
                       {feedbackBadge &&
                         feedbackBadge?.badgeList?.map((data: any) => (
-                          <div className="text-center px-2">
+                          <div
+                            key={data?.badge?.id}
+                            className="text-center px-2"
+                          >
                             <div
                               className="feedback-icon hover-on on"
                               onClick={() => setSelectBadgeId(data?.badge?.id)}
@@ -497,6 +501,7 @@ export default function PeerReviewModal() {
                   {!!peerData &&
                     [contribution, collaboration].map((type: any) => (
                       <div
+                        key={type}
                         className={type === contribution ? undefined : "mt-5"}
                       >
                         <h5 className="card-title align-items-start flex-column font-weight-bolder">
@@ -508,6 +513,8 @@ export default function PeerReviewModal() {
                         <div className="d-flex row-cols-6 mt-3">
                           {selectArray.map((select, i) => (
                             <div
+                              // eslint-disable-next-line react/no-array-index-key
+                              key={i}
                               className="d-flex flex-column align-items-center justify-content-end p-3"
                               onClick={() => changeData(type, { index: i + 1 })}
                             >
@@ -556,7 +563,10 @@ export default function PeerReviewModal() {
                                   {!!peerData?.considerPoints?.optionList &&
                                     peerData.considerPoints.optionList.map(
                                       ({ description, id: optionId }: any) => (
-                                        <label className="checkbox">
+                                        <label
+                                          key={optionId}
+                                          className="checkbox"
+                                        >
                                           <input
                                             type="checkbox"
                                             name="Checkboxes1"

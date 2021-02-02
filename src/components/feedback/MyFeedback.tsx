@@ -7,7 +7,6 @@ import {
   useMyFeedback,
   useFeedBadge,
   useFeedRecent,
-  useFeedOne,
 } from "hooks/useFeedBackRedux";
 
 import Profile from "components/Profile";
@@ -85,6 +84,7 @@ export default function MyFeedback() {
               {feedbackStatisticsData?.availableDates?.map(
                 ({ year, quarter }: any) => (
                   <option
+                    key={`${year}_${quarter}`}
                     selected={
                       feedbackStatisticsData?.year === year &&
                       feedbackStatisticsData?.quarter === quarter
@@ -173,6 +173,7 @@ export default function MyFeedback() {
                     </div>
                     {feedbackBadgeData?.badgeList.map((data: any) => (
                       <div
+                        key={data?.badge?.id}
                         className="col-2 text-center p-0"
                         style={{ minWidth: "78px" }}
                         onClick={() => data?.received && clickBadge(data)}
@@ -261,7 +262,10 @@ export default function MyFeedback() {
                 </p>
 
                 {feedbackStatisticsData?.userList?.map((data: any) => (
-                  <div className="d-flex gutter-t min-h-60px">
+                  <div
+                    key={data?.user?.id}
+                    className="d-flex gutter-t min-h-60px"
+                  >
                     <div className="d-flex w-150px">
                       <Profile user={data.user} width={50} className="mr-3" />
                       <div className="w-100px flex-grow-1 font-size-lg">

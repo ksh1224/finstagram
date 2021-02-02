@@ -1,12 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import { useReviewMain } from "hooks/useReview";
-import React, {
-  createRef,
-  useEffect,
-  useState,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import React, { createRef, useEffect, useState, useRef } from "react";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import SelfReview from "components/review/SelfReview";
 import { getDeadline } from "utils/dateUtil";

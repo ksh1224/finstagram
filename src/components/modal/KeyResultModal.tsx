@@ -33,7 +33,7 @@ export default function KeyResultModal() {
   };
 
   useEffect(() => {
-    getKeyResultData();
+    if (keyResultModal) getKeyResultData();
   }, [keyResultModal]);
 
   const {

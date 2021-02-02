@@ -77,6 +77,7 @@ export default function Body({ children }: LayoutType) {
           >
             {guides.map(({ title, uri, fileUrlHttps }) => (
               <a
+                key={uri}
                 className="dropdown-item"
                 onClick={() =>
                   showModal("help", {
