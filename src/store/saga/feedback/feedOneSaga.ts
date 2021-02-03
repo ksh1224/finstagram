@@ -5,7 +5,7 @@ import {
   feedRecentActionAsync,
   feedSentActionAsync,
   feedRecivedActionAsync,
-} from "store/actions";
+} from "../../actions";
 
 export function* feedOneUpdateSaga(
   feedId: number

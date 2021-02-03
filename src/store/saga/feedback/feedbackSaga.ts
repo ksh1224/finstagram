@@ -10,7 +10,7 @@ import {
   topRankerActionAsync,
   showModalAction,
   feedbackStatisticsActionAsync,
-} from "store/actions";
+} from "../../actions";
 
 export function* feedbackSendSaga(
   type: "PRAISE" | "ADVICE",

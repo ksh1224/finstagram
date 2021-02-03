@@ -6,7 +6,7 @@ import {
   feedRecentActionAsync,
   feedRecivedActionAsync,
   feedSentActionAsync,
-} from "store/actions";
+} from "../../actions";
 
 export function* feedRecentSaga(
   page?: number
