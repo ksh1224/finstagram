@@ -117,7 +117,9 @@ export default function User() {
         <div className="separator separator-solid" />
         <div className="d-flex justify-content-between text-muted px-8 py-5">
           <span className="font-weight-bold">Version</span>
-          <span className="opacity-70">0.1.0</span>
+          <span className="opacity-70">
+            {process.env.REACT_APP_VERSION || "DEV MODE"}
+          </span>
         </div>
       </div>
     </div>

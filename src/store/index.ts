@@ -1,10 +1,19 @@
-import { createStore, applyMiddleware, compose, Store } from "redux";
+import {
+  createStore,
+  applyMiddleware,
+  compose,
+  Store,
+  StoreEnhancer,
+} from "redux";
 import { createLogger } from "redux-logger";
 import createSagaMiddleware, { END } from "redux-saga";
 import * as Sentry from "@sentry/react";
 import rootReducer from "./reducers";
 
-const sentryReduxEnhancer = Sentry.createReduxEnhancer({
+const sentryReduxEnhancer: StoreEnhancer<
+  Record<string, unknown>,
+  RootState
+> = Sentry.createReduxEnhancer({
   // Optionally pass options
 });
 
@@ -16,7 +25,8 @@ const configureStore = (preloadedState?: any) => {
     compose<any>(
       process.env.REACT_APP_DEV
         ? applyMiddleware(saga, createLogger())
-        : applyMiddleware(saga, sentryReduxEnhancer)
+        : applyMiddleware(saga),
+      sentryReduxEnhancer
     )
   );
   store.runSaga = saga.run;
