@@ -1,5 +1,23 @@
 @charset "UTF-8";
 
+/* font */
+body{
+  font-family:'Poppins', 'Noto Sans', 'Noto Sans KR', 'AppleGothicNeoSD', 'Apple SD 산돌고딕 Neo'!important
+}
+.font-weight-bold{
+  font-weight:500!important;
+}
+.font-weight-bolder{
+  font-weight:600!important;
+}
+.font-weight-boldest{
+  font-weight:700!important;
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6,
+strong{
+  font-weight:600;
+}
+
 /* 프로필 */
 .avatar img{
     width: calc(100% - 2px);

@@ -142,7 +142,7 @@ export default function FeedbackModal() {
                 </div>
               )}
               <div className="d-flex flex-column flex-grow-1 w-100px">
-                <span className="d-flex justify-content-between align-items-center text-dark my-1 font-size-lg font-weight-bolder">
+                <span className="d-flex justify-content-between align-items-center text-dark my-1 font-size-lg font-weight-bold">
                   <span>{`${receiveUser?.organization?.name} ${receiveUser?.name}`}</span>
                   <Profile user={receiveUser} type="item" />
                 </span>

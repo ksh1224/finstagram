@@ -122,7 +122,7 @@ export default function CommentItem({
           </div>
         </div>
         <div className="font-size-sm">
-          <a onClick={() => likeComment()}>
+          <a href="javascript:;" onClick={() => likeComment()}>
             <span
               className={`svg-icon svg-icon-sm pr-1 ${
                 like ? "svg-icon-danger" : "svg-icon-light-dark"
