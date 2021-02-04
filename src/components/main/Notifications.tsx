@@ -68,12 +68,14 @@ export default function Notifications() {
           <Scroll
             className="ps px-8 pb-8 h-auto max-h-500px"
             style={{ height: "500px", overflow: "hidden" }}
-            callback={() =>
-              totalPages &&
-              currentPage &&
-              totalPages > currentPage &&
-              request(currentPage + 1)
-            }
+            callback={() => {
+              if (
+                typeof totalPages === "number" &&
+                typeof currentPage === "number" &&
+                totalPages > currentPage
+              )
+                request(currentPage + 1);
+            }}
           >
             <div className="d-flex flex-column flex-center py-10 bg-secondary rounded-top bg-light mx-n8">
               <h4 className="text-dark font-weight-bold">공지사항</h4>
@@ -95,6 +97,7 @@ export default function Notifications() {
                   createdAt,
                   sender,
                   targetEntity,
+                  targetEntityDescription,
                   hasRead,
                 }: any) => {
                   return (
@@ -107,7 +110,7 @@ export default function Notifications() {
                           : undefined
                       }
                       onClick={() => {
-                        switch (targetEntity) {
+                        switch (targetEntityDescription) {
                           case "FEEDBACK":
                             showModal("feedback", entityId);
                             break;
