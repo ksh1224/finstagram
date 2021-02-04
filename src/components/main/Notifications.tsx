@@ -66,7 +66,7 @@ export default function Notifications() {
           }}
         >
           <Scroll
-            className="ps p-8 h-auto max-h-500px"
+            className="ps px-8 pb-8 h-auto max-h-500px"
             style={{ height: "500px", overflow: "hidden" }}
             callback={() =>
               totalPages &&
@@ -75,7 +75,7 @@ export default function Notifications() {
               request(currentPage + 1)
             }
           >
-            <div className="d-flex flex-column flex-center py-10 bg-secondary rounded-top bg-light mt-n8 mx-n8">
+            <div className="d-flex flex-column flex-center py-10 bg-secondary rounded-top bg-light mx-n8">
               <h4 className="text-dark font-weight-bold">공지사항</h4>
               <span className="btn btn-success btn-sm font-weight-bold font-size-sm mt-2">
                 확인하기
