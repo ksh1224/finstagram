@@ -110,7 +110,6 @@ export default function FeedbackModal() {
 
   return (
     <Modal
-      size="lg"
       show={!!feedbackModal}
       animation
       centered
