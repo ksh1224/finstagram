@@ -32,7 +32,7 @@ export default function OKRReviewResult() {
           조직장 Review
         </div>
         <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-          <div className="card-body p-6 word-keep">
+          <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
             {evaluationData && evaluationData[0]
               ? evaluationData[0].answer
               : "리뷰 데이터가 없습니다."}
@@ -129,7 +129,7 @@ export default function OKRReviewResult() {
                                 {1 + qnaIndex}.{tagUtil(question, "sm")}
                               </div>
                               <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-                                <div className="card-body p-6 word-keep">
+                                <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
                                   {arr}
                                 </div>
                               </div>

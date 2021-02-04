@@ -135,7 +135,7 @@
 /* 피드백 요청하기 모달 동료 추가/제거 하기 */
 .dble-item .btn-delete{
   opacity:0;
-  transition:.1s!important;
+  transition:.3s!important;
 }
 .dble-item .btn-delete:hover{
   opacity:1;
@@ -163,7 +163,7 @@
   opacity:1;
 }
 #layer_rq_srchList .symbol-label{
-  transition:.3s;
+  transition:.1s;
 }
 #layer_rq_srchList .checked .symbol-label{
   border:2px solid var(--primary);
