@@ -36,7 +36,7 @@ export const msalConfig: MsalProviderRedirectConfig = {
       loggerOptions: {
         loggerCallback: process.env.REACT_APP_DEV
           ? (level, message, containsPii): void => {
-              if (containsPii) {
+              if (containsPii && !process.env.REACT_APP_DEV) {
                 return;
               }
               // eslint-disable-next-line default-case
