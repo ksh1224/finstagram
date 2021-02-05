@@ -141,7 +141,7 @@ export default function CommentItem({
               : likeCount)}
         </div>
       </div>
-      <div className="text-dark-75 font-size-sm font-weight-normal pt-3">
+      <div className="text-dark-75 font-size-sm font-weight-normal pt-3" style={{whiteSpace:"pre-wrap"}}>
         {content}
       </div>
     </div>

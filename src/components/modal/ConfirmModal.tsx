@@ -34,36 +34,17 @@ export default function ConfirmModal() {
       onHide={() => close()}
     >
       <div className="modal-content">
-        <div
-          className="modal-body"
-          style={{
-            minHeight: "100px",
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <p
-            className="text-dark-75 m-0"
-            style={{ fontSize: "18px", textAlign: "center" }}
-          >
+        <div className="modal-body min-h-100px d-flex align-items-center justify-content-center font-size-lg">
+          <p className="text-dark m-0">
             {content}
           </p>
         </div>
         <div
-          className="modal-footer"
-          style={{
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "center",
-            borderTopColor: "#0000",
-            padding: "10px",
-          }}
-        >
+          className="modal-footer border-0 p-0">
           {cancel && (
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn btn-secondary btn-block m-0 rounded-0 w-50px flex-grow-1"
               data-dismiss="modal"
               onClick={() => close()}
             >
@@ -72,7 +53,7 @@ export default function ConfirmModal() {
           )}
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary btn-block m-0 rounded-0 w-50px flex-grow-1"
             data-dismiss="modal"
             onClick={() => {
               if (onConfirm) {

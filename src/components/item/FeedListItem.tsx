@@ -163,7 +163,7 @@ export default function FeedListItem(feed: DataType) {
           </div>
 
           <div>
-            <div className="text-dark-75 font-size-lg font-weight-normal pt-5">
+            <div className="text-dark-75 font-size-lg font-weight-normal pt-5" style={{whiteSpace:"pre-wrap"}}>
               <p>{contents}</p>
             </div>
             <div className="separator separator-solid mt-6 mb-2" />

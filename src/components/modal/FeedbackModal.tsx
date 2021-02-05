@@ -154,7 +154,7 @@ export default function FeedbackModal() {
             </div>
 
             <div>
-              <div className="text-dark-75 font-size-lg font-weight-normal pt-5">
+              <div className="text-dark-75 font-size-lg font-weight-normal pt-5" style={{whiteSpace:"pre-wrap"}}>
                 <p>{contents}</p>
                 {fileUrl && (
                   <p>

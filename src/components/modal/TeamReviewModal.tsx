@@ -397,7 +397,7 @@ export default function TeamReviewModal() {
                                 }
                               />
                             ) : (
-                              <div className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2">
+                              <div className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2" style={{whiteSpace:"pre-wrap"}}>
                                 {data.considerPoint ||
                                   "작성한 리뷰가 없습니다."}
                               </div>
@@ -423,7 +423,7 @@ export default function TeamReviewModal() {
                                 }
                               />
                             ) : (
-                              <div className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2">
+                              <div className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2" style={{whiteSpace:"pre-wrap"}}>
                                 {data.continuePoint ||
                                   "작성한 리뷰가 없습니다."}
                               </div>
