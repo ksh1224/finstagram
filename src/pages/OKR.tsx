@@ -19,9 +19,9 @@ export default function OKR() {
       className="content container-fluid tab-pane pb-0 active"
       id="content_tab_okr"
     >
-      <div className="row h-100">
-        <div className="section-group-1 col-auto flex-grow-1 w-100px h-100">
-          <div className="card card-custom flex-row h-100">
+      <div className="row h-md-100">
+        <div className="section-group-1 col-auto flex-grow-1 w-100px h-md-100">
+          <div className="card card-custom flex-row h-md-100">
             <TeamList />
             {data ? <UserOKR /> : <TeamOKR />}
           </div>

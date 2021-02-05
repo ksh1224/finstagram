@@ -45,8 +45,11 @@ export default function Header() {
     <div id="kt_header" className="header flex-column header-fixed">
       <div className="header-top">
         <div className="container-fluid">
-          <h1 className="d-lg-flex align-items-center mr-3">
-            <div className="mr-20 text-dark-50">Finstagram</div>
+          <h1 className="logo d-lg-flex align-items-center mr-3 w-100px flex-grow-1">
+            <div className="mr-20 text-dark-50 h-100 d-flex align-items-center">
+              <img src="http://cdn.fnf.co.kr/logos/finstagram.png" alt="Finstagram" />
+              <span className="d-none">Finstagram</span>
+            </div>
           </h1>
           <div className="align-items-center" id="kt_aside_mobile_toggle">
             <button

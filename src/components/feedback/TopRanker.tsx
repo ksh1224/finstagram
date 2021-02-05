@@ -63,10 +63,10 @@ export default function TopRanker() {
   const QuerterGroup: ArrayType = data?.bestCommunicatorByGroup;
 
   return (
-    <div className="col-auto h-sm-100 w-400px d-flex flex-column section-1">
+    <div className="col-auto h-lg-100 w-400px d-flex flex-column section-1">
       <SearchInput value={searchText} onChange={setSearchText} />
-      <div className="position-relative h-100px flex-grow-1 overflow-hidden mt-n7 pt-7 px-7 mx-n7">
-        <div className="card card-custom h-100 rounded-bottom-0">
+      <div className="position-relative h-lg-100px flex-grow-1 overflow-hidden mt-n7 pt-7 px-7 pb-8 pb-xl-0 mx-n7">
+        <div className="card card-custom h-lg-100 rounded-bottom-0">
           <TopRankerHeader
             isQuerter={isQuerter}
             setIsQuerter={setIsQuerter}
@@ -75,7 +75,7 @@ export default function TopRanker() {
             orgGroupId={orgGroupId}
             setOrgGroupId={setOrgGroupId}
           />
-          <div className="card-body overflow-hidden overflow-y-auto h-100px flex-grow-1">
+          <div className="card-body overflow-hidden overflow-y-auto h-lg-100px min-h-300px flex-grow-1">
             <div className="tab-content">
               <DataValidationContainer isFetching={!AllGroup && isFetching}>
                 {!isQuerter

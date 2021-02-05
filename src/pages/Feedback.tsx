@@ -26,8 +26,8 @@ export default function Feedback() {
       className="content container-fluid tab-pane pb-0 active"
       id="content_tab_feedback"
     >
-      <div className="row h-100">
-        <div className="col-auto h-sm-100 d-flex flex-column overflow-hidden overflow-y-auto section-group-1">
+      <div className="row h-md-100">
+        <div className="col-auto h-md-100 d-flex flex-column overflow-hidden overflow-y-auto section-group-1">
           <TopRanker />
           <FeedList />
         </div>

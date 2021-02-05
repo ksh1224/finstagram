@@ -150,8 +150,8 @@ export default function FeedList() {
   }, [selectBadgeData]);
 
   return (
-    <div className="col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column overflow-hidden section-2">
-      <ul className="nav nav-tabs nav-tabs-line gutter-b border-light-dark">
+    <div className="col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column section-2">
+      <ul className="nav nav-tabs nav-tabs-line gutter-b border-light-dark position-sticky top-0 bg-white zindex-1">
         {tabName.map((name, i) => (
           <li key={name} className="nav-item">
             <a
@@ -173,7 +173,7 @@ export default function FeedList() {
         ref={scrollRef}
         callback={() => pagination()}
         isFetching={scollFetching}
-        className="tab-content h-100px flex-grow-1 m-n7 p-7"
+        className="tab-content h-lg-100px flex-grow-1 m-n7 p-7"
       >
         <DataValidationContainer
           isFetching={

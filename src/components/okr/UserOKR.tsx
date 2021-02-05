@@ -83,8 +83,8 @@ export default function UserOKR({ isMy }: UserOKRType) {
     <div
       className={
         isMy
-          ? "section-group-2 col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column"
-          : "section-2 col-auto h-sm-100 flex-grow-1 w-100px d-flex flex-column px-0"
+          ? "section-group-2 col-auto h-md-100 flex-grow-1 w-100px d-flex flex-column"
+          : "section-2 col-auto h-md-100 flex-grow-1 w-100px d-flex flex-column px-0"
       }
     >
       <div className="card card-custom card-stretch rounded-bottom-0">
