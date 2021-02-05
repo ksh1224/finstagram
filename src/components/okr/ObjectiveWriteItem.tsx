@@ -29,6 +29,9 @@ export default function ObjectiveWriteItem({
   updateValues,
   type,
   keyResults,
+  multiMeta,
+  multiMetaDuration,
+  remainingDays,
 }: ObjectiveWriteItemType) {
   const { data } = useMyOKR();
   // eslint-disable-next-line consistent-return
@@ -110,6 +113,44 @@ export default function ObjectiveWriteItem({
         <div className="d-flex justify-content-between mt-2 align-items-center">
           {type === "update" ? (
             <div className="font-size-sm">
+              {`${((multiMetaDuration || 0) + 1) * 3}개월`}
+            </div>
+          ) : (
+            <select
+              className="custom-select form-control border-0 shadow-none pr-3 pl-0 py-0 bg-transparent bgi-position-x-right font-size-sm w-60px h-auto"
+              onChange={({ target }) =>
+                onChange &&
+                onChange(index, { multiMetaDuration: Number(target.value) })
+              }
+            >
+              {[0, 1].map((duration) => (
+                <option
+                  selected={duration === multiMetaDuration}
+                  value={duration}
+                >
+                  {((duration || 0) + 1) * 3}개월
+                </option>
+              ))}
+            </select>
+          )}
+          <OverlayTrigger
+            placement="left"
+            overlay={
+              <IconPopover title="OKR 기간">
+                <p>해당 Objective의 추진 기간 설정</p>
+              </IconPopover>
+            }
+          >
+            <a className="btn btn-icon btn-circle btn-xs btn-hover-icon-primary">
+              <span className="svg-icon svg-icon-md svg-icon-dark mr-0">
+                <SVG xmlns="http://www.w3.org/2000/svg" name="question" />
+              </span>
+            </a>
+          </OverlayTrigger>
+        </div>
+        <div className="d-flex justify-content-between mt-2 align-items-center">
+          {type === "update" ? (
+            <div className="font-size-sm">
               {keyResults
                 ? (
                     keyResults?.reduce((acc, value) => {
@@ -119,7 +160,7 @@ export default function ObjectiveWriteItem({
                 : 0}
             </div>
           ) : (
-            <div className="font-size-sm">{updateValues?.progress}</div>
+            <div className="font-size-sm">{updateValues?.progress || 0}</div>
           )}
           <OverlayTrigger
             placement="left"

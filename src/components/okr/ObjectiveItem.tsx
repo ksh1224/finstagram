@@ -32,9 +32,10 @@ export default function ObjectiveItem({
     status,
     statusColor,
     objectiveHistory,
+    multiMeta,
+    remainingDays,
   }: any = objective;
   const { showModal } = useModal();
-
   const decoratedOnClick = useAccordionToggle(`${objectIndex}`, () => {
     clickItem(objectIndex);
   });
@@ -64,7 +65,19 @@ export default function ObjectiveItem({
               }`}
             >
               <div className="d-flex w-100 font-size-base">
-                <div className="w-100px">{`objective ${objectIndex + 1}`}</div>
+                <div className="w-100px">
+                  {`objective ${objectIndex + 1}`}
+                  {typeof remainingDays === "number" && remainingDays > 0 && (
+                    <>
+                      <br />
+                      <span className="font-size-xs text-dark-50">
+                        {remainingDays === 0
+                          ? "d-day"
+                          : `(D-${remainingDays}일)`}
+                      </span>
+                    </>
+                  )}
+                </div>
                 <div className="w-100px flex-grow-1 mr-10">{description}</div>
                 <div className="w-50px">{statusToKo[status]}</div>
                 <div

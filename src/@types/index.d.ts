@@ -29,6 +29,10 @@ declare global {
       progress?: number;
     };
     index?: number;
+    // 추가
+    multiMeta?: boolean;
+    multiMetaDuration?: number;
+    remainingDays?: number;
   };
 
   type KeyResultType = {
@@ -51,6 +55,7 @@ declare global {
       progress?: number;
       status?: string;
       historyDescription?: string;
+      multiMetaDuration?: number;
     },
     objectiveIndex?: number
   ) => void;

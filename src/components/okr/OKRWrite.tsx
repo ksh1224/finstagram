@@ -82,6 +82,8 @@ export default function OKRWrite({
               status: IN_PROGRESS,
             },
             index: objectiveIndex,
+            multiMeta: false,
+            multiMetaDuration: 0,
           },
         ]);
         setKeyResults([
@@ -186,6 +188,8 @@ export default function OKRWrite({
           status: IN_PROGRESS,
         },
         index: objectiveIndex,
+        multiMeta: false,
+        multiMetaDuration: 0,
       },
     ]);
     setKeyResults([
@@ -237,7 +241,13 @@ export default function OKRWrite({
 
   // OKR 데이터 삽입
   const objectiveChangeHandler: OKRChangeHandler = (index, value) => {
-    const { description, progress, status, historyDescription } = value;
+    const {
+      description,
+      progress,
+      status,
+      historyDescription,
+      multiMetaDuration,
+    } = value;
     setObjectives([
       ...objectives.map((obj) =>
         obj.index === index
@@ -246,10 +256,16 @@ export default function OKRWrite({
               ...(description !== undefined && { description }),
               updateValues: {
                 ...obj.updateValues,
-                ...(progress !== undefined && { progress }),
-                ...(status !== undefined && { status }),
-                ...(historyDescription !== undefined && { historyDescription }),
+                ...(typeof progress === "number" && { progress }),
+                ...(typeof status === "string" && { status }),
+                ...(typeof historyDescription === "string" && {
+                  historyDescription,
+                }),
               },
+              ...(typeof multiMetaDuration === "number" && {
+                multiMetaDuration,
+                multiMeta: multiMetaDuration > 0,
+              }),
             }
           : obj
       ),
