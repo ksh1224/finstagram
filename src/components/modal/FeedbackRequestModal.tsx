@@ -126,8 +126,8 @@ export default function FeedbackRequestModal() {
   return (
     <Modal show={showRequestModal} animation centered onHide={() => close()}>
       <div className="modal-content" onClick={() => setSearchText("")}>
-        <div className="modal-header border-0 mb-n12">
-          <h3 className="modal-title">피드백 요청 동료 추가</h3>
+        <div className="modal-header">
+          <h3 className="modal-title">피드백 요청하기</h3>
           <button
             type="button"
             className="close"
@@ -142,18 +142,19 @@ export default function FeedbackRequestModal() {
           <div className="d-flex flex-column align-items-center">
             {!!requestFeedbackModal && (
               <div
-                className="quick-search quick-search-has-result input-group input-group-solid mb-10 w-225px w-xxl-250px"
+                className="quick-search quick-search-has-result input-group input-group-solid mb-7 w-225px w-xxl-250px"
                 data-toggle="search"
                 data-list="#layer_rq_srchList"
               >
                 <div className="input-group-prepend">
                   <span className="input-group-text">
-                    <span className="svg-icon svg-icon-lg">
-                      <SVG name="search" />
-                    </span>
+                    <label className="svg-icon svg-icon-lg m-0" htmlFor="input_add_fdrC">
+                      <SVG name="plus" />
+                    </label>
                   </span>
                 </div>
                 <input
+                  id="input_add_fdrC" 
                   style={{ fontSize: "12px" }}
                   type="text"
                   className="form-control py-4 h-auto"
@@ -190,10 +191,7 @@ export default function FeedbackRequestModal() {
                         return (
                           <div
                             key={userData.id}
-                            className="d-flex align-items-center bg-hover-light cursor-pointer px-5 py-4"
-                            style={
-                              include ? { backgroundColor: "#9993" } : undefined
-                            }
+                            className={`d-flex align-items-center bg-hover-light cursor-pointer px-5 py-4 ${include && "checked"}`}
                             onClick={() =>
                               include ? deleteUser(userData) : addUser(userData)
                             }
@@ -225,19 +223,21 @@ export default function FeedbackRequestModal() {
             )}
             <div className="d-flex max-w-100 overflow-x-auto">
               <div className="mx-3 text-center">
-                <Profile
-                  user={requestFeedbackModal ? feedbackUser : feed?.sendUser}
-                  type="feedbackModal"
-                />
-                <div className="font-weight-bolder text-dark-75 font-size-lg m-0 pt-1">
+                <div className="position-relative rounded-circle overflow-hidden" style={{fontSize:"0"}}>
+                  <Profile
+                    user={requestFeedbackModal ? feedbackUser : feed?.sendUser}
+                    type="feedbackModal"
+                  />
+                </div>
+                <div className="font-weight-bolder text-dark-75 font-size-lg m-0 pt-2">
                   {requestFeedbackModal
                     ? feedbackUser?.name
                     : feed?.sendUser.name}
                 </div>
               </div>
               {users?.map((userData) => (
-                <div key={userData.id} className="mx-3 text-center">
-                  <span className="symbol-label position-relative bg-transparent">
+                <div key={userData.id} className="dble-item mx-3 text-center">
+                  <div className="position-relative rounded-circle overflow-hidden" style={{fontSize:"0"}}>
                     <Profile
                       onClick={() => deleteUser(userData)}
                       user={userData}
@@ -245,15 +245,15 @@ export default function FeedbackRequestModal() {
                     />
                     <button
                       type="button"
-                      className="label label-danger position-absolute bottom-0 right-0 mr-n2 mb-1 border-0"
+                      className="btn-delete btn btn-primary position-absolute top-0 left-0 h-100 w-100 m-0 p-0"
                       onClick={() => deleteUser(userData)}
                     >
-                      <span className="svg-icon svg-icon-white">
-                        <SVG name="delete" />
+                      <span className="svg-icon svg-icon-xxl svg-icon-white m-0">
+                        <SVG name="close" />
                       </span>
                     </button>
-                  </span>
-                  <div className="font-weight-bolder text-dark-75 font-size-lg m-0 pt-1">
+                  </div>
+                  <div className="font-weight-bolder text-dark-75 font-size-lg m-0 pt-2">
                     {userData?.name}
                   </div>
                 </div>

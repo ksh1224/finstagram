@@ -131,7 +131,7 @@ export default function LeaderReviewResult() {
             문항 별 결과(긍정응답률)
           </div>
           <div className="card bg-light-light text-dark-75 mt-4">
-            <div className="card-body review-score py-4 px-6">
+            <div className="card-body review-score py-4 px-6" style={{whiteSpace:"pre-wrap"}}>
               {scores &&
                 scores.map(
                   ({ question, myScore, averageScore }: any, i: number) => {

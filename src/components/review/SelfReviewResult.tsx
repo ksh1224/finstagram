@@ -16,7 +16,7 @@ export default function SelfReviewResult() {
           자기 성과 Review
         </div>
         <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-          <div className="card-body p-6 word-keep">
+          <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
             {result?.self?.reviewData && result.self.reviewData[0].answer
               ? enterLine(
                   result.self.reviewData[0].answer,
@@ -33,7 +33,7 @@ export default function SelfReviewResult() {
           Continue Points(잘한점)
         </div>
         <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-          <div className="card-body p-6 word-keep">
+          <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
             {result?.self?.evaluation?.continuePoint
               ? result.self.evaluation.continuePoint
               : "리뷰 데이터가 없습니다"}
@@ -45,7 +45,7 @@ export default function SelfReviewResult() {
           Consider Points(개선점)
         </div>
         <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-          <div className="card-body p-6 word-keep">
+          <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
             {result?.self?.evaluation?.considerPoint
               ? result.self.evaluation.considerPoint
               : "리뷰 데이터가 없습니다"}

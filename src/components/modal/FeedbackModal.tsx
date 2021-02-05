@@ -142,7 +142,7 @@ export default function FeedbackModal() {
                 </div>
               )}
               <div className="d-flex flex-column flex-grow-1 w-100px">
-                <span className="d-flex justify-content-between align-items-center text-dark my-1 font-size-lg font-weight-bolder">
+                <span className="d-flex justify-content-between align-items-center text-dark my-1 font-size-lg font-weight-bold">
                   <span>{`${receiveUser?.organization?.name} ${receiveUser?.name}`}</span>
                   <Profile user={receiveUser} type="item" />
                 </span>
@@ -154,7 +154,7 @@ export default function FeedbackModal() {
             </div>
 
             <div>
-              <div className="text-dark-75 font-size-lg font-weight-normal pt-5">
+              <div className="text-dark-75 font-size-lg font-weight-normal pt-5" style={{whiteSpace:"pre-wrap"}}>
                 <p>{contents}</p>
                 {fileUrl && (
                   <p>

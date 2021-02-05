@@ -60,7 +60,7 @@ export default function KeyResultItem({
           </a>
           <div className="flex-grow-1" />
           <div className="w-50px">{statusToKo[status]}</div>
-          <div className="w-50px text-right" style={{ color: statusColor }}>
+          <div className="w-35px text-right" style={{ color: statusColor }}>
             {progress}
           </div>
         </div>

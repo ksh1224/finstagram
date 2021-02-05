@@ -81,7 +81,7 @@ export default function ObjectiveItem({
                 <div className="w-100px flex-grow-1 mr-10">{description}</div>
                 <div className="w-50px">{statusToKo[status]}</div>
                 <div
-                  className="w-50px text-right"
+                  className="w-35px text-right"
                   style={{ color: statusColor }}
                 >
                   {progress}

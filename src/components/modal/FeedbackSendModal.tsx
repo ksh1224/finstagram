@@ -94,7 +94,8 @@ export default function FeedbackSendModal() {
   return (
     <Modal show={show} animation centered onHide={() => close()}>
       <div className="modal-content">
-        <div className="modal-header border-0 mb-n12 justify-content-end">
+        <div className="modal-header">
+          <h3 className="modal-title">피드백 보내기</h3>
           <button
             type="button"
             className="close position-relative zindex-1"

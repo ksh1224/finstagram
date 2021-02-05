@@ -101,7 +101,7 @@ export default function KeyResultModal() {
               </a>
               <div className="flex-grow-1" />
               <div>{statusToKo[status]}</div>
-              <div className="w-50px text-right" style={{ color: statusColor }}>
+              <div className="w-35px text-right" style={{ color: statusColor }}>
                 {progress}
               </div>
             </div>

@@ -99,7 +99,7 @@ export default function MyFeedback() {
         <div className="card-body pt-2 overflow-y-auto">
           <div className="d-flex flex-column flex-center">
             <Profile user={user} width={120} />
-            <div className="card-title font-weight-bolder text-dark-75 font-size-h4 m-0 pt-4 pb-7">
+            <div className="card-title font-weight-bold text-dark-75 font-size-h4 m-0 pt-4 pb-7">
               {user?.organization?.name} {user?.name}
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function MyFeedback() {
           >
             <div className="card card-custom bg-light-light shadow-none gutter-b">
               <div className="card-header border-0">
-                <h4 className="card-title text-dark font-weight-bolder">
+                <h4 className="card-title text-dark">
                   칭찬 배지
                 </h4>
               </div>
@@ -272,7 +272,7 @@ export default function MyFeedback() {
                         <div className="font-weight-bold">
                           {data?.user?.name}
                         </div>
-                        <small className="d-block text-truncate">
+                        <small className="d-block text-truncate text-gray">
                           {data?.user?.organization?.name}
                         </small>
                       </div>

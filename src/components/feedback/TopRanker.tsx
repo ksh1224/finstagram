@@ -75,7 +75,7 @@ export default function TopRanker() {
             orgGroupId={orgGroupId}
             setOrgGroupId={setOrgGroupId}
           />
-          <div className="card-body overflow-hidden overflow-y-auto">
+          <div className="card-body overflow-hidden overflow-y-auto h-100px flex-grow-1">
             <div className="tab-content">
               <DataValidationContainer isFetching={!AllGroup && isFetching}>
                 {!isQuerter

@@ -108,7 +108,7 @@ export default function OKRCommentModal() {
           <h5 className="modal-title font-size-h6">
             <span className="d-block font-size-sm font-weight-normal">
               {statusToKo[status]}
-              <span className="text-danger font-weight-bold">{progress}</span>
+              <span className="text-danger font-weight-bold ml-1">{progress}</span>
             </span>
             {description}
           </h5>
