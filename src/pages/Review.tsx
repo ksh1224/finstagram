@@ -78,26 +78,29 @@ export default function Review() {
 
   const { isWrite } = getDeadline(dateShowResult);
 
-  useScrollTop(tabArr, (el) => {
-    const { scrollTop } = el;
-    mobileScrollRef.current = el;
-    if (!isWrite && scrollRef.current) {
-      if (scrollTop === 0 && tabArr[0]) {
-        setResultIndex(tabArr[0].index);
-        calculateHeight();
-        return;
-      }
-      let prevTabHeight = 0;
-      tabArr.forEach((tab, i) => {
-        if (scrollTop === 0) {
+  useScrollTop(
+    (el) => {
+      const { scrollTop } = el;
+      mobileScrollRef.current = el;
+      if (!isWrite && scrollRef.current) {
+        if (scrollTop === 0 && tabArr[0]) {
           setResultIndex(tabArr[0].index);
-        } else if (prevTabHeight < scrollTop && scrollTop <= tab.height) {
-          setResultIndex(tabArr[i].index);
+          calculateHeight();
+          return;
         }
-        prevTabHeight = tab.height;
-      });
-    }
-  });
+        let prevTabHeight = 0;
+        tabArr.forEach((tab, i) => {
+          if (scrollTop === 0) {
+            setResultIndex(tabArr[0].index);
+          } else if (prevTabHeight < scrollTop && scrollTop <= tab.height) {
+            setResultIndex(tabArr[i].index);
+          }
+          prevTabHeight = tab.height;
+        });
+      }
+    },
+    [tabArr]
+  );
 
   useEffect(() => {
     if (!isWrite && windowWidth && scrollRef.current && windowWidth <= 767) {

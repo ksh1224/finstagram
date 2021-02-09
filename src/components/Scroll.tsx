@@ -3,6 +3,7 @@ import React, { createRef, useEffect, useState, forwardRef } from "react";
 
 type Props = {
   className?: string;
+  id?: string;
   children: JSX.Element | JSX.Element[];
   style?: React.CSSProperties;
   isFetching?: boolean;
@@ -12,7 +13,7 @@ type Props = {
 
 export default forwardRef<HTMLDivElement, Props>(
   (
-    { className, children, style, callback, isFetching, onScroll }: Props,
+    { className, children, style, callback, isFetching, onScroll, id }: Props,
     ref
   ) => {
     const safeRef = useForwardedRef<HTMLDivElement>(ref);
@@ -36,6 +37,7 @@ export default forwardRef<HTMLDivElement, Props>(
 
     return (
       <div
+        id={id}
         className={`overflow-hidden overflow-y-auto ${className || ""}`}
         ref={safeRef}
         style={style}
