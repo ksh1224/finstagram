@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { DependencyList, useEffect } from "react";
 
-export default function useScrollTop(value: any, onScroll: (e: any) => void) {
+export default function useScrollTop(
+  onScroll: (e: any) => void,
+  deps?: DependencyList
+) {
   useEffect(() => {
     function handleScroll(event: any) {
       if (event) {
@@ -15,5 +18,5 @@ export default function useScrollTop(value: any, onScroll: (e: any) => void) {
       // Unbind the event listener on clean up
       document.removeEventListener("scroll", handleScroll);
     };
-  }, [value]);
+  }, [deps]);
 }
