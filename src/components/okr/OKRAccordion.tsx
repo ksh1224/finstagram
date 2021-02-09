@@ -24,7 +24,7 @@ export default function OKRAccordion({
   };
 
   return (
-    <Accordion className="mb-10">
+    <Accordion className="accordion-toggle-arrow mb-10">
       {objectives &&
         objectives.map((objective: any, objectIndex: number) =>
           objective.status !== CANCEL ? (

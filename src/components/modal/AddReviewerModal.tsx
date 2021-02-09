@@ -147,12 +147,12 @@ export default function AddReviewerModal() {
             <></>
           ) : (
             <div className="border-bottom px-7">
-              <h5 className="font-weight-bolder gutter-b text-dark">
+              <h6 className="font-weight-bold text-dark-75 mb-5">
                 나의 Reviewer 찾기
-              </h5>
+              </h6>
 
               <div
-                className="quick-search quick-search-has-result input-group input-group-solid mb-3"
+                className="quick-search quick-search-has-result input-group input-group-solid gutter-b"
                 data-toggle="search"
               >
                 <div className="input-group-prepend">
@@ -187,14 +187,12 @@ export default function AddReviewerModal() {
           {isSubmit ? (
             <></>
           ) : (
-            <div className="d-flex flex-column pt-4 px-7">
-              <h5 className="font-weight-bolder text-dark mb-4 word-keep">
+            <div className="d-flex flex-column px-7 gutter-b">
+              <h6 className="font-weight-bold text-dark-75 gutter-t mb-7 word-keep">
                 Finstagram에서 Feedback을 주거나 받은 동료
-              </h5>
+              </h6>
               <div
-                className="text-nowrap mx-n2 text-center reviewer-list gutter-b"
-                style={{ height: "74px" }}
-              >
+                className="text-nowrap text-center reviewer-list pb-2 px-7 mx-n7 fs-scroll">
                 {feedbackList.map((feedbackUser) => {
                   const isInclude = !!reviewerlist.find(
                     (reviewer) => reviewer.userId === feedbackUser.id
@@ -224,8 +222,8 @@ export default function AddReviewerModal() {
             </div>
           )}
 
-          <div className="d-flex position-relative flex-column pt-4 px-7">
-            <div className="d-flex flex-grow-1 flex-row pb-4">
+          <div className="d-flex position-relative flex-column bg-light-light">
+            <div className="d-flex flex-grow-1 flex-row py-4 px-7 bg-secondary border-top border-light-dark">
               <div className="d-flex w-150px justify-content-center">
                 Reviewer
               </div>
@@ -240,7 +238,7 @@ export default function AddReviewerModal() {
             </div>
             <Scroll style={{ maxHeight: "30vh" }}>
               {reviewerlist.map((user) => (
-                <div className="d-flex py-4 border-top border-light-dark">
+                <div className="d-flex py-4 px-7 border-top border-light-dark">
                   <div className="d-flex w-150px align-items-center">
                     <div className="avatar symbol symbol-50 mr-4">
                       <Profile user={user} onClick={() => {}} />

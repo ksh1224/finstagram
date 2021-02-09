@@ -117,7 +117,7 @@ export default function MyFeedback() {
               </div>
               <div className="card-body p-0">
                 <div
-                  className="feedback-icon-group card-spacer-x pb-5"
+                  className="feedback-icon-group card-spacer-x pb-5 fs-scroll"
                   id="feedback-scroll"
                 >
                   <div className="d-flex flex-nowrap text-nowrap mx-n2">

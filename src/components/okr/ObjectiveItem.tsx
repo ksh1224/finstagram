@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { statusType, statusToKo } from "constant/progress";
 import { Accordion, Card, useAccordionToggle, Button } from "react-bootstrap";
 import SVG from "utils/SVG";
-import styles from "./arrow.scss";
 import KeyResultItem from "./KeyResultItem";
 
 type ObjectiveItemType = {
@@ -51,7 +50,6 @@ export default function ObjectiveItem({
             ? ""
             : "data"
         } ${isOpen(objectIndex) ? "" : "off"}`}
-        style={styles}
       >
         <Accordion.Toggle
           as={Card.Header}
