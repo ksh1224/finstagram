@@ -107,7 +107,7 @@ export default function TeamList() {
   });
 
   return (
-    <div className="section-1 col-auto h-sm-100 w-250px d-flex flex-column border-right px-0">
+    <div className="section-1 col-auto h-md-100 w-250px d-flex flex-column border-right px-0">
       <div className="card card-custom card-stretch rounded-0 shadow-none">
         <OKRSearchInput
           onFocus={(e) => setFocus(e)}
@@ -116,7 +116,7 @@ export default function TeamList() {
         />
         <div ref={divRef} className="card-body position-relative px-6 py-0">
           <div
-            className={`list-team h-100 overflow-y-auto py-5 ${
+            className={`list-team h-md-100 overflow-y-auto py-5 ${
               focus ? "show" : ""
             }`}
           >
