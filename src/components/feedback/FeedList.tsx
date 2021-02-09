@@ -13,10 +13,15 @@ import {
 import SVG from "utils/SVG";
 import DataValidationContainer from "layouts/DataValidationContainer";
 import Scroll from "components/Scroll";
+import useScrollEnd from "hooks/useScrollEnd";
 
 const tabName = ["최신 피드백", "내가 받은 피드백", "내가 보낸 피드백"];
 
-export default function FeedList() {
+type Props = {
+  scrollEnd?: boolean;
+};
+
+export default function FeedList({ scrollEnd }: Props) {
   const scrollRef = createRef<HTMLDivElement>();
   const scrollBadgeRef = createRef<HTMLDivElement>();
   const {
@@ -87,6 +92,21 @@ export default function FeedList() {
         break;
     }
   };
+
+  useEffect(() => {
+    if (scrollEnd) {
+      pagination();
+    }
+  }, [scrollEnd]);
+
+  useScrollEnd(
+    (isScrollEnd) => {
+      if (isScrollEnd) {
+        pagination();
+      }
+    },
+    [feedRecentList]
+  );
 
   const scollFetching =
     (tab === 0 && feedRecentFetching) ||
