@@ -29,9 +29,7 @@ export default function ObjectiveWriteItem({
   updateValues,
   type,
   keyResults,
-  multiMeta,
   multiMetaDuration,
-  remainingDays,
 }: ObjectiveWriteItemType) {
   const { data } = useMyOKR();
   // eslint-disable-next-line consistent-return

@@ -3,10 +3,15 @@ import React, { useEffect, useState } from "react";
 
 type InputType = {
   value?: string;
+  onFocus?: (isForcus: boolean) => void;
   onChangeState?: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export default function OKRSearchInput({ value, onChangeState }: InputType) {
+export default function OKRSearchInput({
+  value,
+  onChangeState,
+  onFocus,
+}: InputType) {
   return (
     <div className="card-header align-items-center px-5">
       <div
@@ -26,6 +31,8 @@ export default function OKRSearchInput({ value, onChangeState }: InputType) {
           onChange={({ target }) =>
             onChangeState && onChangeState(target.value)
           }
+          onFocus={() => onFocus && onFocus(true)}
+          // onBlur={() => onFocus && onFocus(false)}
           type="text"
           className="form-control py-4 h-auto"
           placeholder="팀 또는 이름을 입력해 주세요."
