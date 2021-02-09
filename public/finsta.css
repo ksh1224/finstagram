@@ -1136,6 +1136,7 @@ strong{
     width:100%!important;
     padding-top: 25px;
     transform: none;
+    overflow:unset!important;
   }
   #content_tab_feedback .section-group-2 {
     order: 3;

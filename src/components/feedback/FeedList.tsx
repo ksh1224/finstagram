@@ -173,7 +173,7 @@ export default function FeedList() {
         ref={scrollRef}
         callback={() => pagination()}
         isFetching={scollFetching}
-        className="tab-content h-lg-100px flex-grow-1 m-n7 p-7"
+        className="tab-content h-lg-100px flex-grow-1 my-n7 py-7 mx-n4 px-4"
       >
         <DataValidationContainer
           isFetching={

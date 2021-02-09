@@ -65,7 +65,7 @@ export default function TopRanker() {
   return (
     <div className="col-auto h-lg-100 w-400px d-flex flex-column section-1">
       <SearchInput value={searchText} onChange={setSearchText} />
-      <div className="position-relative h-lg-100px flex-grow-1 overflow-hidden mt-n7 pt-7 px-7 pb-8 pb-xl-0 mx-n7">
+      <div className="position-relative h-lg-100px flex-grow-1 overflow-hidden mt-n7 pt-7 px-4 pb-8 pb-xl-0 mx-n4">
         <div className="card card-custom h-lg-100 rounded-bottom-0">
           <TopRankerHeader
             isQuerter={isQuerter}
