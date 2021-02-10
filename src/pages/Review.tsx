@@ -133,7 +133,7 @@ export default function Review() {
         <div className="d-flex flex-column col h-md-100 p-0">
           <div
             className="d-flex flex-center mt-5 mb-10 review-top-select"
-            style={{ zIndex: 999 }}
+            style={{ zIndex: 99 }}
           >
             <DropdownButton
               className="dropdown bootstrap-select form-control max-w-200px bg-light"

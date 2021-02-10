@@ -32,6 +32,8 @@ strong{
 .logo img{
   width:auto;
   height:44%;
+  object-fit: contain;
+  object-position: 0 50%;
 }
 
 /* 프로필 */
@@ -879,6 +881,12 @@ strong{
   }
   #kt_header_topbar.on {
     left: 0;
+  }
+  @media (max-width : 575px){
+    .topbar-noti .dropdown-menu{
+      transform: translate3d(calc(-100% + 132px), 44px, 0px)!important;
+      width: calc(100vw - 20px);
+    }
   }
   #content_tab_feedback .section-group-1 {
     flex-direction: column !important;

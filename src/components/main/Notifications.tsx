@@ -32,7 +32,7 @@ export default function Notifications() {
 
   return (
     <div className="dropdown">
-      <div className="topbar-item mr-3">
+      <div className="topbar-noti topbar-item mr-3">
         <div
           className={`btn btn-icon btn-secondary ${
             typeof notiCount === "number" && notiCount !== 0
@@ -62,7 +62,7 @@ export default function Notifications() {
             willChange: "transform",
             top: "0px",
             left: "0px",
-            transform: "translate3d(-349px, 41px, 0px)",
+            transform: "translate3d(calc(-100% + 38px), 41px, 0px)",
           }}
         >
           <Scroll
