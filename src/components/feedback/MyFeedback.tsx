@@ -72,7 +72,7 @@ export default function MyFeedback() {
   }
 
   return (
-    <div className="col-auto h-sm-100 flex-grow-1 w-100px section-group-3">
+    <div className="col-auto h-md-100 flex-grow-1 w-100px section-group-3">
       <div className="card card-custom card-stretch rounded-bottom-0">
         <div className="card-header border-0">
           <h3 className="card-title font-weight-bolder">My Feedback</h3>
@@ -117,7 +117,7 @@ export default function MyFeedback() {
               </div>
               <div className="card-body p-0">
                 <div
-                  className="feedback-icon-group card-spacer-x pb-5"
+                  className="feedback-icon-group card-spacer-x pb-5 fs-scroll"
                   id="feedback-scroll"
                 >
                   <div className="d-flex flex-nowrap text-nowrap mx-n2">

@@ -224,7 +224,7 @@ export default function SelfReviewModal() {
               className="d-flex flex-column col-auto w-100px flex-grow-1 section-1 px-6"
               style={{ maxHeight: "74vh" }}
             >
-              <div className="d-flex flex-column  px-6">
+              <div className="d-flex flex-column">
                 <div className="flex-nowrap align-items-center border-0">
                   <h5
                     className="align-items-center d-flex flex-row"
@@ -263,7 +263,7 @@ export default function SelfReviewModal() {
                   </h5>
                 </div>
                 <div className="pt-2">
-                  <div className="overflow-x-auto pb-2 px-0 badge-scroll">
+                  <div className="overflow-x-auto pb-2 px-0 badge-scroll fs-scroll">
                     <div className="text-nowrap d-flex justify-content-between">
                       <div className="text-center px-2">
                         <div
@@ -410,7 +410,7 @@ export default function SelfReviewModal() {
                   {textArr.map((text, index) =>
                     isSubmitted ? (
                       // eslint-disable-next-line react/no-array-index-key
-                      <div key={index} className="pl-2 mt-3">
+                      <div key={index} className="pl-2 mt-3" style={{whiteSpace:"pre-wrap"}}>
                         {index + 1}. {text}
                       </div>
                     ) : (

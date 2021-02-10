@@ -130,10 +130,10 @@ export default function Review() {
       aria-labelledby="content_tab_review"
     >
       {!isFetching || availableMetas[0] ? (
-        <div className="d-flex flex-column col h-100 p-0">
+        <div className="d-flex flex-column col h-md-100 p-0">
           <div
             className="d-flex flex-center mt-5 mb-10 review-top-select"
-            style={{ zIndex: 999 }}
+            style={{ zIndex: 99 }}
           >
             <DropdownButton
               className="dropdown bootstrap-select form-control max-w-200px bg-light"
@@ -155,7 +155,7 @@ export default function Review() {
             </DropdownButton>
           </div>
           {isWrite ? (
-            <div className="row h-100 p-0 section-review flex-nowrap">
+            <div className="row h-md-100 p-0 section-review flex-nowrap">
               <div className="review-wrap">
                 <SelfReview />
               </div>
@@ -197,9 +197,9 @@ export default function Review() {
               </div>
             </div>
           ) : (
-            <div className="row flex-grow-1 h-100px p-0" id="tab-review">
+            <div className="row flex-grow-1 h-md-100px p-0" id="tab-review">
               <div className="col-auto h-sm-100 flex-grow-1 w-100">
-                <div className="card card-custom flex-row h-100 review-result">
+                <div className="card card-custom flex-row h-md-100 review-result">
                   <div className="section-1 col-auto h-sm-100 w-400px d-flex flex-column border-right px-0">
                     <div className="card card-custom card-stretch rounded-20 shadow-none">
                       <div className="card-body position-relative px-10 py-0">

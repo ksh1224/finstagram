@@ -189,7 +189,7 @@ export default function UserProfileModal() {
                 </div>
                 <div>
                   <div className="card-body pt-2">
-                    <div className="overflow-x-auto pb-2 px-0 badge-scroll">
+                    <div className="overflow-x-auto pb-2 px-0 badge-scroll fs-scroll">
                       <div className="text-nowrap d-flex justify-content-between">
                         <div
                           className="text-center px-2"
