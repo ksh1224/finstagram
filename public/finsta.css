@@ -927,22 +927,31 @@ strong{
   #content_tab_okr .section-group-1 .section-1 {
     border-right: 0 !important;
   }
-  #content_tab_okr .section-group-1 .section-1 .card-header + .card-body {
-    position: absolute !important;
-    top: 59px;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    z-index: 10;
+  #content_tab_okr .list-team-box {
+    padding-top:0!important;
+    padding-bottom:0!important;
   }
-  #content_tab_okr .section-group-1 .section-1 .list-team {
-    display: none;
-    opacity: 0;
+  #content_tab_okr .list-team-box .list-team,
+  .list-team-box #layer_okr_srchList
+  {
+    position:static!important;
+    height:0!important;
+    padding-top:0!important;
+    padding-bottom:0!important;
+    overflow:hidden;
+    opacity:0;
+    transition:.3s;
   }
-  #content_tab_okr .section-group-1 .section-1 .list-team.show {
-    display: block;
-    opacity: 1;
+  #content_tab_okr .list-team-box.focus .list-team,
+  .list-team-box.show #layer_okr_srchList{
+    height:auto!important;
+    max-height:9999px;
+    padding-top:1rem!important;
+    padding-bottom:1rem!important;
+    opacity:1;
   }
+
+
   #content_tab_okr .accordion .card-title {
     padding-right: 3rem !important;
   }

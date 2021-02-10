@@ -67,8 +67,7 @@ export default function ObjectiveItem({
                   {`objective ${objectIndex + 1}`}
                   {typeof remainingDays === "number" && remainingDays > 0 && (
                     <>
-                      <br />
-                      <span className="font-size-xs text-dark-50">
+                      <span className="d-inline d-lg-block ml-2 ml-lg-0 font-size-xs text-dark-50">
                         {remainingDays === 0
                           ? "d-day"
                           : `(D-${remainingDays}일)`}
