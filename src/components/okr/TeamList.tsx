@@ -114,11 +114,11 @@ export default function TeamList() {
           value={text}
           onChangeState={setText}
         />
-        <div ref={divRef} className={`list-team-box card-body position-relative px-6 py-0 
+        <div ref={divRef} className={`list-team-box card-body position-relative px-6 py-0 py-md-5 h-md-100 overflow-y-auto 
             ${
               focus ? (show ? "show" : "focus") : ""
             }`}>
-          <div className="list-team h-md-100 overflow-y-auto py-5">
+          <div className="list-team">
             <style dangerouslySetInnerHTML={{ __html: STYLE }} />
             <Tree
               style={{ fontSize: "15px" }}
