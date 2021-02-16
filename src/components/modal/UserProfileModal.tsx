@@ -114,6 +114,10 @@ export default function UserProfileModal() {
     }
   }, [myOKRData]);
 
+  useEffect(() => {
+    if (user) getFeedbackData();
+  }, [feedbackStatisticsData]);
+
   return (
     <Modal
       size="xl"
