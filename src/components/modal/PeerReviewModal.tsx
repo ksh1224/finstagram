@@ -394,7 +394,7 @@ export default function PeerReviewModal() {
                               </span>
                             )}
                         </div>
-                        <div className="mt-4 font-size-sm text-dark-50 text-truncate">
+                        <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
                           합계
                         </div>
                       </div>
@@ -433,7 +433,7 @@ export default function PeerReviewModal() {
                                 </span>
                               )}
                             </div>
-                            <div className="mt-4 font-size-sm text-dark-50 text-truncate">
+                            <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
                               {data?.badge?.name}
                             </div>
                           </div>

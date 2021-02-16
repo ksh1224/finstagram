@@ -146,7 +146,7 @@ export default function FeedbackModal() {
                   <span>{`${receiveUser?.organization?.name} ${receiveUser?.name}`}</span>
                   <Profile user={receiveUser} type="item" />
                 </span>
-                <span className="d-flex justify-content-between align-items-center text-dark-50">
+                <span className="d-flex justify-content-between align-items-center text-dark-50 font-weight-bold">
                   <span>{`Form ${sendUser?.organization?.name} ${sendUser?.name}`}</span>
                   <Profile user={sendUser} type="item" />
                 </span>

@@ -40,7 +40,7 @@ export default function SearchListItem({ user }: SearchListItemType) {
         </div>
         <div>
           <a
-            className="btn btn-text-dark-50 btn-icon-gray btn-hover-icon-primary text-hover-primary btn-sm d-block text-left p-0 d-flex align-items-center"
+            className="btn btn-text-dark-50 btn-icon-gray btn-hover-icon-primary text-hover-primary font-weight-bold btn-sm d-block text-left p-0 d-flex align-items-center"
             href="javascript:;"
             data-toggle="modal"
             data-target="#modal_sendFeedback"
@@ -67,7 +67,7 @@ export default function SearchListItem({ user }: SearchListItemType) {
             피드백 보내기
           </a>
           <a
-            className="btn btn-text-dark-50 btn-icon-gray btn-hover-icon-primary text-hover-primary btn-sm d-block text-left p-0 mt-2 d-flex align-items-center"
+            className="btn btn-text-dark-50 btn-icon-gray btn-hover-icon-primary text-hover-primary font-weight-bold btn-sm d-block text-left p-0 mt-2 d-flex align-items-center"
             href="javascript:;"
             data-toggle="modal"
             data-target="#modal_requestFeedback"
