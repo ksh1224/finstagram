@@ -310,7 +310,7 @@ th{
 .chart-donut [class*="donut-segment-"]{
     transform: rotate(-90deg);
     transform-origin: center;
-    animation: circle-chart-fill 1s .1s reverse;
+    animation: circle-chart-fill 1s reverse;
     stroke-width: 3.5;
 }
 .chart-donut .donut-segment-1{
