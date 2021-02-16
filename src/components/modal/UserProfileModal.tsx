@@ -191,81 +191,79 @@ export default function UserProfileModal() {
                     </span>
                   </h3>
                 </div>
-                <div>
-                  <div className="card-body pt-2">
-                    <div className="overflow-x-auto pb-2 px-0 badge-scroll fs-scroll">
-                      <div className="text-nowrap d-flex justify-content-between">
+                <div className="card-body pt-2">
+                  <div className="overflow-x-auto pb-2 px-0 badge-scroll fs-scroll">
+                    <div className="text-nowrap d-flex justify-content-between">
+                      <div
+                        className="text-center px-2"
+                        style={{ minWidth: "86px" }}
+                      >
                         <div
-                          className="text-center px-2"
-                          style={{ minWidth: "86px" }}
+                          className={`feedback-icon hover-on ${
+                            selectBadgeId === -1 ? "on" : ""
+                          }`}
+                          onClick={() => setSelectBadgeId(-1)}
                         >
+                          <SVG
+                            className="w-55px h-55px bg-white border border-light-dark rounded-circle"
+                            xmlns="http://www.w3.org/2000/svg"
+                            name="total"
+                            viewBox="0 0 90 90"
+                          />
+                          {!!feedbackBadge?.receivedTotal &&
+                            feedbackBadge?.receivedTotal !== 0 && (
+                              <span className="badge label label-lg">
+                                {feedbackBadge?.receivedTotal}
+                              </span>
+                            )}
+                        </div>
+                        <div className="mt-4 font-size-sm text-dark-50 text-truncate">
+                          합계
+                        </div>
+                      </div>
+                      {feedbackBadge &&
+                        feedbackBadge?.badgeList?.map((data: any) => (
                           <div
-                            className={`feedback-icon hover-on ${
-                              selectBadgeId === -1 ? "on" : ""
-                            }`}
-                            onClick={() => setSelectBadgeId(-1)}
+                            key={data?.badge?.id}
+                            className="text-center px-2"
+                            style={{ minWidth: "86px" }}
                           >
-                            <SVG
-                              className="w-55px h-55px bg-white border border-light-dark rounded-circle"
-                              xmlns="http://www.w3.org/2000/svg"
-                              name="total"
-                              viewBox="0 0 90 90"
-                            />
-                            {!!feedbackBadge?.receivedTotal &&
-                              feedbackBadge?.receivedTotal !== 0 && (
+                            <div
+                              className="feedback-icon hover-on on"
+                              onClick={() =>
+                                setSelectBadgeId(data?.badge?.id)
+                              }
+                            >
+                              <img
+                                className="w-55px h-55px"
+                                style={{
+                                  width: "65px",
+                                  height: "65px",
+                                  borderRadius: "33px",
+                                  border: `1.5px solid ${
+                                    selectBadgeId === data?.badge?.id
+                                      ? "#000"
+                                      : "#5555"
+                                  }`,
+                                }}
+                                src={
+                                  selectBadgeId === data?.badge?.id
+                                    ? data?.badge?.selectedFileUrlHttps
+                                    : data?.badge?.fileUrlHttps
+                                }
+                                alt=""
+                              />
+                              {!!data?.received && data?.received !== 0 && (
                                 <span className="badge label label-lg">
-                                  {feedbackBadge?.receivedTotal}
+                                  {data?.received}
                                 </span>
                               )}
-                          </div>
-                          <div className="mt-4 font-size-sm text-dark-50 text-truncate">
-                            합계
-                          </div>
-                        </div>
-                        {feedbackBadge &&
-                          feedbackBadge?.badgeList?.map((data: any) => (
-                            <div
-                              key={data?.badge?.id}
-                              className="text-center px-2"
-                              style={{ minWidth: "86px" }}
-                            >
-                              <div
-                                className="feedback-icon hover-on on"
-                                onClick={() =>
-                                  setSelectBadgeId(data?.badge?.id)
-                                }
-                              >
-                                <img
-                                  className="w-55px h-55px"
-                                  style={{
-                                    width: "65px",
-                                    height: "65px",
-                                    borderRadius: "33px",
-                                    border: `1.5px solid ${
-                                      selectBadgeId === data?.badge?.id
-                                        ? "#000"
-                                        : "#5555"
-                                    }`,
-                                  }}
-                                  src={
-                                    selectBadgeId === data?.badge?.id
-                                      ? data?.badge?.selectedFileUrlHttps
-                                      : data?.badge?.fileUrlHttps
-                                  }
-                                  alt=""
-                                />
-                                {!!data?.received && data?.received !== 0 && (
-                                  <span className="badge label label-lg">
-                                    {data?.received}
-                                  </span>
-                                )}
-                              </div>
-                              <div className="mt-4 font-size-sm text-dark-50 text-truncate">
-                                {data?.badge?.name}
-                              </div>
                             </div>
-                          ))}
-                      </div>
+                            <div className="mt-4 font-size-sm text-dark-50 text-truncate">
+                              {data?.badge?.name}
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
 
