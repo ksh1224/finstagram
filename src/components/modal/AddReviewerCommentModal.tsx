@@ -39,7 +39,7 @@ export default function AddReviewerCommentModal() {
               {feedbackUser ? (
                 <li>
                   <span className="text-dark-50 font-weight-bold">
-                    Form {feedbackUser?.organization.name} {feedbackUser?.name}
+                    {feedbackUser?.organization.name} {feedbackUser?.name}
                   </span>
                 </li>
               ) : (
@@ -47,7 +47,7 @@ export default function AddReviewerCommentModal() {
                 selectList.map((user: any) => (
                   <li>
                     <span className="text-dark-50 font-weight-bold">
-                      Form {user?.organizationName} {user?.name}
+                      {user?.organizationName} {user?.name}
                     </span>
                   </li>
                 ))

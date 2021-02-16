@@ -156,14 +156,17 @@ export default function FeedListItem(feed: DataType) {
                 <Profile user={receiveUser} type="item" />
               </span>
               <span className="d-flex justify-content-between align-items-center text-dark-50 font-weight-bold">
-                <span>{`Form ${sendUser?.organization?.name} ${sendUser?.name}`}</span>
+                <span>{`From ${sendUser?.organization?.name} ${sendUser?.name}`}</span>
                 <Profile user={sendUser} type="item" />
               </span>
             </div>
           </div>
 
           <div>
-            <div className="text-dark-75 font-size-lg font-weight-normal pt-5" style={{whiteSpace:"pre-wrap"}}>
+            <div
+              className="text-dark-75 font-size-lg font-weight-normal pt-5"
+              style={{ whiteSpace: "pre-wrap" }}
+            >
               <p>{contents}</p>
             </div>
             <div className="separator separator-solid mt-6 mb-2" />
