@@ -14,7 +14,7 @@ export default function AddReviewerModal() {
   const { request } = useReviewMain();
   const { modals, closeModal, showModal } = useModal();
   const [isSubmit, setIsSubmit] = useState(false);
-  const [reviewerlist, setReviewerList] = useState<any[]>([]);
+  const [reviewerlist, setReviewerList] = useState<any[] | null>(null);
   const [feedbackList, setFeedbackList] = useState<any[]>([]);
   const [text, setText] = useState("");
   const [searchList, setSearchList] = useState<any[]>([]);
@@ -29,7 +29,7 @@ export default function AddReviewerModal() {
     closeModal("addReviewer");
     setTimeout(() => {
       setText("");
-      setReviewerList([]);
+      setReviewerList(null);
       setFeedbackList([]);
       setIsSubmit(false);
     }, 300);
@@ -129,7 +129,7 @@ export default function AddReviewerModal() {
 
   return (
     <Modal
-      show={!!addReviewerModal && reviewerlist.length !== 0}
+      show={!!addReviewerModal && !!reviewerlist}
       animation
       centered
       onHide={() => close()}
@@ -191,12 +191,13 @@ export default function AddReviewerModal() {
               <h6 className="font-weight-bold text-dark-75 gutter-t mb-7 word-keep">
                 Finstagram에서 Feedback을 주거나 받은 동료
               </h6>
-              <div
-                className="text-nowrap text-center reviewer-list pb-2 px-7 mx-n7 fs-scroll">
+              <div className="text-nowrap text-center reviewer-list pb-2 px-7 mx-n7 fs-scroll">
                 {feedbackList.map((feedbackUser) => {
-                  const isInclude = !!reviewerlist.find(
-                    (reviewer) => reviewer.userId === feedbackUser.id
-                  );
+                  const isInclude =
+                    !!reviewerlist &&
+                    reviewerlist.find(
+                      (reviewer) => reviewer.userId === feedbackUser.id
+                    );
                   return (
                     <div
                       className="d-inline-block text-center"
@@ -237,49 +238,64 @@ export default function AddReviewerModal() {
               </div>
             </div>
             <Scroll style={{ maxHeight: "30vh" }}>
-              {reviewerlist.map((user) => (
-                <div className="d-flex py-4 px-7 border-top border-light-dark">
-                  <div className="d-flex w-150px align-items-center">
-                    <div className="avatar symbol symbol-50 mr-4">
-                      <Profile user={user} onClick={() => {}} />
+              {reviewerlist && reviewerlist.length !== 0 ? (
+                reviewerlist.map((user) => (
+                  <div className="d-flex py-4 px-7 border-top border-light-dark">
+                    <div className="d-flex w-150px align-items-center">
+                      <div className="avatar symbol symbol-50 mr-4">
+                        <Profile user={user} onClick={() => {}} />
+                      </div>
+                      <div className="overflow-hidden w-100px flex-grow-1 font-size-lg">
+                        <div className="font-weight-bold">{user?.name}</div>
+                        <small className="d-block text-truncate">
+                          {user?.department}
+                        </small>
+                      </div>
                     </div>
-                    <div className="overflow-hidden w-100px flex-grow-1 font-size-lg">
-                      <div className="font-weight-bold">{user?.name}</div>
-                      <small className="d-block text-truncate">
-                        {user?.department}
-                      </small>
+                    <div className="d-flex flex-grow-1 flex-row">
+                      <div className="d-flex flex-column col-8 p-0 align-items-center justify-content-center align-items-center justify-content-center">
+                        <span className="text-center word-keep">
+                          {user?.description}
+                        </span>
+                      </div>
+                      <div className="d-flex flex-column col-4 p-0 align-items-center justify-content-center">
+                        {isSubmit ? (
+                          <></>
+                        ) : user.type !== "EXTRA_BY_EVALUATOR" &&
+                          user?.deletable ? (
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => exceptReviewer(user?.userId)}
+                          >
+                            제외
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-sm"
+                          >
+                            필수
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="d-flex flex-grow-1 flex-row">
-                    <div className="d-flex flex-column col-8 p-0 align-items-center justify-content-center align-items-center justify-content-center">
-                      <span className="text-center word-keep">
-                        {user?.description}
-                      </span>
-                    </div>
-                    <div className="d-flex flex-column col-4 p-0 align-items-center justify-content-center">
-                      {isSubmit ? (
-                        <></>
-                      ) : user.type !== "EXTRA_BY_EVALUATOR" &&
-                        user?.deletable ? (
-                        <button
-                          type="button"
-                          className="btn btn-danger btn-sm"
-                          onClick={() => exceptReviewer(user?.userId)}
-                        >
-                          제외
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="btn btn-secondary btn-sm"
-                        >
-                          필수
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    minHeight: "100px",
+                  }}
+                  className="text-dark-75 font-size-lg font-weight-normal text-center"
+                >
+                  Reviewer가 없습니다.
+                </span>
+              )}
             </Scroll>
             <div
               id="layer_reviewer_srchList"
