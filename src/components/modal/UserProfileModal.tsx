@@ -214,7 +214,7 @@ export default function UserProfileModal() {
                                 </span>
                               )}
                           </div>
-                          <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
+                          <div className="mt-4 font-size-sm text-dark-50 text-truncate">
                             합계
                           </div>
                         </div>
@@ -256,7 +256,7 @@ export default function UserProfileModal() {
                                   </span>
                                 )}
                               </div>
-                              <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
+                              <div className="mt-4 font-size-sm text-dark-50 text-truncate">
                                 {data?.badge?.name}
                               </div>
                             </div>
