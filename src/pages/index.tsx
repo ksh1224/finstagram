@@ -1,5 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { Switch, Route, Link, useLocation, useParams } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  Link,
+  useLocation,
+  useParams,
+  Redirect,
+} from "react-router-dom";
 
 import { msalConfig } from "utils/msalConfig";
 
@@ -75,6 +82,7 @@ export default function App(): JSX.Element {
               <Route exact path="/" component={Feedback} />
               <Route path="/OKR" component={OKR} />
               <Route exact path="/Review" component={Review} />
+              <Redirect path="*" to="/" />
             </Switch>
           </SwitchContainer>
         </Body>
