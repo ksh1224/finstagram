@@ -116,20 +116,24 @@ export default function ObjectiveItem({
             </div>
           </div>
         </Accordion.Toggle>
-        {keyResult &&
-          keyResult.map(
-            (data: any, index: number) =>
-              data?.status &&
-              data?.status !== statusType.CANCEL && (
-                <KeyResultItem
-                  key={data?.id}
-                  objectIndex={objectIndex}
-                  keyResult={data}
-                  lastIndex={keyResult.length - 1 === index}
-                  index={index}
-                />
-              )
-          )}
+        <Accordion.Collapse eventKey={`${objectIndex}`} className="card-body">
+          <>
+            {keyResult &&
+              keyResult.map(
+                (data: any, index: number) =>
+                  data?.status &&
+                  data?.status !== statusType.CANCEL && (
+                    <KeyResultItem
+                      key={data?.id}
+                      objectIndex={objectIndex}
+                      keyResult={data}
+                      lastIndex={keyResult.length - 1 === index}
+                      index={index}
+                    />
+                  )
+              )}
+          </>
+        </Accordion.Collapse>
       </div>
     );
   return <></>;
