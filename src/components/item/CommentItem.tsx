@@ -81,7 +81,7 @@ export default function CommentItem({
         <Profile user={user} />
         <div className="w-100px flex-grow-1 mx-5">
           <div className="text-dark-50 font-weight-normal flex-grow-1 font-size-sm">
-            <span className="text-dark-75 text-hover-primary font-size-lg font-weight-bolder mr-2">
+            <span className="text-dark-75 text-hover-primary font-size-lg font-weight-bold mr-2">
               {user?.name}
             </span>
             <span>{user?.organization?.name}</span>

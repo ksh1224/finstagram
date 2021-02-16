@@ -29,7 +29,7 @@ export default function KeyResultItem({
   } = keyResult;
 
   return (
-    <Accordion.Collapse eventKey={`${objectIndex}`}>
+    <Accordion.Collapse eventKey={`${objectIndex}`} data-hoit={`${objectIndex}`}>
       <div className="card-body">
         <div className="font-size-base font-weight-bold mb-3 mt-1">
           Key-
