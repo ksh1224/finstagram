@@ -155,7 +155,7 @@ export default function FeedListItem(feed: DataType) {
                 <span>{`${receiveUser?.organization?.name} ${receiveUser?.name}`}</span>
                 <Profile user={receiveUser} type="item" />
               </span>
-              <span className="d-flex justify-content-between align-items-center text-dark-50 font-weight-bold">
+              <span className="d-flex justify-content-between align-items-center text-dark-50">
                 <span>{`From ${sendUser?.organization?.name} ${sendUser?.name}`}</span>
                 <Profile user={sendUser} type="item" />
               </span>

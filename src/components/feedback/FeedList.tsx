@@ -176,7 +176,7 @@ export default function FeedList({ scrollEnd }: Props) {
           <li key={name} className="nav-item">
             <a
               href="javascript:;"
-              className={`nav-link pt-1 pb-5 font-weight-bolder ${
+              className={`nav-link pt-1 pb-5 font-weight-bold ${
                 i === tab && "active"
               }`}
               onClick={() => {

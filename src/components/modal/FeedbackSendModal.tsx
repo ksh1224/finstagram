@@ -187,7 +187,7 @@ export default function FeedbackSendModal() {
                             }}
                           />
                         </span>
-                        <div className="mt-4 font-size-sm text-dark-50 font-weight-bold text-truncate">
+                        <div className="mt-4 font-size-sm text-dark-50 text-truncate">
                           {badge?.name}
                         </div>
                       </div>
