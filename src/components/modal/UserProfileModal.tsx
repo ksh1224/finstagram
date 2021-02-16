@@ -269,10 +269,7 @@ export default function UserProfileModal() {
                     </div>
                   </div>
 
-                  <Scroll
-                    className="card-body pt-2"
-                    style={{ maxHeight: "25vh" }}
-                  >
+                  <Scroll className="card-body pt-2">
                     <DataValidationContainer
                       noDataView={
                         <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
@@ -300,17 +297,14 @@ export default function UserProfileModal() {
                 </div>
               </div>
             </div>
-            <div className="col-auto w-100px flex-grow-1 section-2">
-              <div className="card card-custom card-stretch">
+            <div className="col-auto w-100px flex-grow-1 section-2 order-first order-lg-2">
+              <div className="card card-custom position-static position-lg-sticky top-0">
                 <div className="card-header flex-nowrap align-items-center border-0">
                   <h3 className="card-title align-items-start flex-column">
                     <span className="font-weight-bolder text-dark">OKR</span>
                   </h3>
                 </div>
-                <Scroll
-                  className="card-body pt-2"
-                  style={{ maxHeight: "38vh" }}
-                >
+                <Scroll className="card-body pt-2">
                   <div className="d-flex justify-content-between align-items-center">
                     <OKRGraph
                       show={show}

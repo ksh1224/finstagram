@@ -1025,7 +1025,7 @@ th{
   #modal_userProfile .col-auto  {
     width: 100% !important;
   }
-  #modal_userProfile .col-auto + .col-auto {
+  #modal_userProfile .section-2 {
     margin-top: 25px;
   }
   #layer_fd_srchList .modal-content {
