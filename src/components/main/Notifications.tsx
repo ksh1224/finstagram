@@ -77,12 +77,12 @@ export default function Notifications() {
                 request(currentPage + 1);
             }}
           >
-            <div className="d-flex flex-column flex-center py-10 bg-secondary rounded-top bg-light mx-n8">
+            {/* <div className="d-flex flex-column flex-center py-10 bg-secondary rounded-top bg-light mx-n8">
               <h4 className="text-dark font-weight-bold">공지사항</h4>
               <span className="btn btn-success btn-sm font-weight-bold font-size-sm mt-2">
                 확인하기
               </span>
-            </div>
+            </div> */}
             <DataValidationContainer
               noDataView={
                 <div className="d-flex align-items-center mx-n8 p-8 mt-8 justify-content-center">
