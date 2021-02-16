@@ -176,10 +176,17 @@ export default function App(): JSX.Element {
       </div>
     );
   return (
-    <div className="d-flex flex-row flex-column-fluid page">
-      <div className="d-flex w-100 align-items-center justify-content-center">
-        <div className="spinner spinner-primary spinner-lg spinner-center w-100 h-50px" />
-      </div>
+    <div className="splash-screen">
+      <svg className="splash-spinner" viewBox="0 0 50 50">
+        <circle
+          className="path"
+          cx="25"
+          cy="25"
+          r="20"
+          fill="none"
+          strokeWidth="5"
+        />
+      </svg>
     </div>
   );
 }
