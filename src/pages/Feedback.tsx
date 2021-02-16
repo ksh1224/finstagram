@@ -38,6 +38,7 @@ export default function Feedback() {
     >
       <div className="row h-md-100">
         <Scroll
+          removeScrollY
           callback={() => {
             scrollEnd();
           }}

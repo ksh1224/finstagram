@@ -7,13 +7,23 @@ type Props = {
   children: JSX.Element | JSX.Element[];
   style?: React.CSSProperties;
   isFetching?: boolean;
+  removeScrollY?: boolean;
   callback?: () => void;
   onScroll?: (e: React.UIEvent<HTMLDivElement, UIEvent>) => void;
 };
 
 export default forwardRef<HTMLDivElement, Props>(
   (
-    { className, children, style, callback, isFetching, onScroll, id }: Props,
+    {
+      className,
+      children,
+      style,
+      callback,
+      isFetching,
+      removeScrollY,
+      onScroll,
+      id,
+    }: Props,
     ref
   ) => {
     const safeRef = useForwardedRef<HTMLDivElement>(ref);
@@ -38,7 +48,9 @@ export default forwardRef<HTMLDivElement, Props>(
     return (
       <div
         id={id}
-        className={`overflow-hidden overflow-y-auto ${className || ""}`}
+        className={`overflow-hidden ${removeScrollY ? "" : "overflow-y-auto"} ${
+          className || ""
+        }`}
         ref={safeRef}
         style={style}
         onScroll={(e) => {
