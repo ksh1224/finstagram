@@ -70,57 +70,59 @@ export default function PeerReview() {
         <h3 className="card-title font-weight-bolder">동료 Review</h3>
       </div>
       <div className="card-body overflow-y-auto">
-        {my.isReviewer && peerSelectEvalPeriod === "Write" && (
-          <ReviewCardItem
-            title="팀원 Reviewer 추가"
-            // total={1}
-            // count={progress?.okrSelfSubmitted ? 1 : 0}
-            period={peerSelectEvalPeriod}
-            periodText={peerSelectEvalPeriodText}
-            header={<></>}
-            // removeCenterText
-          >
-            <div className="d-flex flex-column position-relative bg-light-light">
-              <div className="d-flex flex-grow-1 flex-row px-8 py-4 bg-secondary border-top border-light-dark align-items-center">
-                <div className="d-flex w-150px justify-content-center">
-                  팀원
-                </div>
-                <div className="d-flex flex-grow-1 flex-row align-items-center">
-                  <div className="col-6 p-0 text-center">내용</div>
-                  <div className="col-6 p-0 text-center word-keep">
-                    Reviewer 선정현황
+        {my.isReviewer &&
+          (peerSelectEvalPeriod === "Write" ||
+            peerSelectEvalPeriod === "BEFORE") && (
+            <ReviewCardItem
+              title="팀원 Reviewer 추가"
+              // total={1}
+              // count={progress?.okrSelfSubmitted ? 1 : 0}
+              period={peerSelectEvalPeriod}
+              periodText={peerSelectEvalPeriodText}
+              header={<></>}
+              // removeCenterText
+            >
+              <div className="d-flex flex-column position-relative bg-light-light">
+                <div className="d-flex flex-grow-1 flex-row px-8 py-4 bg-secondary border-top border-light-dark align-items-center">
+                  <div className="d-flex w-150px justify-content-center">
+                    팀원
+                  </div>
+                  <div className="d-flex flex-grow-1 flex-row align-items-center">
+                    <div className="col-6 p-0 text-center">내용</div>
+                    <div className="col-6 p-0 text-center word-keep">
+                      Reviewer 선정현황
+                    </div>
                   </div>
                 </div>
+                <Scroll style={{ maxHeight: "300px" }}>
+                  {peerEvalListData && peerEvalListData.length !== 0 ? (
+                    peerEvalListData.map((contents: any) => (
+                      <ReviewListItem
+                        contents={contents?.user}
+                        buttonText={`${contents?.size}/6`}
+                        action={contents?.size < 6}
+                        description={
+                          contents?.size < 6
+                            ? `${6 - contents?.size}명 이상 추가해주세요.`
+                            : ""
+                        }
+                        onClick={() =>
+                          showModal("addTeamReviewer", {
+                            meta,
+                            user: contents?.user,
+                          })
+                        }
+                      />
+                    ))
+                  ) : (
+                    <div className="w-100 py-8 text-center word-keep">
+                      리뷰 가능한 팀원이 없습니다.
+                    </div>
+                  )}
+                </Scroll>
               </div>
-              <Scroll style={{ maxHeight: "300px" }}>
-                {peerEvalListData && peerEvalListData.length !== 0 ? (
-                  peerEvalListData.map((contents: any) => (
-                    <ReviewListItem
-                      contents={contents?.user}
-                      buttonText={`${contents?.size}/6`}
-                      action={contents?.size < 6}
-                      description={
-                        contents?.size < 6
-                          ? `${6 - contents?.size}명 이상 추가해주세요.`
-                          : ""
-                      }
-                      onClick={() =>
-                        showModal("addTeamReviewer", {
-                          meta,
-                          user: contents?.user,
-                        })
-                      }
-                    />
-                  ))
-                ) : (
-                  <div className="w-100 py-8 text-center word-keep">
-                    리뷰 가능한 팀원이 없습니다.
-                  </div>
-                )}
-              </Scroll>
-            </div>
-          </ReviewCardItem>
-        )}
+            </ReviewCardItem>
+          )}
         <ReviewCardItem
           title="동료 Review 작성"
           total={peer?.total}
