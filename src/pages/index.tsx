@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useLayoutEffect } from "react";
 import {
   Switch,
   Route,
@@ -46,6 +46,7 @@ import {
 } from "@azure/msal-react";
 import { InteractionType } from "@azure/msal-browser";
 import KeyResultModal from "components/modal/KeyResultModal";
+import { versionCheck } from "utils/pkgInfoUtil";
 
 export default function App(): JSX.Element {
   const { request, user, error, isFetching } = useAuth();
@@ -53,12 +54,7 @@ export default function App(): JSX.Element {
   const { error: authError } = useMsalAuthentication(InteractionType.Redirect);
   const account = useAccount(accounts[0] || {});
   const isAuthenticated = useIsAuthenticated(accounts[0]);
-
-  // useEffect(() => {
-  //   if (accounts.length === 0) {
-  //     instance.loginRedirect(msalConfig.redirectRequestConfig);
-  //   }
-  // }, [accounts]);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (account && isAuthenticated)
@@ -71,6 +67,17 @@ export default function App(): JSX.Element {
           request(result.accessToken);
         });
   }, [account, isAuthenticated]);
+
+  useLayoutEffect(() => {
+    versionCheck(() => {
+      caches.keys().then((names) => {
+        names.forEach((name) => {
+          caches.delete(name);
+        });
+      });
+      window.history.go(0);
+    });
+  }, [pathname]);
 
   if (user && account && isAuthenticated && !isFetching)
     return (

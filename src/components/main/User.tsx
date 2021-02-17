@@ -1,5 +1,5 @@
 import SVG from "utils/SVG";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Profile from "components/Profile";
 import { useAuth } from "hooks/useRedux";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ export default function User() {
     (state: RootState) => state.setting
   );
   const dispatch = useDispatch();
+  const version = localStorage.getItem("version");
 
   useEffect(() => {
     const isHelp = localStorage.getItem("help");
@@ -118,7 +119,7 @@ export default function User() {
         <div className="d-flex justify-content-between text-muted px-8 py-5">
           <span className="font-weight-bold">Version</span>
           <span className="opacity-70">
-            {process.env.REACT_APP_VERSION || "DEV MODE"}
+            {process.env.REACT_APP_DEV ? version : "DEV MODE"}
           </span>
         </div>
       </div>

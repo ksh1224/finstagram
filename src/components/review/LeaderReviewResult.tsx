@@ -106,18 +106,18 @@ export default function LeaderReviewResult() {
               style={{ width: "calc(100% - 200px)" }}
             >
               <span
-                className={`d-flex align-items-center mt-2 ${
-                  averageScorePercentage <= 50
-                    ? "position-relative left-50 mb-2 text-dark"
+                className={`d-flex align-items-center mt-4 mb-2 ${
+                  myScorePercentage <= 50
+                    ? "position-relative left-50 text-dark"
                     : ""
                 }`}
               >
-                평균 5점
+                평균 {myScoreTotalAverage}점
               </span>
               <span
-                className={`d-flex align-items-center mt-2 ${
-                  averageScoreTotalAverage <= 50
-                    ? "position-relative left-50 mb-2 text-dark"
+                className={`d-flex align-items-center mt-2 mb-4 ${
+                  averageScorePercentage <= 50
+                    ? "position-relative left-50 text-dark"
                     : ""
                 }`}
               >
@@ -131,7 +131,10 @@ export default function LeaderReviewResult() {
             문항 별 결과(긍정응답률)
           </div>
           <div className="card bg-light-light text-dark-75 mt-4">
-            <div className="card-body review-score py-4 px-6" style={{whiteSpace:"pre-wrap"}}>
+            <div
+              className="card-body review-score py-4 px-6"
+              style={{ whiteSpace: "pre-wrap" }}
+            >
               {scores &&
                 scores.map(
                   ({ question, myScore, averageScore }: any, i: number) => {
