@@ -21,6 +21,7 @@ import APIAuthSaga from "./APIAuthSaga";
 import watchFeedback from "./feedback";
 import notificationSaga from "./notificationSaga";
 import watchOKR from "./okr";
+import pulling from "./pulling";
 import watchReview from "./review";
 import searchUserSaga from "./searchUserSaga";
 
@@ -36,6 +37,7 @@ function* watchCommon() {
     ({ payload }: { type: string; payload?: number }) =>
       notificationSaga(payload)
   );
+  yield pulling();
 }
 
 export default function* root(): Generator {
