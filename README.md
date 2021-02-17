@@ -9,11 +9,11 @@
 
 # Finstagram
 
-### `소개`
+### 소개
 
 FNF 인사관리 어플리케이션입니다.
 
-### `기술`
+### 기술
 
 - [Typescript][typescript]
 - [React][react]
@@ -24,24 +24,23 @@ FNF 인사관리 어플리케이션입니다.
 - [React-Router][react-router]
 - [Microsoft Azure SSO][azure]
 
-### `세팅`
+### 세팅
 1. 깃 클론
-```
-git clone https://github.com/ksh1224/finstagram.git
-```
+
+       git clone https://github.com/ksh1224/finstagram.git
+
 2. 해당 프로젝트 모듈 설치
-```
-yarn  
 
-or
+       yarn  
 
-npm install
-```
+       or
+
+       npm install
+
 3. 환경 변수 설정 후 실행
-```
-yarn start
 
-or
+       yarn start
 
-npm run start
-```
+       or
+
+       npm run start
