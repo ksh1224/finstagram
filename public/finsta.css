@@ -895,7 +895,7 @@ th{
     flex-direction: column !important;
     width: 50% !important;
     transform: translate(0);
-    overflow-y:auto;
+    overflow-y:auto!important;
   }
   #content_tab_feedback .section-group-3 .d-flex.min-h-60px {
     flex-direction: row;
