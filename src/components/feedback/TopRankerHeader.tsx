@@ -6,6 +6,7 @@ type TopRankerHeaderType = {
   orgGroupId?: number;
   setIsQuerter?: React.Dispatch<React.SetStateAction<boolean>>;
   setOrgGroupId?: React.Dispatch<React.SetStateAction<number | undefined>>;
+  onClick?: () => void;
   AllGroup?: {
     orgGroup: {
       id: number;
@@ -27,6 +28,7 @@ export default function TopRankerHeader({
   QuerterGroup,
   orgGroupId,
   setOrgGroupId,
+  onClick,
 }: TopRankerHeaderType) {
   const { showModal } = useModal();
 
@@ -46,7 +48,10 @@ export default function TopRankerHeader({
             className={`btn btn-sm ${
               !isQuerter ? "btn-light-dark btn-hover-light-dark" : "btn-light"
             }`}
-            onClick={() => setIsQuerter && setIsQuerter(false)}
+            onClick={() => {
+              if (setIsQuerter) setIsQuerter(false);
+              if (onClick) onClick();
+            }}
           >
             연간
           </button>
@@ -55,7 +60,10 @@ export default function TopRankerHeader({
             className={`btn btn-sm ${
               isQuerter ? "btn-light-dark btn-hover-light-dark" : "btn-light"
             }`}
-            onClick={() => setIsQuerter && setIsQuerter(true)}
+            onClick={() => {
+              if (setIsQuerter) setIsQuerter(true);
+              if (onClick) onClick();
+            }}
           >
             분기
           </button>
@@ -70,7 +78,10 @@ export default function TopRankerHeader({
                     className={`nav-link border-0 ${
                       orgGroup.id === orgGroupId ? "active" : ""
                     }`}
-                    onClick={() => setOrgGroupId && setOrgGroupId(orgGroup.id)}
+                    onClick={() => {
+                      if (setOrgGroupId) setOrgGroupId(orgGroup.id);
+                      if (onClick) onClick();
+                    }}
                   >
                     {orgGroup.name}
                   </a>
@@ -83,7 +94,10 @@ export default function TopRankerHeader({
                     className={`nav-link border-0 ${
                       orgGroup.id === orgGroupId ? "active" : ""
                     }`}
-                    onClick={() => setOrgGroupId && setOrgGroupId(orgGroup.id)}
+                    onClick={() => {
+                      if (setOrgGroupId) setOrgGroupId(orgGroup.id);
+                      if (onClick) onClick();
+                    }}
                   >
                     {orgGroup.name}
                   </a>

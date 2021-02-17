@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import TopRankerItem from "components/item/TopRankerItem";
 import SearchInput from "components/input/FeedbackSearchInput";
 import SearchList from "components/feedback/SearchList";
 import TopRankerHeader from "components/feedback/TopRankerHeader";
 import { useTopRanker } from "hooks/useFeedBackRedux";
 import DataValidationContainer from "layouts/DataValidationContainer";
+import Scroll from "components/Scroll";
 
 type ArrayType = [
   {
@@ -44,6 +45,7 @@ export default function TopRanker() {
   const [isQuerter, setIsQuerter] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [orgGroupId, setOrgGroupId] = useState<number>();
+  const scrollRef = createRef<HTMLDivElement>();
 
   useEffect(() => {
     if (!orgGroupId && data?.bestCommunicatorByGroup) {
@@ -74,8 +76,14 @@ export default function TopRanker() {
             QuerterGroup={QuerterGroup}
             orgGroupId={orgGroupId}
             setOrgGroupId={setOrgGroupId}
+            onClick={() => {
+              scrollRef.current?.scrollTo({ top: 0 });
+            }}
           />
-          <div className="card-body overflow-hidden overflow-y-auto h-lg-100px min-h-300px flex-grow-1">
+          <Scroll
+            ref={scrollRef}
+            className="card-body h-lg-100px min-h-300px flex-grow-1"
+          >
             <div className="tab-content">
               <DataValidationContainer isFetching={!AllGroup && isFetching}>
                 {!isQuerter
@@ -149,7 +157,7 @@ export default function TopRanker() {
                     })}
               </DataValidationContainer>
             </div>
-          </div>
+          </Scroll>
         </div>
         <SearchList text={searchText} />
       </div>
