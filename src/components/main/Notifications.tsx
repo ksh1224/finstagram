@@ -34,7 +34,7 @@ export default function Notifications() {
   });
 
   useEffect(() => {
-    if (location.search.includes("showmethenoti")) {
+    if (location.search.includes("ShowMeTheNoti")) {
       setShow(true);
       history.push(location.pathname);
     }
