@@ -45,7 +45,7 @@ export default function MyFeedback() {
   }, [feedbackStatisticsData]);
 
   useEffect(() => {
-    if (feedRecentData) {
+    if (feedRecentData && feedbackStatisticsData) {
       const { year, quarter } = feedbackStatisticsData;
       cancelBadge();
       feedbackBadgeRequest(year, quarter);
@@ -111,9 +111,7 @@ export default function MyFeedback() {
           >
             <div className="card card-custom bg-light-light shadow-none gutter-b">
               <div className="card-header border-0">
-                <h4 className="card-title text-dark">
-                  칭찬 배지
-                </h4>
+                <h4 className="card-title text-dark">칭찬 배지</h4>
               </div>
               <div className="card-body p-0">
                 <div
