@@ -145,11 +145,11 @@ export default function PeerReviewResult() {
       contribution
     ) {
       const pie1 = new Chart(
-        contributionPieRef.current,
+        collaborationPieRef.current,
         pieConfig(collaboration.continueCount, collaboration.considerCount)
       );
       const pie2 = new Chart(
-        collaborationPieRef.current,
+        contributionPieRef.current,
         pieConfig(contribution.continueCount, contribution.considerCount)
       );
     }
@@ -160,11 +160,11 @@ export default function PeerReviewResult() {
       contribution
     ) {
       const bar1 = new Chart(
-        contributionBarRef.current,
+        collaborationBarRef.current,
         barConfig(collaboration.myScore, collaboration.totalScore)
       );
       const bar2 = new Chart(
-        collaborationBarRef.current,
+        contributionBarRef.current,
         barConfig(contribution.myScore, contribution.totalScore)
       );
     }
@@ -233,7 +233,10 @@ export default function PeerReviewResult() {
               Comment(잘한점)
             </div>
             <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-              <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
+              <div
+                className="card-body p-6 word-keep"
+                style={{ whiteSpace: "pre-wrap" }}
+              >
                 {contribution.continueComment.map((comment: string) => (
                   <>
                     - {comment}
@@ -253,7 +256,10 @@ export default function PeerReviewResult() {
               Comment(개선점)
             </div>
             <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-              <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
+              <div
+                className="card-body p-6 word-keep"
+                style={{ whiteSpace: "pre-wrap" }}
+              >
                 {contribution.considerComment.map((comment: string) => (
                   <>
                     - {comment}
@@ -326,7 +332,10 @@ export default function PeerReviewResult() {
               Comment(잘한점)
             </div>
             <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-              <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
+              <div
+                className="card-body p-6 word-keep"
+                style={{ whiteSpace: "pre-wrap" }}
+              >
                 {collaboration?.continueComment &&
                   collaboration.continueComment.map((comment: string) => (
                     <>
@@ -347,7 +356,10 @@ export default function PeerReviewResult() {
               Comment(개선점)
             </div>
             <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-              <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
+              <div
+                className="card-body p-6 word-keep"
+                style={{ whiteSpace: "pre-wrap" }}
+              >
                 {collaboration.considerComment.map((comment: string) => (
                   <>
                     - {comment}

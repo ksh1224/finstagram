@@ -2,6 +2,7 @@
 import SVG from "utils/SVG";
 import React, { createRef, useEffect, useState } from "react";
 import Profile from "components/Profile";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useModal, useNotification } from "hooks/useRedux";
 import useOutsideClick from "hooks/useOutsideClick";
 import Scroll from "components/Scroll";
@@ -17,6 +18,8 @@ export default function Notifications() {
     notiCount,
     request,
   } = useNotification();
+  const location = useLocation();
+  const history = useHistory();
   const { showModal, modals } = useModal();
   const [show, setShow] = useState(false);
   const divRef = createRef<HTMLDivElement>();
@@ -29,6 +32,13 @@ export default function Notifications() {
         await request();
       }, 100);
   });
+
+  useEffect(() => {
+    if (location.search.includes("ShowMeTheNoti")) {
+      setShow(true);
+      history.push(location.pathname);
+    }
+  }, []);
 
   return (
     <div className="dropdown">

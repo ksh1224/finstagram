@@ -22,7 +22,7 @@ type UserType = {
 
 export default function FeedbackRequestModal() {
   const fileRef = createRef<HTMLInputElement>();
-  const textLimit = 100;
+  const textLimit = 1000;
   const { user } = useAuth();
   const { modals, closeModal } = useModal();
   const [users, setUsers] = useState<UserType[]>();
@@ -148,13 +148,16 @@ export default function FeedbackRequestModal() {
               >
                 <div className="input-group-prepend">
                   <span className="input-group-text">
-                    <label className="svg-icon svg-icon-lg m-0" htmlFor="input_add_fdrC">
+                    <label
+                      className="svg-icon svg-icon-lg m-0"
+                      htmlFor="input_add_fdrC"
+                    >
                       <SVG name="plus" />
                     </label>
                   </span>
                 </div>
                 <input
-                  id="input_add_fdrC" 
+                  id="input_add_fdrC"
                   style={{ fontSize: "12px" }}
                   type="text"
                   className="form-control py-4 h-auto"
@@ -191,7 +194,9 @@ export default function FeedbackRequestModal() {
                         return (
                           <div
                             key={userData.id}
-                            className={`d-flex align-items-center bg-hover-light cursor-pointer px-5 py-4 ${include && "checked"}`}
+                            className={`d-flex align-items-center bg-hover-light cursor-pointer px-5 py-4 ${
+                              include && "checked"
+                            }`}
                             onClick={() =>
                               include ? deleteUser(userData) : addUser(userData)
                             }
@@ -223,7 +228,10 @@ export default function FeedbackRequestModal() {
             )}
             <div className="d-flex max-w-100 overflow-x-auto">
               <div className="mx-3 text-center">
-                <div className="position-relative rounded-circle overflow-hidden" style={{fontSize:"0"}}>
+                <div
+                  className="position-relative rounded-circle overflow-hidden"
+                  style={{ fontSize: "0" }}
+                >
                   <Profile
                     user={requestFeedbackModal ? feedbackUser : feed?.sendUser}
                     type="feedbackModal"
@@ -237,7 +245,10 @@ export default function FeedbackRequestModal() {
               </div>
               {users?.map((userData) => (
                 <div key={userData.id} className="dble-item mx-3 text-center">
-                  <div className="position-relative rounded-circle overflow-hidden" style={{fontSize:"0"}}>
+                  <div
+                    className="position-relative rounded-circle overflow-hidden"
+                    style={{ fontSize: "0" }}
+                  >
                     <Profile
                       onClick={() => deleteUser(userData)}
                       user={userData}

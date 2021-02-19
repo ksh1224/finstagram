@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { Modal } from "react-bootstrap";
 import { useAuth, useModal, useSearchUser } from "hooks/useRedux";
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import SVG from "utils/SVG";
 import axios from "utils/axiosUtil";
 import Scroll from "components/Scroll";
@@ -19,6 +19,8 @@ export default function AddReviewerModal() {
   const [text, setText] = useState("");
   const [searchList, setSearchList] = useState<any[]>([]);
   const [selectList, setSelectList] = useState<any[]>([]);
+  const [top, setTop] = useState(0);
+  const viewRef = createRef<HTMLDivElement>();
   const { data: userData } = useSearchUser();
 
   const addReviewerModal = modals.find((modal) => modal.name === "addReviewer");
@@ -103,6 +105,8 @@ export default function AddReviewerModal() {
           });
         }, 300);
         close();
+      } else {
+        console.log("res", res);
       }
     } catch (error) {
       console.log("error", error);
@@ -123,6 +127,10 @@ export default function AddReviewerModal() {
       setSearchList(searchData);
     }
   }, [text]);
+
+  useEffect(() => {
+    setTop((viewRef.current?.clientHeight || 0) + 25);
+  }, [viewRef]);
 
   const isSelect =
     (text && text.trim().length > 1) || (selectList && selectList.length > 0);
@@ -187,7 +195,7 @@ export default function AddReviewerModal() {
           {isSubmit ? (
             <></>
           ) : (
-            <div className="d-flex flex-column px-7 gutter-b">
+            <div ref={viewRef} className="d-flex flex-column px-7 gutter-b">
               <h6 className="font-weight-bold text-dark-75 gutter-t mb-7 word-keep">
                 Finstagram에서 Feedback을 주거나 받은 동료
               </h6>
@@ -222,7 +230,6 @@ export default function AddReviewerModal() {
               </div>
             </div>
           )}
-
           <div className="d-flex position-relative flex-column bg-light-light">
             <div className="d-flex flex-grow-1 flex-row py-4 px-7 bg-secondary border-top border-light-dark">
               <div className="d-flex w-150px justify-content-center">
@@ -301,7 +308,7 @@ export default function AddReviewerModal() {
               id="layer_reviewer_srchList"
               x-placement="bottom-start"
               className={isSelect ? "show" : undefined}
-              style={{ top: "-147px" }}
+              style={{ top: `-${top}px` }}
             >
               {selectList ? (
                 <div

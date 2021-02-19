@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { Modal } from "react-bootstrap";
 import { useAuth, useModal, useSearchUser } from "hooks/useRedux";
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import SVG from "utils/SVG";
 import axios from "utils/axiosUtil";
 import Scroll from "components/Scroll";
@@ -19,6 +19,8 @@ export default function AddTeamReviewerModal() {
   const [searchList, setSearchList] = useState<any[]>([]);
   const [selectList, setSelectList] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
+  const [top, setTop] = useState(0);
+  const viewRef = createRef<HTMLDivElement>();
   const { data: userData } = useSearchUser();
 
   const addReviewerModal = modals.find(
@@ -107,6 +109,8 @@ export default function AddTeamReviewerModal() {
             text: "확정되었습니다.",
           });
         }, 300);
+      } else {
+        console.log("res", res);
       }
     } catch (error) {
       console.log("error", error);
@@ -127,6 +131,10 @@ export default function AddTeamReviewerModal() {
       setSearchList(searchData);
     }
   }, [text]);
+
+  useEffect(() => {
+    setTop((viewRef.current?.clientHeight || 0) + 25);
+  }, [viewRef]);
 
   const isSelect =
     (text && text.trim().length > 1) || (selectList && selectList.length > 0);
@@ -194,12 +202,11 @@ export default function AddTeamReviewerModal() {
           {isSubmit ? (
             <></>
           ) : (
-            <div className="d-flex flex-column px-7 gutter-b">
+            <div ref={viewRef} className="d-flex flex-column px-7 gutter-b">
               <h5 className="font-weight-bold text-dark-75 gutter-t mb-7 word-keep">
                 Finstagram에서 Feedback을 주거나 받은 동료
               </h5>
-              <div
-                className="text-nowrap text-center reviewer-list pb-2 px-7 mx-n7 fs-scroll">
+              <div className="text-nowrap text-center reviewer-list pb-2 px-7 mx-n7 fs-scroll">
                 {feedbackList.map((feedbackUser) => {
                   const isInclude = !!reviewerlist.find(
                     (reviewer) => reviewer.userId === feedbackUser.id
@@ -238,54 +245,69 @@ export default function AddTeamReviewerModal() {
               </div>
             </div>
             <Scroll style={{ maxHeight: "30vh" }}>
-              {reviewerlist.map((reviewer) => (
-                <div className="d-flex py-4 px-7 border-top border-light-dark">
-                  <div className="d-flex w-150px align-items-center">
-                    <div className="avatar symbol symbol-50 mr-4">
-                      <Profile user={reviewer} onClick={() => {}} />
+              {reviewerlist.length !== 0 ? (
+                reviewerlist.map((reviewer) => (
+                  <div className="d-flex py-4 px-7 border-top border-light-dark">
+                    <div className="d-flex w-150px align-items-center">
+                      <div className="avatar symbol symbol-50 mr-4">
+                        <Profile user={reviewer} onClick={() => {}} />
+                      </div>
+                      <div className="overflow-hidden w-100px flex-grow-1 font-size-lg">
+                        <div className="font-weight-bold">{reviewer?.name}</div>
+                        <small className="d-block text-truncate">
+                          {reviewer?.department}
+                        </small>
+                      </div>
                     </div>
-                    <div className="overflow-hidden w-100px flex-grow-1 font-size-lg">
-                      <div className="font-weight-bold">{reviewer?.name}</div>
-                      <small className="d-block text-truncate">
-                        {reviewer?.department}
-                      </small>
+                    <div className="d-flex flex-grow-1 flex-row">
+                      <div className="d-flex flex-column col-8 p-0 align-items-center justify-content-center align-items-center justify-content-center">
+                        <span className="text-center word-keep">
+                          {reviewer?.description}
+                        </span>
+                      </div>
+                      <div className="d-flex flex-column col-4 p-0 align-items-center justify-content-center">
+                        {isSubmit ? (
+                          <></>
+                        ) : reviewer?.deletable ? (
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => exceptReviewer(reviewer?.userId)}
+                          >
+                            제외
+                          </button>
+                        ) : (
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-sm"
+                          >
+                            필수
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="d-flex flex-grow-1 flex-row">
-                    <div className="d-flex flex-column col-8 p-0 align-items-center justify-content-center align-items-center justify-content-center">
-                      <span className="text-center word-keep">
-                        {reviewer?.description}
-                      </span>
-                    </div>
-                    <div className="d-flex flex-column col-4 p-0 align-items-center justify-content-center">
-                      {isSubmit ? (
-                        <></>
-                      ) : reviewer?.deletable ? (
-                        <button
-                          type="button"
-                          className="btn btn-danger btn-sm"
-                          onClick={() => exceptReviewer(reviewer?.userId)}
-                        >
-                          제외
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="btn btn-secondary btn-sm"
-                        >
-                          필수
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    minHeight: "100px",
+                  }}
+                  className="text-dark-75 font-size-lg font-weight-normal text-center"
+                >
+                  Reviewer가 없습니다.
+                </span>
+              )}
             </Scroll>
             <div
               id="layer_reviewer_srchList"
               x-placement="bottom-start"
               className={isSelect ? "show" : undefined}
-              style={{ top: "-147px" }}
+              style={{ top: `-${top}px` }}
             >
               {selectList ? (
                 <div

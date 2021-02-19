@@ -9,7 +9,7 @@ import React, { useEffect, useState, createRef } from "react";
 
 export default function FeedbackSendModal() {
   const fileRef = createRef<HTMLInputElement>();
-  const textLimit = 100;
+  const textLimit = 1000;
   const [type, setType] = useState<"PRAISE" | "ADVICE">("PRAISE");
   const [select, setSelect] = useState(0);
   const [contents, setContents] = useState("");
