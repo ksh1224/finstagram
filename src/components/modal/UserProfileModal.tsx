@@ -147,6 +147,35 @@ export default function UserProfileModal() {
     }
   }, [myOKRData]);
 
+  useEffect(() => {
+    console.log(
+      "asdasdasdasd",
+      feedbackStatisticsData?.availableDates[0],
+      selectDate
+    );
+    if (
+      user &&
+      selectDate &&
+      feedbackStatisticsData?.availableDates[0].year === selectDate.year &&
+      feedbackStatisticsData?.availableDates[0].quarter === selectDate.quarter
+    ) {
+      getFeedbackData(selectDate.year, selectDate.quarter);
+    }
+  }, [feedbackStatisticsData]);
+
+  const updateOneFeedback = async (id: number) => {
+    const { data: feedbackOneData } = await axios(`/feedbacks/${id}`, "GET");
+    setFeedbackListData({
+      ...feedbackListData!,
+      data: [
+        ...feedbackListData!.data!.map((feedback) => {
+          if (feedback.id === id) return feedbackOneData;
+          return feedback;
+        }),
+      ],
+    });
+  };
+
   return (
     <Modal
       size="xl"
@@ -326,12 +355,7 @@ export default function UserProfileModal() {
                             key={feedback.id}
                             {...feedback}
                             feedType="modal"
-                            onUpdate={() =>
-                              getFeedbackData(
-                                selectDate.year,
-                                selectDate.quarter
-                              )
-                            }
+                            onUpdate={() => updateOneFeedback(feedback.id)}
                           />
                         );
                       })}
