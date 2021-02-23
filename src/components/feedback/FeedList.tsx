@@ -217,7 +217,7 @@ export default function FeedList({ scrollEnd }: Props) {
       </Scroll>
       <div
         id="layer_myBadgeFeedback"
-        className={`layer right-to-left zindex-2 ${selectBadgeData ? "show" : ""}`}
+        className={`layer right-to-left zindex-9 ${selectBadgeData ? "show" : ""}`}
       >
         <div className="modal-content col-auto">
           <div className="modal-header px-0 pt-0">
