@@ -64,6 +64,28 @@ export default function PeerReview() {
     text.trim().length > 1
       ? searchList(peerListData, text, ["user", "name"])
       : peerListData;
+
+  // 버튼 추가할 때 확정 확인 로직 추가해야함 url: /review/peer/reviewee/team/submitted?metaId=${}
+  // const fixReviewer = async () => {
+  //   try {
+  //     const res = await axios(
+  //       `/review/peer/reviewee/team/submit?metaId=${meta.id}`,
+  //       "POST"
+  //     );
+  //     if (res.responseCode === "SUCCESS") {
+  //       setTimeout(() => {
+  //         showModal("confirm", {
+  //           text: "확정되었습니다.",
+  //         });
+  //       }, 300);
+  //     } else {
+  //       console.log("res", res);
+  //     }
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // };
+
   return (
     <div className="card card-custom card-stretch rounded-bottom-0 w-100">
       <div className="card-header border-0 justify-content-start">
@@ -121,6 +143,40 @@ export default function PeerReview() {
                   )}
                 </Scroll>
               </div>
+              {/* {isSubmit ? (
+                <></>
+              ) : (
+                <div className="modal-footer border-0 p-0">
+                  {isSelect ? (
+                    <button
+                      type="button"
+                      className="btn btn-lg btn-success w-100 m-0 rounded-0"
+                      onClick={() => addReviewer()}
+                    >
+                      추가하기
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-lg btn-primary w-100 m-0 rounded-0"
+                      onClick={() =>
+                        showModal("confirm", {
+                          onConfirm: () => fixReviewer(),
+                          isCancel: true,
+                          text: (
+                            <>
+                              확정 후 수정할 수 없습니다. <br />{" "}
+                              확정하시겠습니까?
+                            </>
+                          ),
+                        })
+                      }
+                    >
+                      확정하기
+                    </button>
+                  )}
+                </div>
+              )} */}
             </ReviewCardItem>
           )}
         <ReviewCardItem
