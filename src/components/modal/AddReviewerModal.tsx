@@ -20,7 +20,9 @@ export default function AddReviewerModal() {
   const [searchList, setSearchList] = useState<any[]>([]);
   const [selectList, setSelectList] = useState<any[]>([]);
   const [top, setTop] = useState(0);
+  const [searchHeight, setSearchHeight] = useState(0);
   const viewRef = createRef<HTMLDivElement>();
+  const scrollRef = createRef<HTMLDivElement>();
   const { data: userData } = useSearchUser();
 
   const addReviewerModal = modals.find((modal) => modal.name === "addReviewer");
@@ -131,6 +133,10 @@ export default function AddReviewerModal() {
   useEffect(() => {
     setTop((viewRef.current?.clientHeight || 0) + 25);
   }, [viewRef]);
+
+  useEffect(() => {
+    setSearchHeight(scrollRef.current?.clientHeight || 0);
+  }, [scrollRef]);
 
   const isSelect =
     (text && text.trim().length > 1) || (selectList && selectList.length > 0);
@@ -244,7 +250,7 @@ export default function AddReviewerModal() {
                 )}
               </div>
             </div>
-            <Scroll style={{ maxHeight: "30vh" }}>
+            <Scroll ref={scrollRef} style={{ maxHeight: "30vh" }}>
               {reviewerlist && reviewerlist.length !== 0 ? (
                 reviewerlist.map((user) => (
                   <div className="d-flex py-4 px-7 border-top border-light-dark">
@@ -349,7 +355,9 @@ export default function AddReviewerModal() {
               <div className="quick-search-wrapper h-101 bg-white scroll ps">
                 <Scroll
                   className="quick-search-result"
-                  style={{ height: "39.1vh" }}
+                  style={{
+                    height: `calc(11.8vh + ${searchHeight || 0}px)`,
+                  }}
                 >
                   {searchList.map((user) => (
                     <div

@@ -20,7 +20,9 @@ export default function AddTeamReviewerModal() {
   const [selectList, setSelectList] = useState<any[]>([]);
   const [profile, setProfile] = useState<any>(null);
   const [top, setTop] = useState(0);
+  const [searchHeight, setSearchHeight] = useState(0);
   const viewRef = createRef<HTMLDivElement>();
+  const scrollRef = createRef<HTMLDivElement>();
   const { data: userData } = useSearchUser();
 
   const addReviewerModal = modals.find(
@@ -49,7 +51,6 @@ export default function AddTeamReviewerModal() {
       setProfile(data?.user);
       setReviewerList(data?.data);
       setFeedbackList(data?.feedbackUsers);
-      setIsSubmit(data?.submitted);
     } catch (error) {
       console.log("error", error);
     }
@@ -96,27 +97,6 @@ export default function AddTeamReviewerModal() {
     }
   };
 
-  const fixReviewer = async () => {
-    try {
-      const res = await axios(
-        `/review/peer/reviewee/team/submit/${user.id}?metaId=${meta.id}`,
-        "POST"
-      );
-      if (res.responseCode === "SUCCESS") {
-        close();
-        setTimeout(() => {
-          showModal("confirm", {
-            text: "확정되었습니다.",
-          });
-        }, 300);
-      } else {
-        console.log("res", res);
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
   useEffect(() => {
     if (addReviewerModal) {
       getData();
@@ -135,6 +115,10 @@ export default function AddTeamReviewerModal() {
   useEffect(() => {
     setTop((viewRef.current?.clientHeight || 0) + 25);
   }, [viewRef]);
+
+  useEffect(() => {
+    setSearchHeight(scrollRef.current?.clientHeight || 0);
+  }, [scrollRef]);
 
   const isSelect =
     (text && text.trim().length > 1) || (selectList && selectList.length > 0);
@@ -244,7 +228,7 @@ export default function AddTeamReviewerModal() {
                 )}
               </div>
             </div>
-            <Scroll style={{ maxHeight: "30vh" }}>
+            <Scroll ref={scrollRef} style={{ maxHeight: "30vh" }}>
               {reviewerlist.length !== 0 ? (
                 reviewerlist.map((reviewer) => (
                   <div className="d-flex py-4 px-7 border-top border-light-dark">
@@ -348,7 +332,9 @@ export default function AddTeamReviewerModal() {
               <div className="quick-search-wrapper h-101 bg-white scroll ps">
                 <Scroll
                   className="quick-search-result"
-                  style={{ height: "39.1vh" }}
+                  style={{
+                    height: `calc(11.8vh + ${searchHeight || 0}px)`,
+                  }}
                 >
                   {searchList.map((reviewer) => (
                     <div
@@ -377,39 +363,18 @@ export default function AddTeamReviewerModal() {
             </div>
           </div>
         </Scroll>
-
-        {isSubmit ? (
-          <></>
-        ) : (
+        {isSelect ? (
           <div className="modal-footer border-0 p-0">
-            {isSelect ? (
-              <button
-                type="button"
-                className="btn btn-lg btn-success w-100 m-0 rounded-0"
-                onClick={() => addReviewer()}
-              >
-                추가하기
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="btn btn-lg btn-primary w-100 m-0 rounded-0"
-                onClick={() =>
-                  showModal("confirm", {
-                    onConfirm: () => fixReviewer(),
-                    isCancel: true,
-                    text: (
-                      <>
-                        확정 후 수정할 수 없습니다. <br /> 확정하시겠습니까?
-                      </>
-                    ),
-                  })
-                }
-              >
-                확정하기
-              </button>
-            )}
+            <button
+              type="button"
+              className="btn btn-lg btn-success w-100 m-0 rounded-0"
+              onClick={() => addReviewer()}
+            >
+              추가하기
+            </button>
           </div>
+        ) : (
+          <></>
         )}
       </Scroll>
     </Modal>
