@@ -35,6 +35,7 @@ export default function AddReviewerModal() {
       setText("");
       setReviewerList(null);
       setFeedbackList([]);
+      setSelectList([]);
       setIsSubmit(false);
     }, 300);
   }

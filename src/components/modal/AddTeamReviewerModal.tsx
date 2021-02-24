@@ -12,12 +12,12 @@ import { searchListUser } from "utils/searchUtil";
 export default function AddTeamReviewerModal() {
   const { request } = useReviewMain();
   const { modals, closeModal, showModal } = useModal();
-  const [isSubmit, setIsSubmit] = useState(false);
   const [reviewerlist, setReviewerList] = useState<any[]>([]);
   const [feedbackList, setFeedbackList] = useState<any[]>([]);
   const [text, setText] = useState("");
   const [searchList, setSearchList] = useState<any[]>([]);
   const [selectList, setSelectList] = useState<any[]>([]);
+  const [isSubmit, setIsSubmit] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [top, setTop] = useState(0);
   const [searchHeight, setSearchHeight] = useState(0);
@@ -28,16 +28,17 @@ export default function AddTeamReviewerModal() {
   const addReviewerModal = modals.find(
     (modal) => modal.name === "addTeamReviewer"
   );
-  const { meta, user } = addReviewerModal?.param || {};
+  const { meta, user, submitted } = addReviewerModal?.param || {};
 
   function close() {
     request(meta?.id);
     closeModal("addTeamReviewer");
     setTimeout(() => {
       setText("");
+      setIsSubmit(false);
       setReviewerList([]);
       setFeedbackList([]);
-      setIsSubmit(false);
+      setSelectList([]);
       setProfile(null);
     }, 300);
   }
@@ -51,6 +52,7 @@ export default function AddTeamReviewerModal() {
       setProfile(data?.user);
       setReviewerList(data?.data);
       setFeedbackList(data?.feedbackUsers);
+      setIsSubmit(submitted);
     } catch (error) {
       console.log("error", error);
     }

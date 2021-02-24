@@ -8,6 +8,7 @@ import {
   useReviewPeerList,
 } from "hooks/useReview";
 import React, { useEffect, useState } from "react";
+import axios from "utils/axiosUtil";
 import { getWriteDate } from "utils/dateUtil";
 import { searchList } from "utils/searchUtil";
 import SVG from "utils/SVG";
@@ -23,15 +24,22 @@ export default function PeerReview() {
     request: peerEvalListRequest,
   } = useReviewPeerEvalList();
   const [text, setText] = useState("");
+  const [submitted, setSubmitted] = useState(true);
 
   const { peer } = progress || {};
+
+  const getSubmitted = async (selectMeta: any) => {
+    const data = await axios(
+      `/review/peer/reviewee/team/submitted?metaId=${selectMeta.id}`
+    );
+    setSubmitted(data?.data);
+  };
 
   useEffect(() => {
     peerListRequest(meta.id);
     peerEvalListRequest(meta.id);
+    getSubmitted(meta);
   }, [meta]);
-
-  useEffect(() => {}, [text]);
 
   const {
     dateReviewPeerStart,
@@ -65,26 +73,26 @@ export default function PeerReview() {
       ? searchList(peerListData, text, ["user", "name"])
       : peerListData;
 
-  // 버튼 추가할 때 확정 확인 로직 추가해야함 url: /review/peer/reviewee/team/submitted?metaId=${}
-  // const fixReviewer = async () => {
-  //   try {
-  //     const res = await axios(
-  //       `/review/peer/reviewee/team/submit?metaId=${meta.id}`,
-  //       "POST"
-  //     );
-  //     if (res.responseCode === "SUCCESS") {
-  //       setTimeout(() => {
-  //         showModal("confirm", {
-  //           text: "확정되었습니다.",
-  //         });
-  //       }, 300);
-  //     } else {
-  //       console.log("res", res);
-  //     }
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
+  const fixReviewer = async () => {
+    try {
+      const res = await axios(
+        `/review/peer/reviewee/team/submit?metaId=${meta.id}`,
+        "POST"
+      );
+      if (res.responseCode === "SUCCESS") {
+        setTimeout(() => {
+          getSubmitted(meta);
+          showModal("confirm", {
+            text: "확정되었습니다.",
+          });
+        }, 300);
+      } else {
+        console.log("res", res);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   return (
     <div className="card card-custom card-stretch rounded-bottom-0 w-100">
@@ -122,9 +130,9 @@ export default function PeerReview() {
                       <ReviewListItem
                         contents={contents?.user}
                         buttonText={`${contents?.size}/6`}
-                        action={contents?.size < 6}
+                        action={!submitted && contents?.size < 6}
                         description={
-                          contents?.size < 6
+                          !submitted && contents?.size < 6
                             ? `${6 - contents?.size}명 이상 추가해주세요.`
                             : ""
                         }
@@ -132,6 +140,7 @@ export default function PeerReview() {
                           showModal("addTeamReviewer", {
                             meta,
                             user: contents?.user,
+                            submitted,
                           })
                         }
                       />
@@ -143,40 +152,31 @@ export default function PeerReview() {
                   )}
                 </Scroll>
               </div>
-              {/* {isSubmit ? (
+              {submitted ? (
                 <></>
               ) : (
                 <div className="modal-footer border-0 p-0">
-                  {isSelect ? (
-                    <button
-                      type="button"
-                      className="btn btn-lg btn-success w-100 m-0 rounded-0"
-                      onClick={() => addReviewer()}
-                    >
-                      추가하기
-                    </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className="btn btn-lg btn-primary w-100 m-0 rounded-0"
-                      onClick={() =>
-                        showModal("confirm", {
-                          onConfirm: () => fixReviewer(),
-                          isCancel: true,
-                          text: (
-                            <>
-                              확정 후 수정할 수 없습니다. <br />{" "}
-                              확정하시겠습니까?
-                            </>
-                          ),
-                        })
-                      }
-                    >
-                      확정하기
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    className="btn btn-lg btn-primary w-100 m-0"
+                    style={{ borderRadius: "0 0 5px 5px" }}
+                    onClick={() =>
+                      showModal("confirm", {
+                        onConfirm: () => fixReviewer(),
+                        isCancel: true,
+                        text: (
+                          <>
+                            확정 후 수정할 수 없습니다. <br />
+                            확정하시겠습니까?
+                          </>
+                        ),
+                      })
+                    }
+                  >
+                    확정하기
+                  </button>
                 </div>
-              )} */}
+              )}
             </ReviewCardItem>
           )}
         <ReviewCardItem
