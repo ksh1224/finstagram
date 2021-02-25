@@ -63,7 +63,11 @@ const barConfig = (
   };
 };
 
-export default function LeaderReviewResult() {
+export default function LeaderReviewResult({
+  modalLeadership,
+}: {
+  modalLeadership?: any;
+}) {
   const { data = {} } = useReviewMain();
   const {
     averageScorePercentage,
@@ -73,7 +77,7 @@ export default function LeaderReviewResult() {
     considerComments,
     continueComments,
     scores,
-  } = data?.result?.leadership || {};
+  } = modalLeadership || data?.result?.leadership || {};
   const barRef = createRef<HTMLCanvasElement>();
 
   useEffect(() => {
@@ -91,9 +95,18 @@ export default function LeaderReviewResult() {
 
   return (
     <div className="mb-30 tab-group">
-      <h3 className="d-flex h-40px font-weight-bolder align-items-center mb-0">
-        리더 Review 결과
-      </h3>
+      {!modalLeadership ? (
+        <h3 className="d-flex h-40px font-weight-bolder align-items-center mb-0">
+          리더 Review 결과
+        </h3>
+      ) : (
+        <h5 className="d-flex gutter-b align-items-center justify-content-center line-height-40px">
+          <span className="d-inline-block h-40px font-weight-bolder border-bottom">
+            리더 Review 결과
+            <span />
+          </span>
+        </h5>
+      )}
       <div className="">
         <div className="mt-10">
           <div className="font-weight-bolder text-dark font-size-lg">

@@ -2,9 +2,10 @@ import { useReviewMain } from "hooks/useReview";
 import React, { useEffect, useState } from "react";
 import { enterLine, tagUtil } from "utils/stringUtil";
 
-export default function OKRReviewResult() {
+export default function OKRReviewResult({ modalOKR }: { modalOKR?: any }) {
   const { data = {} } = useReviewMain();
-  const { okr, reviewData, evaluationData } = data?.result?.okr || {};
+  const { okr, reviewData, evaluationData } =
+    modalOKR || data?.result?.okr || {};
   const [selfOkrData, setSelfOkrData] = useState<any[]>();
 
   useEffect(() => {
@@ -24,15 +25,28 @@ export default function OKRReviewResult() {
 
   return (
     <div className="mb-30 tab-group">
-      <h3 className="d-flex h-40px font-weight-bolder align-items-center mb-0">
-        OKR Review 결과
-      </h3>
+      {!modalOKR ? (
+        <h3 className="d-flex h-40px font-weight-bolder align-items-center mb-0">
+          OKR Review 결과
+        </h3>
+      ) : (
+        <h5 className="d-flex gutter-b align-items-center justify-content-center line-height-40px">
+          <span className="d-inline-block h-40px font-weight-bolder border-bottom">
+            OKR Review 결과
+            <span />
+          </span>
+        </h5>
+      )}
+
       <div className="mt-10">
         <div className="font-weight-bolder text-dark font-size-lg">
           조직장 Review
         </div>
         <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-          <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
+          <div
+            className="card-body p-6 word-keep"
+            style={{ whiteSpace: "pre-wrap" }}
+          >
             {evaluationData && evaluationData[0]
               ? evaluationData[0].answer
               : "리뷰 데이터가 없습니다."}
@@ -129,7 +143,10 @@ export default function OKRReviewResult() {
                                 {1 + qnaIndex}.{tagUtil(question, "sm")}
                               </div>
                               <div className="card bg-light-light text-dark-75 mt-4 line-height-xl">
-                                <div className="card-body p-6 word-keep" style={{whiteSpace:"pre-wrap"}}>
+                                <div
+                                  className="card-body p-6 word-keep"
+                                  style={{ whiteSpace: "pre-wrap" }}
+                                >
                                   {arr}
                                 </div>
                               </div>

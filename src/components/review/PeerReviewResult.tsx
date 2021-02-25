@@ -129,13 +129,13 @@ const barConfig = (
   };
 };
 
-export default function PeerReviewResult() {
-  const { data = {} } = useReviewMain();
+export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
   const contributionPieRef = createRef<HTMLCanvasElement>();
   const collaborationPieRef = createRef<HTMLCanvasElement>();
   const contributionBarRef = createRef<HTMLCanvasElement>();
   const collaborationBarRef = createRef<HTMLCanvasElement>();
-  const { collaboration, contribution } = data?.result?.peer || {};
+  const { data = {} } = useReviewMain();
+  const { collaboration, contribution } = modalPeer || data?.result?.peer || {};
 
   useEffect(() => {
     if (
@@ -172,9 +172,18 @@ export default function PeerReviewResult() {
 
   return (
     <div className="mb-30 tab-group">
-      <h3 className="d-flex h-40px font-weight-bolder align-items-center mb-0">
-        동료 Review 결과
-      </h3>
+      {!modalPeer ? (
+        <h3 className="d-flex h-40px font-weight-bolder align-items-center mb-0">
+          동료 Review 결과
+        </h3>
+      ) : (
+        <h5 className="d-flex gutter-b align-items-center justify-content-center line-height-40px">
+          <span className="d-inline-block h-40px font-weight-bolder border-bottom">
+            동료 Review 결과
+            <span />
+          </span>
+        </h5>
+      )}
       <div className="mt-10">
         <div className="font-size-h6 font-weight-bolder word-keep">성과</div>
         <div className="d-flex mt-10 review-chart">
