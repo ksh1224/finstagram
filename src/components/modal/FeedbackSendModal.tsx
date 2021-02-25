@@ -3,9 +3,10 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import Profile from "components/Profile";
 import { Modal } from "react-bootstrap";
-import { useModal, useBadgeList } from "hooks/useRedux";
+import { useModal } from "hooks/useRedux";
 import { useFeedback } from "hooks/useFeedBackRedux";
 import React, { useEffect, useState, createRef } from "react";
+import axios from "utils/axiosUtil";
 
 export default function FeedbackSendModal() {
   const fileRef = createRef<HTMLInputElement>();
@@ -13,12 +14,25 @@ export default function FeedbackSendModal() {
   const [type, setType] = useState<"PRAISE" | "ADVICE">("PRAISE");
   const [select, setSelect] = useState(0);
   const [contents, setContents] = useState("");
+  const [badgeList, setBadgeList] = useState<any[]>();
   const [file, setFile] = useState<any>(null);
   const [prevFileName, setPrevFileName] = useState<string>();
   const { feedbackSend } = useFeedback();
   const { modals, closeModal } = useModal();
-  const { data: dadgeList } = useBadgeList();
   const [show, setShow] = useState(false);
+
+  const getBadgeList = async (props?: { year: number; quarter: number }) => {
+    try {
+      const { year, quarter } = props || {};
+      const { data } = await axios(
+        `/badge${year && quarter ? `&year=${year}&quarter=${quarter}` : ""}`,
+        "GET"
+      );
+      setBadgeList(data);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   const sendFeedbackModal = modals.find(
     (modal: any) => modal.name === "sendFeedback"
   );
@@ -44,11 +58,11 @@ export default function FeedbackSendModal() {
   };
 
   function sendFeedback() {
-    if (sendFeedbackModal) {
+    if (sendFeedbackModal && badgeList) {
       feedbackSend(
         type,
         sendFeedbackModal?.param,
-        dadgeList?.CONTRIBUTION[select],
+        badgeList[select],
         contents,
         file && file[0]
       );
@@ -57,11 +71,11 @@ export default function FeedbackSendModal() {
   }
 
   function updateFeedback() {
-    if (updateFeedbackModal) {
+    if (updateFeedbackModal && badgeList) {
       feedbackSend(
         type,
         sendFeedbackModal?.param,
-        dadgeList?.CONTRIBUTION[select],
+        badgeList[select],
         contents,
         file && file[0],
         feed?.id
@@ -73,10 +87,10 @@ export default function FeedbackSendModal() {
   useEffect(() => {
     if (updateFeedbackModal) {
       if (feed?.feedbackBadge) {
-        const findIndex = dadgeList?.CONTRIBUTION.findIndex(
+        const findIndex = badgeList?.findIndex(
           (badge: any) => badge.id === feed?.feedbackBadge.id
         );
-        if (findIndex >= 0) setSelect(findIndex);
+        if (findIndex && findIndex >= 0) setSelect(findIndex);
       }
       setType(feed?.type);
       setContents(feed?.contents);
@@ -88,6 +102,7 @@ export default function FeedbackSendModal() {
   useEffect(() => {
     if (sendFeedbackModal) {
       setShow(true);
+      getBadgeList();
     }
   }, [sendFeedbackModal]);
 
@@ -163,7 +178,7 @@ export default function FeedbackSendModal() {
               <div>
                 <div className="feedback-icon-group w-100">
                   <div className="text-nowrap d-flex justify-content-between">
-                    {dadgeList?.CONTRIBUTION?.map((badge: any, i: number) => (
+                    {badgeList?.map((badge: any, i: number) => (
                       <div
                         key={badge?.id}
                         className="d-inline-block text-center"

@@ -148,11 +148,6 @@ export default function UserProfileModal() {
   }, [myOKRData]);
 
   useEffect(() => {
-    console.log(
-      "asdasdasdasd",
-      feedbackStatisticsData?.availableDates[0],
-      selectDate
-    );
     if (
       user &&
       selectDate &&

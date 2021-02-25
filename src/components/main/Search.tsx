@@ -20,11 +20,11 @@ export default function Search({ on }: Props) {
 
   useEffect(() => {
     if (text && text.trim().length > 1) {
-      if (text === "@transOn") {
+      if (text === process.env.REACT_APP_TEST_ON) {
         setIsTest(true);
         setText("");
       }
-      if (text === "@transOff") {
+      if (text === process.env.REACT_APP_TEST_OFF) {
         localStorage.setItem("testUser", "");
         window.location.href = window.location.origin;
       }

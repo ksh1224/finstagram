@@ -27,7 +27,11 @@ export const badgeListActionAsync = createAsyncAction(
   BADGE_LIST_REQUEST,
   BADGE_LIST_SUCCESS,
   BADGE_LIST_FAIL
-)<void, any, AxiosError>();
+)<
+  { year: number | string; quarter: number | string } | void,
+  any,
+  AxiosError
+>();
 export const badgeListActionTypes = {
   BADGE_LIST_REQUEST,
   BADGE_LIST_SUCCESS,

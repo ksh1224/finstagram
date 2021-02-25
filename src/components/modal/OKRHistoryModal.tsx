@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import Profile from "components/Profile";
 import { Modal } from "react-bootstrap";
-import { useModal, useBadgeList } from "hooks/useRedux";
+import { useModal } from "hooks/useRedux";
 import { useFeedback } from "hooks/useFeedBackRedux";
 import React, { useEffect, useState, createRef } from "react";
 import { statusToKo } from "constant/progress";
