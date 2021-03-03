@@ -558,7 +558,9 @@ export default function PeerReviewModal() {
                             {type === collaboration &&
                             peerData[type]?.answer === Consider ? (
                               <div className="mt-5">
-                                {peerData?.considerPoints?.question}
+                                <span className="d-block font-size-sm mt-3 word-keep">
+                                  {peerData?.considerPoints?.question}
+                                </span>
                                 <div className="checkbox-list mt-5">
                                   {!!peerData?.considerPoints?.optionList &&
                                     peerData.considerPoints.optionList.map(
