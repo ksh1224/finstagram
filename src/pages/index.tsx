@@ -47,6 +47,7 @@ import {
 import { InteractionType } from "@azure/msal-browser";
 import KeyResultModal from "components/modal/KeyResultModal";
 import { versionCheck } from "utils/pkgInfoUtil";
+import Error404 from "./Error404";
 
 export default function App(): JSX.Element {
   const { request, user, error, isFetching } = useAuth();
@@ -87,9 +88,9 @@ export default function App(): JSX.Element {
           <SwitchContainer>
             <Switch>
               <Route exact path="/" component={Feedback} />
-              <Route path="/OKR" component={OKR} />
+              <Route exact path="/OKR" component={OKR} />
               <Route exact path="/Review" component={Review} />
-              <Redirect path="*" to="/" />
+              <Route path="*" component={Error404} />
             </Switch>
           </SwitchContainer>
         </Body>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import SVG from "utils/SVG";
 import axios from "utils/axiosUtil";
@@ -6,7 +6,7 @@ import { useAuth, useModal } from "hooks/useRedux";
 import { useSelector } from "react-redux";
 
 type LayoutType = {
-  children: JSX.Element[];
+  children: ReactNode;
 };
 
 export default function Body({ children }: LayoutType) {
