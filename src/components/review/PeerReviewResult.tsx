@@ -157,7 +157,8 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
       contributionBarRef.current &&
       collaborationBarRef.current &&
       collaboration &&
-      contribution
+      contribution &&
+      !modalPeer
     ) {
       const bar1 = new Chart(
         collaborationBarRef.current,
@@ -202,7 +203,7 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
             </div>
             <canvas ref={contributionPieRef} className="max-w-300px" />
           </div>
-          {contribution?.myScore ? (
+          {!modalPeer && contribution?.myScore ? (
             <div className="col-6">
               <div className="d-flex">
                 <div
@@ -300,7 +301,7 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
             </div>
             <canvas ref={collaborationPieRef} className="max-w-300px" />
           </div>
-          {collaboration?.myScore ? (
+          {!modalPeer && collaboration?.myScore ? (
             <div className="col-6">
               <div className="d-flex">
                 <div
