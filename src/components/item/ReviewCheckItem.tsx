@@ -37,7 +37,7 @@ export default function ReviewCheckItem({
     >
       <div className="d-flex w-150px align-items-center">
         <div className="avatar symbol symbol-50 mr-4">
-          <Profile user={user} />
+          <Profile user={user} onClick={() => {}} />
         </div>
         <div className="overflow-hidden w-100px flex-grow-1 font-size-lg">
           <div className="font-weight-bold">{user.name}</div>
