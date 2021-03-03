@@ -28,10 +28,10 @@ export default function Body({ children }: LayoutType) {
       try {
         let url = "/guide/feedback";
         let evalData;
-        if (pathname === "/OKR") url = "/guide/okr";
-        else if (pathname === "/Review") url = "/guide/review";
+        if (pathname.toUpperCase() === "/OKR") url = "/guide/okr";
+        else if (pathname.toUpperCase() === "/REVIEW") url = "/guide/review";
         const { data } = await axios(url, "GET");
-        if (pathname === "/Review" && my.isReviewer) {
+        if (pathname.toUpperCase() === "/REVIEW" && my.isReviewer) {
           ({ evalData } = await axios("/guide/performance", "GET"));
         }
         if (evalData) setGuides([...evalData, ...data]);
