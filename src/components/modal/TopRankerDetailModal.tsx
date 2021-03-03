@@ -22,7 +22,7 @@ export default function TopRankerDetailModal() {
     isFetching,
     request,
   } = useTopRankerDetail();
-  const sendFeedbackModal = modals.find(
+  const topRankerModal = modals.find(
     (modal: any) => modal.name === "topRanker"
   );
   const [orgGroupIndex, setOrgGroupIndex] = useState<number | null>(null);
@@ -30,7 +30,8 @@ export default function TopRankerDetailModal() {
   const [selectDate, setSelectDate] = useState({ year: "0", quarter: "0" });
 
   useEffect(() => {
-    if (sendFeedbackModal) request(sendFeedbackModal?.param.orgGroupId);
+    if (topRankerModal && orgGroupIndex === null)
+      request(topRankerModal?.param.orgGroupId);
   }, [modals]);
 
   useEffect(() => {
@@ -43,10 +44,10 @@ export default function TopRankerDetailModal() {
     if (
       availableOptions &&
       orgGroupIndex === null &&
-      sendFeedbackModal?.param.orgGroupId
+      topRankerModal?.param.orgGroupId
     ) {
       availableOptions.forEach((option: any, i: number) => {
-        if (option.id === sendFeedbackModal?.param.orgGroupId) {
+        if (option.id === topRankerModal?.param.orgGroupId) {
           setOrgGroupIndex(i);
         }
       });
@@ -61,7 +62,7 @@ export default function TopRankerDetailModal() {
 
   return (
     <Modal
-      show={!!sendFeedbackModal && orgGroupIndex !== null}
+      show={!!topRankerModal && orgGroupIndex !== null}
       animation
       centered
       onHide={() => close()}

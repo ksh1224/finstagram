@@ -21,7 +21,12 @@ export default function UserProfileModal() {
   const [okrData, setOKRData] = useState<any>();
   const [feedbackBadge, setFeedbackBadge] = useState<any>([]);
   const [selectBadgeId, setSelectBadgeId] = useState(-1);
-  const [feedbackListData, setFeedbackListData] = useState<any[]>([]);
+  const [feedbackListData, setFeedbackListData] = useState<{
+    currentPage: number;
+    totalCount: number;
+    totalPages: number;
+    data: any[];
+  }>();
   const [showUserModal, setUserShowMoal] = useState(false);
 
   const userProfileModal = modals.find(
@@ -38,15 +43,43 @@ export default function UserProfileModal() {
     }, 300);
   }
 
-  const getBadgeList = async (year?: string, quarter?: string) => {
+  const getBadgeList = async (
+    year?: string,
+    quarter?: string,
+    page?: number
+  ) => {
     try {
-      const { data } = await axios(
-        `/feedbacks/received/list?user_id=${user.id}${
-          year && quarter ? `&year=${year}&quarter=${quarter}` : ""
-        }${selectBadgeId !== -1 ? `&badge_id=${selectBadgeId}` : ""}`,
-        "GET"
-      );
-      setFeedbackListData(data);
+      if (page) {
+        const data = await axios(
+          `/feedbacks/received/list?user_id=${user.id}${
+            year && quarter ? `&year=${year}&quarter=${quarter}` : ""
+          }${selectBadgeId !== -1 ? `&badge_id=${selectBadgeId}` : ""}${
+            page ? `&page=${page}` : ""
+          }`,
+          "GET"
+        );
+        setFeedbackListData({
+          ...data,
+          data: [
+            ...(feedbackListData?.data ? feedbackListData.data : []),
+            ...data.data,
+          ],
+        });
+      } else {
+        const data = await axios(
+          `/feedbacks/received/list?user_id=${user.id}${
+            year && quarter ? `&year=${year}&quarter=${quarter}` : ""
+          }${selectBadgeId !== -1 ? `&badge_id=${selectBadgeId}` : ""}`,
+          "GET"
+        );
+        console.log(
+          `/feedbacks/received/list?user_id=${user.id}${
+            year && quarter ? `&year=${year}&quarter=${quarter}` : ""
+          }${selectBadgeId !== -1 ? `&badge_id=${selectBadgeId}` : ""}`,
+          data
+        );
+        setFeedbackListData(data);
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -85,11 +118,11 @@ export default function UserProfileModal() {
   }
 
   useEffect(() => {
+    if (!feedbackStatisticsData) feedbackStatisticsRequest();
     if (user) {
-      feedbackStatisticsRequest();
       setSelectDate({
-        year: feedbackStatisticsData?.year,
-        quarter: feedbackStatisticsData?.quarter,
+        year: feedbackStatisticsData?.availableDates[0].year,
+        quarter: feedbackStatisticsData?.availableDates[0].quarter,
       });
       setUserShowMoal(true);
     }
@@ -115,8 +148,28 @@ export default function UserProfileModal() {
   }, [myOKRData]);
 
   useEffect(() => {
-    if (user) getFeedbackData();
+    if (
+      user &&
+      selectDate &&
+      feedbackStatisticsData?.availableDates[0].year === selectDate.year &&
+      feedbackStatisticsData?.availableDates[0].quarter === selectDate.quarter
+    ) {
+      getFeedbackData(selectDate.year, selectDate.quarter);
+    }
   }, [feedbackStatisticsData]);
+
+  const updateOneFeedback = async (id: number) => {
+    const { data: feedbackOneData } = await axios(`/feedbacks/${id}`, "GET");
+    setFeedbackListData({
+      ...feedbackListData!,
+      data: [
+        ...feedbackListData!.data!.map((feedback) => {
+          if (feedback.id === id) return feedbackOneData;
+          return feedback;
+        }),
+      ],
+    });
+  };
 
   return (
     <Modal
@@ -149,7 +202,23 @@ export default function UserProfileModal() {
             <i aria-hidden="true" className="ki ki-close" />
           </button>
         </div>
-        <Scroll className="modal-body" style={{ maxHeight: "90vh" }}>
+        <Scroll
+          className="modal-body"
+          style={{ maxHeight: "90vh" }}
+          callback={() => {
+            if (
+              feedbackListData?.totalPages &&
+              feedbackListData?.currentPage &&
+              feedbackListData.totalPages > feedbackListData.currentPage
+            ) {
+              getBadgeList(
+                selectDate.year,
+                selectDate.quarter,
+                feedbackListData.currentPage + 1
+              );
+            }
+          }}
+        >
           <div className="d-flex flex-column align-items-center">
             <Profile user={user} width={80} />
             <div className="font-weight-bolder text-dark-75 font-size-h4 m-0 pt-3">
@@ -191,108 +260,102 @@ export default function UserProfileModal() {
                     </span>
                   </h3>
                 </div>
-                  <div className="card-body pt-2">
-                    <div className="overflow-x-auto pb-2 px-0 badge-scroll fs-scroll">
-                      <div className="text-nowrap d-flex justify-content-between">
+                <div className="card-body pt-2">
+                  <div className="overflow-x-auto pb-2 px-0 badge-scroll fs-scroll">
+                    <div className="text-nowrap d-flex justify-content-between">
+                      <div
+                        className="text-center px-2"
+                        style={{ minWidth: "86px" }}
+                      >
                         <div
-                          className="text-center px-2"
-                          style={{ minWidth: "86px" }}
+                          className={`feedback-icon hover-on ${
+                            selectBadgeId === -1 ? "on" : ""
+                          }`}
+                          onClick={() => setSelectBadgeId(-1)}
                         >
+                          <SVG
+                            className="w-55px h-55px bg-white border border-light-dark rounded-circle"
+                            xmlns="http://www.w3.org/2000/svg"
+                            name="total"
+                            viewBox="0 0 90 90"
+                          />
+                          {!!feedbackBadge?.receivedTotal &&
+                            feedbackBadge?.receivedTotal !== 0 && (
+                              <span className="badge label label-lg">
+                                {feedbackBadge?.receivedTotal}
+                              </span>
+                            )}
+                        </div>
+                        <div className="mt-4 font-size-sm text-dark-50 text-truncate">
+                          합계
+                        </div>
+                      </div>
+                      {feedbackBadge &&
+                        feedbackBadge?.badgeList?.map((data: any) => (
                           <div
-                            className={`feedback-icon hover-on ${
-                              selectBadgeId === -1 ? "on" : ""
-                            }`}
-                            onClick={() => setSelectBadgeId(-1)}
+                            key={data?.badge?.id}
+                            className="text-center px-2"
+                            style={{ minWidth: "86px" }}
                           >
-                            <SVG
-                              className="w-55px h-55px bg-white border border-light-dark rounded-circle"
-                              xmlns="http://www.w3.org/2000/svg"
-                              name="total"
-                              viewBox="0 0 90 90"
-                            />
-                            {!!feedbackBadge?.receivedTotal &&
-                              feedbackBadge?.receivedTotal !== 0 && (
+                            <div
+                              className="feedback-icon hover-on on"
+                              onClick={() => setSelectBadgeId(data?.badge?.id)}
+                            >
+                              <img
+                                className="w-55px h-55px"
+                                style={{
+                                  width: "65px",
+                                  height: "65px",
+                                  borderRadius: "33px",
+                                  border: `1.5px solid ${
+                                    selectBadgeId === data?.badge?.id
+                                      ? "#000"
+                                      : "#5555"
+                                  }`,
+                                }}
+                                src={
+                                  selectBadgeId === data?.badge?.id
+                                    ? data?.badge?.selectedFileUrlHttps
+                                    : data?.badge?.fileUrlHttps
+                                }
+                                alt=""
+                              />
+                              {!!data?.received && data?.received !== 0 && (
                                 <span className="badge label label-lg">
-                                  {feedbackBadge?.receivedTotal}
+                                  {data?.received}
                                 </span>
                               )}
-                          </div>
-                          <div className="mt-4 font-size-sm text-dark-50 text-truncate">
-                            합계
-                          </div>
-                        </div>
-                        {feedbackBadge &&
-                          feedbackBadge?.badgeList?.map((data: any) => (
-                            <div
-                              key={data?.badge?.id}
-                              className="text-center px-2"
-                              style={{ minWidth: "86px" }}
-                            >
-                              <div
-                                className="feedback-icon hover-on on"
-                                onClick={() =>
-                                  setSelectBadgeId(data?.badge?.id)
-                                }
-                              >
-                                <img
-                                  className="w-55px h-55px"
-                                  style={{
-                                    width: "65px",
-                                    height: "65px",
-                                    borderRadius: "33px",
-                                    border: `1.5px solid ${
-                                      selectBadgeId === data?.badge?.id
-                                        ? "#000"
-                                        : "#5555"
-                                    }`,
-                                  }}
-                                  src={
-                                    selectBadgeId === data?.badge?.id
-                                      ? data?.badge?.selectedFileUrlHttps
-                                      : data?.badge?.fileUrlHttps
-                                  }
-                                  alt=""
-                                />
-                                {!!data?.received && data?.received !== 0 && (
-                                  <span className="badge label label-lg">
-                                    {data?.received}
-                                  </span>
-                                )}
-                              </div>
-                              <div className="mt-4 font-size-sm text-dark-50 text-truncate">
-                                {data?.badge?.name}
-                              </div>
                             </div>
-                          ))}
-                      </div>
+                            <div className="mt-4 font-size-sm text-dark-50 text-truncate">
+                              {data?.badge?.name}
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </div>
+                </div>
 
-                  <Scroll className="card-body pt-2">
-                    <DataValidationContainer
-                      noDataView={
-                        <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
-                          피드백이 없습니다.
-                        </div>
-                      }
-                    >
-                      {feedbackListData?.map((feedback) => {
+                <Scroll className="card-body pt-2">
+                  <DataValidationContainer
+                    noDataView={
+                      <div className="d-flex align-items-center justify-content-center min-h-150px font-size-lg">
+                        피드백이 없습니다.
+                      </div>
+                    }
+                  >
+                    {feedbackListData?.data &&
+                      feedbackListData.data?.map((feedback) => {
                         return (
                           <FeedListItem
                             key={feedback.id}
                             {...feedback}
                             feedType="modal"
-                            onUpdate={() =>
-                              getFeedbackData(
-                                selectDate.year,
-                                selectDate.quarter
-                              )
-                            }
+                            onUpdate={() => updateOneFeedback(feedback.id)}
                           />
                         );
                       })}
-                    </DataValidationContainer>
-                  </Scroll>
+                  </DataValidationContainer>
+                </Scroll>
               </div>
             </div>
             <div className="col-auto w-100px flex-grow-1 section-2 order-first order-lg-2">

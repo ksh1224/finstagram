@@ -6,6 +6,10 @@ import axios from "utils/axiosUtil";
 import { enterLine } from "utils/stringUtil";
 import Scroll from "components/Scroll";
 import { useReviewMain } from "hooks/useReview";
+import OKRReviewResult from "components/review/OKRReviewResult";
+import SelfReviewResult from "components/review/SelfReviewResult";
+import PeerReviewResult from "components/review/PeerReviewResult";
+import LeaderReviewResult from "components/review/LeaderReviewResult";
 
 const scores = ["LEADING", "STRONG", "SOLID", "BUILDING", "IMPROVEMENT_NEEDED"];
 
@@ -13,6 +17,7 @@ export default function TeamReviewModal() {
   const { request } = useReviewMain();
   const { modals, closeModal, showModal } = useModal();
   const [prevData, setPrevData] = useState<any>({});
+  const [resultData, setResultData] = useState<any>();
   const [isTemporary, setIsTemporary] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isCopy, setIsCopy] = useState(false);
@@ -107,6 +112,16 @@ export default function TeamReviewModal() {
       close();
     }
   };
+  const getResultData = async () => {
+    try {
+      const { data } = await axios(`/review/team/result/${user.id}`, "GET");
+      console.log("data123", data);
+      setResultData(data);
+    } catch (error) {
+      console.log("error", error);
+      close();
+    }
+  };
 
   const getSubmitted = async () => {
     const { data: isSubmitted } = await axios(
@@ -152,6 +167,7 @@ export default function TeamReviewModal() {
     if (teamReviewModal && user) {
       getSubmitted();
       getData();
+      getResultData();
     }
   }, [teamReviewModal]);
 
@@ -245,7 +261,10 @@ export default function TeamReviewModal() {
         </div>
         <Scroll className="modal-body" style={{ maxHeight: "90vh" }}>
           <div className="d-flex flex-row flex-wrap align-items-stretch">
-            <div className="col-auto w-100px flex-grow-1 section-1">
+            <Scroll
+              className="col-auto w-100px flex-grow-1 section-1"
+              style={{ maxHeight: "70vh" }}
+            >
               <h5 className="d-flex gutter-b align-items-center justify-content-center line-height-40px">
                 <span className="d-inline-block h-40px font-weight-bolder border-bottom">
                   자기 성과 Review
@@ -253,7 +272,7 @@ export default function TeamReviewModal() {
               </h5>
               {prevData?.reviewData &&
                 prevData?.reviewData.map((review: any) => (
-                  <>
+                  <div className="mb-30">
                     <h6 className="font-weight-bolder word-keep">
                       {review?.question}
                     </h6>
@@ -264,9 +283,16 @@ export default function TeamReviewModal() {
                       </div>
                       {/* <div className="text-dark-75 font-size-sm font-weight-normal word-keep pt-3">성과 내용</div> */}
                     </div>
-                  </>
+                  </div>
                 ))}
-            </div>
+              {resultData?.okr && <OKRReviewResult modalOKR={resultData.okr} />}
+              {resultData?.peer && (
+                <PeerReviewResult modalPeer={resultData?.peer} />
+              )}
+              {resultData?.leadership && (
+                <LeaderReviewResult modalLeadership={resultData?.leadership} />
+              )}
+            </Scroll>
             <div className="col-auto w-100px flex-grow-1 modal-tabs section-2">
               <div className="h-40px gutter-b font-size-h5 font-weight-bold text-center">
                 <ul className="header-tabs nav h-100" role="tablist">
@@ -397,7 +423,10 @@ export default function TeamReviewModal() {
                                 }
                               />
                             ) : (
-                              <div className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2" style={{whiteSpace:"pre-wrap"}}>
+                              <div
+                                className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2"
+                                style={{ whiteSpace: "pre-wrap" }}
+                              >
                                 {data.considerPoint ||
                                   "작성한 리뷰가 없습니다."}
                               </div>
@@ -423,7 +452,10 @@ export default function TeamReviewModal() {
                                 }
                               />
                             ) : (
-                              <div className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2" style={{whiteSpace:"pre-wrap"}}>
+                              <div
+                                className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2"
+                                style={{ whiteSpace: "pre-wrap" }}
+                              >
                                 {data.continuePoint ||
                                   "작성한 리뷰가 없습니다."}
                               </div>

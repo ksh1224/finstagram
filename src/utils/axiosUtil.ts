@@ -1,11 +1,11 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { MethodsType } from "constant/HTTPMethods";
 
 type ServerError = { code: string; description: string };
 
 async function axiosUtil(
   url: string,
-  method: MethodsType,
+  method?: MethodsType,
   body?: any
 ): Promise<any> {
   try {
@@ -27,8 +27,8 @@ async function axiosUtil(
 
     if (testUser) headers["X-FNF-DEV"] = testUser;
 
-    const config: ObjectType = {
-      method,
+    const config: AxiosRequestConfig = {
+      method: method || "GET",
       url: fullUrl,
       headers,
       validateStatus(status: number) {

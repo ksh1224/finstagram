@@ -22,7 +22,7 @@ export default function Header() {
       const response = await axios("/review/showButton/info", "GET");
       if (response.responseCode === "SUCCESS") {
         setShowReiview(response.data);
-        if (!response.data && pathname === "/Review") {
+        if (!response.data && pathname.toUpperCase() === "/REVIEW") {
           history.push("/");
         }
       }

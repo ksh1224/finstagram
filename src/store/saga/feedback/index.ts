@@ -34,7 +34,15 @@ export default function* watchFeedback() {
     ({ payload }: { type: string; payload: ObjectType }) =>
       topRankerDetailSaga(payload?.orgGroupId, payload?.year, payload?.quarter)
   );
-  yield takeEvery(badgeListActionTypes.BADGE_LIST_REQUEST, badgeListSaga);
+  yield takeEvery(
+    badgeListActionTypes.BADGE_LIST_REQUEST,
+    ({
+      payload,
+    }: {
+      type: string;
+      payload?: { year: number; quarter: number };
+    }) => badgeListSaga(payload)
+  );
   yield takeEvery(
     feedRecentActionTypes.FEED_RECENT_REQUEST,
     ({ payload }: { type: string; payload?: number }) => feedRecentSaga(payload)

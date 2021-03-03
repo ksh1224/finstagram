@@ -62,9 +62,11 @@ export function useBadgeList() {
   );
   const dispatch = useDispatch();
 
-  const request = useCallback(() => dispatch(badgeListActionAsync.request()), [
-    dispatch,
-  ]);
+  const request = useCallback(
+    (props?: { year: number | string; quarter: number | string }) =>
+      dispatch(badgeListActionAsync.request(props)),
+    [dispatch]
+  );
 
   return {
     request,

@@ -18,7 +18,10 @@ export default function TabItem({ path }: { path: string }) {
     <li className="nav-item col-4">
       <Link
         to={`/${path}`}
-        className={`nav-link ${location.pathname === `/${path}` && "active"}`}
+        className={`nav-link ${
+          location.pathname.toUpperCase() === `/${path}`.toUpperCase() &&
+          "active"
+        }`}
         data-target="#content_tab_review"
       >
         <span className="d-flex align-items-center nav-title">
