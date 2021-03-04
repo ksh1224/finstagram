@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.flex-grow-unset{
+  flex-grow:unset!important;
+}
+
 /* font */
 body{
   font-family:'Poppins', 'Noto Sans', 'Noto Sans KR', 'AppleGothicNeoSD', 'Apple SD 산돌고딕 Neo'!important

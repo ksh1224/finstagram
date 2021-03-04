@@ -186,6 +186,7 @@ export default function PeerReview() {
           period={peerPeriod}
           periodText={peerPeriodText}
           removeBottom
+          css="h-100 h-min-400px"
           header={
             <div className="d-flex flex-row">
               <div className="quick-search quick-search-inline quick-search-has-result bg-white rounded w-100">

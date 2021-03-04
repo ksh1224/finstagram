@@ -17,6 +17,7 @@ type Props = {
   removeBottom?: boolean;
   removeCenterText?: boolean;
   finished?: boolean;
+  css?: string;
 };
 
 export default function ReviewCardItem({
@@ -32,6 +33,7 @@ export default function ReviewCardItem({
   removeBottom,
   removeCenterText,
   finished,
+  css
 }: Props) {
   let centerText = "진행 가능";
   if (finished)
@@ -63,7 +65,7 @@ export default function ReviewCardItem({
     <div
       className={`card card-custom shadow-none ${
         !removeBottom ? "gutter-b" : ""
-      } ${children ? "border" : "bg-light"}`}
+      } ${children ? "border" : "bg-light"} ${css}`}
     >
       <div className="row card-header flex-nowrap align-items-center border-0 mx-0">
         <h4 className="d-block card-title font-weight-bold text-dark font-size-lg text-truncate">
@@ -80,7 +82,7 @@ export default function ReviewCardItem({
       {removeCenterText && (period === "Write" || period === "END") ? (
         <></>
       ) : (
-        <div className="card-body pt-2">
+        <div className="card-body flex-grow-unset pt-2">
           <div className="text-center">
             <p className="font-size-h4 text-dark-75 font-weight-bolder mb-8">
               {centerText}
