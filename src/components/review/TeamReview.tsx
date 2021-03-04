@@ -112,7 +112,7 @@ export default function TeamReview() {
           {leaderPeriodText}
         </span> */}
       </div>
-      <div className="card-body overflow-y-auto">
+      <div className="card-body overflow-y-auto flex-grow-1 h-md-100px">
         {reviewLeaderIncluded &&
           progress?.leadership &&
           progress.leadership.length !== 0 && (
@@ -123,10 +123,10 @@ export default function TeamReview() {
               header={<></>}
               removeCenterText={leaderPeriod !== "END"}
             >
-              <Scroll className="card-body pt-2" style={{ maxHeight: "250px" }}>
+              <Scroll className="card-body pt-2 pb-0">
                 {progress.leadership.length !== 0 ? (
                   progress.leadership.map(({ user, finished }: any) => (
-                    <div className="card card-custom shadow-none border bg-light">
+                    <div className="card card-custom shadow-none border bg-light gutter-b">
                       <div className="card-body">
                         <div className="d-flex border-light-dark">
                           <div className="d-flex w-150px align-items-center">
@@ -187,9 +187,10 @@ export default function TeamReview() {
             title="팀원 성과 Review"
             period={headPeriod}
             periodText={headPeriodText}
+            css="h-100 min-h-400px"
             header={
               <div className="d-flex flex-row">
-                <div className="flex-grow-1 quick-search quick-search-inline quick-search-has-result bg-white rounded">
+                <div className="quick-search quick-search-inline quick-search-has-result bg-white rounded">
                   <div className="quick-search quick-search-has-result input-group input-group-solid">
                     <div className="input-group-prepend">
                       <span className="input-group-text">
@@ -237,8 +238,8 @@ export default function TeamReview() {
               </div>
             }
           >
-            <div className="d-flex flex-column position-relative bg-light-light">
-              <div className="d-flex flex-grow-1 flex-row py-4 px-8 bg-secondary border-top border-light-dark">
+            <div className="d-flex flex-column flex-grow-1 h-100px position-relative bg-light-light">
+              <div className="d-flex flex-row py-4 px-8 bg-secondary border-top border-light-dark">
                 <div className="d-flex w-150px justify-content-center">
                   구성원
                 </div>
@@ -249,7 +250,7 @@ export default function TeamReview() {
                   <div className="col-3 p-0 text-center">Final</div>
                 </div>
               </div>
-              <Scroll style={{ maxHeight: "300px" }}>
+              <Scroll className="h-100px flex-grow-1">
                 {findList && findList.length !== 0 ? (
                   findList.map((peer: any) => {
                     if (!isPosible || peer?.progress === "IN_PROGRESS")

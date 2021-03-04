@@ -99,7 +99,7 @@ export default function PeerReview() {
       <div className="card-header border-0 justify-content-start">
         <h3 className="card-title font-weight-bolder">동료 Review</h3>
       </div>
-      <div className="card-body overflow-y-auto">
+      <div className="card-body overflow-y-auto flex-grow-1 h-md-100px">
         {my.isReviewer &&
           (peerSelectEvalPeriod === "Write" ||
             peerSelectEvalPeriod === "BEFORE") && (
@@ -186,7 +186,7 @@ export default function PeerReview() {
           period={peerPeriod}
           periodText={peerPeriodText}
           removeBottom
-          css="h-100 h-min-400px"
+          css="h-100 min-h-400px"
           header={
             <div className="d-flex flex-row">
               <div className="quick-search quick-search-inline quick-search-has-result bg-white rounded w-100">
@@ -220,15 +220,15 @@ export default function PeerReview() {
             </div>
           }
         >
-          <div className="d-flex flex-column position-relative bg-light-light">
-            <div className="d-flex flex-grow-1 flex-row py-4 px-8 bg-secondary border-top border-light-dark">
+          <div className="d-flex flex-column flex-grow-1 h-100px position-relative bg-light-light">
+            <div className="d-flex flex-row py-4 px-8 bg-secondary border-top border-light-dark">
               <div className="d-flex w-150px justify-content-center">동료</div>
               <div className="d-flex flex-grow-1 flex-row">
                 <div className="col-6 p-0 text-center">내용</div>
                 <div className="col-6 p-0 text-center">비고</div>
               </div>
             </div>
-            <Scroll style={{ maxHeight: "300px" }}>
+            <Scroll className="h-100px flex-grow-1">
               {findList && findList.length !== 0 ? (
                 findList.map((contents: any) => (
                   <ReviewListItem
