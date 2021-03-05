@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+.flex-grow-unset{
+  flex-grow:unset!important;
+}
+
 /* font */
 body{
   font-family:'Poppins', 'Noto Sans', 'Noto Sans KR', 'AppleGothicNeoSD', 'Apple SD 산돌고딕 Neo'!important
@@ -772,7 +776,7 @@ th{
   .card.card-custom > .card-header,
   .card.card-custom > .card-body,
   .card.card-custom > .card-body .card-spacer-x {
-    padding: 1rem !important;
+    padding: 1rem;
   }
   .card.card-custom > .card-body .d-flex.w-150px.pl-8 {
     padding-left: 1rem !important;
