@@ -10,6 +10,7 @@ import {
   selectBadgeAction,
   notificationActionAsync,
   APILogInActionAsync,
+  yearQuarterActionAsync,
 } from "../store/actions";
 
 export function useAuth() {
@@ -111,6 +112,22 @@ export function useSelectBadge() {
     selectBadge,
     cancelBadge,
     selectBadgeData,
+  };
+}
+
+export function useYearQuarter() {
+  const { data: yearQuarter, isFetching } = useSelector(
+    (state: RootState) => state.yearQuarter
+  );
+  const dispatch = useDispatch();
+  const request = useCallback(
+    () => dispatch(yearQuarterActionAsync.request()),
+    [dispatch]
+  );
+  return {
+    request,
+    isFetching,
+    yearQuarter,
   };
 }
 

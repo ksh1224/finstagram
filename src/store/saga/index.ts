@@ -14,6 +14,7 @@ import {
   APILogInActionTypes,
   searchUserActionTypes,
   notificationActionTypes,
+  yearQuarterActionTypes,
 } from "store/actions";
 // import { logout } from "utils/msalUtil";
 
@@ -23,7 +24,7 @@ import notificationSaga from "./notificationSaga";
 import watchOKR from "./okr";
 import pulling from "./pulling";
 import watchReview from "./review";
-import searchUserSaga from "./searchUserSaga";
+import { searchUserSaga, yearQuarterSaga } from "./staticDataSaga";
 
 function* watchCommon() {
   // type의 action이 실행되면 fetchBoardsSaga도 항상(Every) 실행한다
@@ -32,6 +33,7 @@ function* watchCommon() {
     ({ payload }: { type: string; payload: string }) => APIAuthSaga(payload)
   );
   yield takeEvery(searchUserActionTypes.SEARCH_USER_REQUEST, searchUserSaga);
+  yield takeEvery(yearQuarterActionTypes.YEAR_QUARTER_REQUEST, yearQuarterSaga);
   yield takeEvery(
     notificationActionTypes.NOTIFICATION_REQUEST,
     ({ payload }: { type: string; payload?: number }) =>

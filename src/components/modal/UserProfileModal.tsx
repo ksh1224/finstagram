@@ -1,5 +1,5 @@
 import { Modal } from "react-bootstrap";
-import { useModal } from "hooks/useRedux";
+import { useModal, useYearQuarter } from "hooks/useRedux";
 import React, { useEffect, useState, createRef } from "react";
 import SVG from "utils/SVG";
 import Profile from "components/Profile";
@@ -14,7 +14,7 @@ import DataValidationContainer from "layouts/DataValidationContainer";
 
 export default function UserProfileModal() {
   const { modals, closeModal, showModal } = useModal();
-  const { feedbackStatisticsData, feedbackStatisticsRequest } = useMyFeedback();
+  const { yearQuarter } = useYearQuarter();
   const { data: myOKRData } = useMyOKR();
   const [selectDate, setSelectDate] = useState({ year: "0", quarter: "0" });
   const [show, setShow] = useState<any>();
@@ -112,11 +112,10 @@ export default function UserProfileModal() {
   }
 
   useEffect(() => {
-    if (!feedbackStatisticsData) feedbackStatisticsRequest();
-    if (user) {
+    if (user && yearQuarter) {
       setSelectDate({
-        year: feedbackStatisticsData?.availableDates[0].year,
-        quarter: feedbackStatisticsData?.availableDates[0].quarter,
+        year: yearQuarter[0].year,
+        quarter: yearQuarter[0].quarter,
       });
       setUserShowMoal(true);
     }
@@ -145,12 +144,12 @@ export default function UserProfileModal() {
     if (
       user &&
       selectDate &&
-      feedbackStatisticsData?.availableDates[0].year === selectDate.year &&
-      feedbackStatisticsData?.availableDates[0].quarter === selectDate.quarter
+      yearQuarter[0].year === selectDate.year &&
+      yearQuarter[0].quarter === selectDate.quarter
     ) {
       getFeedbackData(selectDate.year, selectDate.quarter);
     }
-  }, [feedbackStatisticsData]);
+  }, [yearQuarter]);
 
   const updateOneFeedback = async (id: number) => {
     const { data: feedbackOneData } = await axios(`/feedbacks/${id}`, "GET");
@@ -180,17 +179,15 @@ export default function UserProfileModal() {
             onChange={changeDate}
             className="custom-select form-control border-0 shadow-none pr-5 bgi-position-x-right w-auto"
           >
-            {feedbackStatisticsData?.availableDates?.map(
-              ({ year, quarter }: any) => (
-                <option
-                  key={`${year}_${quarter}`}
-                  selected={
-                    selectDate?.year === year && selectDate?.quarter === quarter
-                  }
-                  value={`${year}_${quarter}`}
-                >{`${year}년 ${quarter}분기`}</option>
-              )
-            )}
+            {yearQuarter?.map(({ year, quarter }: any) => (
+              <option
+                key={`${year}_${quarter}`}
+                selected={
+                  selectDate?.year === year && selectDate?.quarter === quarter
+                }
+                value={`${year}_${quarter}`}
+              >{`${year}년 ${quarter}분기`}</option>
+            ))}
           </select>
           <button type="button" className="close" onClick={() => close()}>
             <i aria-hidden="true" className="ki ki-close" />

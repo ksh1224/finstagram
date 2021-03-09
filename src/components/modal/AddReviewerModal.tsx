@@ -109,7 +109,7 @@ export default function AddReviewerModal() {
         }, 300);
         close();
       } else {
-        console.log("res", res);
+        console.log("res error", res);
       }
     } catch (error) {
       console.log("error", error);

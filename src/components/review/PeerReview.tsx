@@ -87,7 +87,7 @@ export default function PeerReview() {
           });
         }, 300);
       } else {
-        console.log("res", res);
+        console.log("res error", res);
       }
     } catch (error) {
       console.log("error", error);

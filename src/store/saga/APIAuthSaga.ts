@@ -6,6 +6,7 @@ import {
   badgeListActionAsync,
   notificationActionAsync,
   searchUserActionAsync,
+  yearQuarterActionAsync,
 } from "store/actions";
 import * as Sentry from "@sentry/react";
 
@@ -45,6 +46,7 @@ export default function* APIAuthSaga(
       });
       yield put(APILogInActionAsync.success(user));
       yield put(searchUserActionAsync.request());
+      yield put(yearQuarterActionAsync.request());
       yield put(notificationActionAsync.request(null));
       yield put(badgeListActionAsync.request());
     } else {

@@ -9,6 +9,10 @@ const BADGE_LIST_REQUEST = "BADGE_LIST_REQUEST";
 const BADGE_LIST_SUCCESS = "BADGE_LIST_SUCCESS";
 const BADGE_LIST_FAIL = "BADGE_LIST_FAIL";
 
+const YEAR_QUARTER_REQUEST = "YEAR_QUARTER_REQUEST";
+const YEAR_QUARTER_SUCCESS = "YEAR_QUARTER_SUCCESS";
+const YEAR_QUARTER_FAIL = "YEAR_QUARTER_FAIL";
+
 const SELECT_BADGE = "SELECT_BADGE";
 const CANCEL_SELECT_BADGE = "CANCEL_SELECT_BADGE";
 
@@ -36,6 +40,21 @@ export const badgeListActionTypes = {
   BADGE_LIST_REQUEST,
   BADGE_LIST_SUCCESS,
   BADGE_LIST_FAIL,
+};
+
+export const yearQuarterActionAsync = createAsyncAction(
+  YEAR_QUARTER_REQUEST,
+  YEAR_QUARTER_SUCCESS,
+  YEAR_QUARTER_FAIL
+)<
+  { year: number | string; quarter: number | string } | void,
+  any,
+  AxiosError
+>();
+export const yearQuarterActionTypes = {
+  YEAR_QUARTER_REQUEST,
+  YEAR_QUARTER_SUCCESS,
+  YEAR_QUARTER_FAIL,
 };
 
 export const selectBadgeAction = createAction(

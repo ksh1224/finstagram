@@ -28,6 +28,7 @@ import modal from "./ModalReducer";
 import setting from "./SettingReducer";
 import notification from "./notificationReducer";
 import selectBadge from "./feedback/selectBadgeReducer";
+import yearQuarter from "./yearQuarterReducer";
 
 const rootReducer = combineReducers({
   APIAuth,
@@ -54,6 +55,7 @@ const rootReducer = combineReducers({
   modal,
   setting,
   notification,
+  yearQuarter,
 });
 
 export default rootReducer;
