@@ -21,6 +21,8 @@ export default function UserOKR({ isMy }: UserOKRType) {
     quarter?: any;
     user?: any;
     extraData?: any;
+    isWrite?: any;
+    isModifiable?: any;
   };
   let isFetching;
   let request: (arg0: number, arg1: number, arg2?: number) => void;
@@ -28,40 +30,21 @@ export default function UserOKR({ isMy }: UserOKRType) {
   else ({ data: responseData = {}, isFetching, request } = useUserOKR());
 
   const { showModal } = useModal();
-  const { data, availableDates, year, quarter, user } = responseData;
+  const {
+    data,
+    availableDates,
+    year,
+    quarter,
+    user,
+    isWrite,
+    isModifiable,
+  } = responseData;
   const [show, setShow] = useState(false);
   const [okrWriteType, setOkrWriteType] = useState<"write" | "add" | "update">(
     "write"
   );
   const [updateOKRId, setUpdateOKRId] = useState<number>();
-  const [isWrite, setIsWrite] = useState(false);
-  const [isModifiable, setIsModifiable] = useState(false);
   const [isWriteOpen, setIsWriteOpen] = useState(false);
-  const [isModifiableOpen, setIsModifiableOpen] = useState(false);
-
-  useEffect(() => {
-    if (responseData?.extraData) {
-      const {
-        writeStartAt,
-        writeEndAt,
-        modifiableStartAt,
-        modifiableEndAt,
-      } = responseData.extraData;
-      const now = new Date();
-      const [writeStart, writeEnd, modifiableStart, modifiableEnd] = [
-        new Date(writeStartAt),
-        new Date(writeEndAt),
-        new Date(modifiableStartAt),
-        new Date(modifiableEndAt),
-      ];
-      writeStart.setHours(0, 0, 0, 0);
-      writeEnd.setHours(23, 59, 59, 999);
-      modifiableStart.setHours(0, 0, 0, 0);
-      modifiableEnd.setHours(23, 59, 59, 999);
-      setIsWrite(writeStart <= now && now <= writeEnd);
-      setIsModifiable(modifiableStart <= now && now <= modifiableEnd);
-    }
-  }, [responseData]);
 
   useEffect(() => {
     setShow(true);
@@ -191,7 +174,7 @@ export default function UserOKR({ isMy }: UserOKRType) {
               </div>
             </div>
             {!data ? (
-              isWrite && isMy ? (
+              isWrite ? (
                 <div className="text-center my-10">
                   <p className="font-size-h5 mb-6">
                     {`${year}년 ${quarter}분기 OKR을 작성해 주세요.`}

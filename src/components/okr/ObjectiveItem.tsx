@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { statusType, statusToKo } from "constant/progress";
 import { Accordion, Card, useAccordionToggle, Button } from "react-bootstrap";
 import SVG from "utils/SVG";
+import { useMyOKR } from "hooks/useOKRRedux";
 import KeyResultItem from "./KeyResultItem";
 
 type ObjectiveItemType = {
@@ -34,10 +35,13 @@ export default function ObjectiveItem({
     multiMeta,
     remainingDays,
   }: any = objective;
+  const { data: responseData = {} } = useMyOKR();
   const { showModal } = useModal();
   const decoratedOnClick = useAccordionToggle(`${objectIndex}`, () => {
     clickItem(objectIndex);
   });
+
+  const { isWrite, isModifiable } = responseData;
 
   if (status)
     return (
@@ -96,7 +100,7 @@ export default function ObjectiveItem({
                   >
                     History
                   </button>
-                  {!user && (
+                  {!user && (isModifiable || isWrite) && (
                     <button
                       type="button"
                       className="btn label label-light-dark label-inline btn-hover-light-primary btn-hover-icon-primary"

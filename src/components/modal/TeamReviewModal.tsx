@@ -115,7 +115,6 @@ export default function TeamReviewModal() {
   const getResultData = async () => {
     try {
       const { data } = await axios(`/review/team/result/${user.id}`, "GET");
-      console.log("data123", data);
       setResultData(data);
     } catch (error) {
       console.log("error", error);

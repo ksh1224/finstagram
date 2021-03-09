@@ -72,12 +72,6 @@ export default function UserProfileModal() {
           }${selectBadgeId !== -1 ? `&badge_id=${selectBadgeId}` : ""}`,
           "GET"
         );
-        console.log(
-          `/feedbacks/received/list?user_id=${user.id}${
-            year && quarter ? `&year=${year}&quarter=${quarter}` : ""
-          }${selectBadgeId !== -1 ? `&badge_id=${selectBadgeId}` : ""}`,
-          data
-        );
         setFeedbackListData(data);
       }
     } catch (error) {

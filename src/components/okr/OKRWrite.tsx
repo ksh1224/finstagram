@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { statusType } from "constant/progress";
 import axios from "utils/axiosUtil";
-import { useRefreshOKRData } from "hooks/useOKRRedux";
+import { useMyOKR, useRefreshOKRData } from "hooks/useOKRRedux";
 import { useModal } from "hooks/useRedux";
 import KeyResultWriteItem from "./KeyResultWriteItem";
 import ObjectiveWriteItem from "./ObjectiveWriteItem";
@@ -28,10 +28,14 @@ export default function OKRWrite({
 }: OKRWriteType) {
   const { showModal } = useModal();
   const { refreshOKRData } = useRefreshOKRData();
+  const { data: responseData = {} } = useMyOKR();
   const [objectives, setObjectives] = useState<ObjectiveType[]>([]);
   const [keyResults, setKeyResults] = useState<KeyResultType[]>([]);
   const [prevOKR, setPrevOKR] = useState<ObjectiveType>();
   const [isClick, setIsClick] = useState(false);
+
+  const { isWrite } = responseData;
+
   // index 부여
   const indexNumber: number[] = [];
   const createIndex = () => {
@@ -318,6 +322,28 @@ export default function OKRWrite({
       alert("실패!");
     }
   };
+  const onUpdate = async () => {
+    try {
+      const data = objectives.map((objective) => ({
+        ...objective,
+        keyResult: keyResults.filter(
+          ({ objectiveIndex }) => objectiveIndex === objective.index
+        ),
+      }));
+      const res = await axios(
+        `/okr/update?year=${year}&quarter=${quarter}`,
+        "PUT",
+        JSON.stringify(data)
+      );
+      if (res.responseCode === "SUCCESS") {
+        refreshOKRData();
+        close();
+      }
+    } catch (error) {
+      console.log("error", error);
+      alert("실패!");
+    }
+  };
 
   return (
     <div id="layer_createOKR" className={`layer fade ${show ? "show" : ""}`}>
@@ -390,13 +416,20 @@ export default function OKRWrite({
             }`}
             onClick={() =>
               isClick &&
+              // eslint-disable-next-line no-nested-ternary
               (type === "update"
-                ? showModal("okrUpdate", {
-                    objectives,
-                    keyResults,
-                    prevOKR,
-                    close,
-                  })
+                ? isWrite
+                  ? showModal("confirm", {
+                      onConfirm: () => onUpdate(),
+                      isCancel: true,
+                      text: <>수정하시겠습니까?</>,
+                    })
+                  : showModal("okrUpdate", {
+                      objectives,
+                      keyResults,
+                      prevOKR,
+                      close,
+                    })
                 : onWrite())
             }
           >

@@ -102,15 +102,6 @@ export default function SelfReviewModal() {
 
       if (data?.reviewData && data.reviewData[0].answer) {
         setTextArr(data.reviewData[0].answer.split("<split/>"));
-        // const replace = data.reviewData[0].answer
-        //   .replace(/\n/gm, "&enter&")
-        //   .replace(/\./gm, "&dot&")
-        //   .replace(/(&enter&){0,2}([1-3]&dot&)/g, "\n");
-        // const split = replace.split(/\n/gm).map((string: string) => {
-        //   const aa = string.replace(/&enter&/gm, "\n").replace(/&dot&/gm, ".");
-        //   return aa;
-        // });
-        // setText([split[1], split[2], split[3]]);
       }
     } catch (error) {
       console.log("error", error);
@@ -410,7 +401,11 @@ export default function SelfReviewModal() {
                   {textArr.map((text, index) =>
                     isSubmitted ? (
                       // eslint-disable-next-line react/no-array-index-key
-                      <div key={index} className="pl-2 mt-3" style={{whiteSpace:"pre-wrap"}}>
+                      <div
+                        key={Math.random()}
+                        className="pl-2 mt-3"
+                        style={{ whiteSpace: "pre-wrap" }}
+                      >
                         {index + 1}. {text}
                       </div>
                     ) : (
