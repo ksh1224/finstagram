@@ -58,6 +58,7 @@ export default function TeamReviewModal() {
     setTimeout(() => setTeamData(null), 200);
     setIsCopy(false);
     setIsComplete(false);
+    setResultData(undefined);
   }
 
   const getData = async () => {
@@ -284,11 +285,13 @@ export default function TeamReviewModal() {
                     </div>
                   </div>
                 ))}
-              {resultData?.okr && <OKRReviewResult modalOKR={resultData.okr} />}
-              {resultData?.peer && (
+              {teamData && resultData?.okr && (
+                <OKRReviewResult modalOKR={resultData.okr} />
+              )}
+              {teamData && resultData?.peer && (
                 <PeerReviewResult modalPeer={resultData?.peer} />
               )}
-              {resultData?.leadership && (
+              {teamData && resultData?.leadership && (
                 <LeaderReviewResult modalLeadership={resultData?.leadership} />
               )}
             </Scroll>

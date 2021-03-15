@@ -169,6 +169,12 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
         barConfig(contribution.myScore, contribution.totalScore)
       );
     }
+    return () => {
+      collaborationPieRef.current?.remove();
+      contributionPieRef.current?.remove();
+      collaborationBarRef.current?.remove();
+      contributionBarRef.current?.remove();
+    };
   }, [data]);
 
   return (
