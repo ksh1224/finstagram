@@ -415,35 +415,6 @@ export default function TeamReviewModal() {
                                 className="form-control resize-none mt-3"
                                 placeholder="텍스트를 입력하세요."
                                 rows={6}
-                                value={editData?.considerPoint || ""}
-                                onChange={({ target }) =>
-                                  data.editable &&
-                                  setEditData({
-                                    ...editData,
-                                    considerPoint: target.value,
-                                  })
-                                }
-                              />
-                            ) : (
-                              <div
-                                className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2"
-                                style={{ whiteSpace: "pre-wrap" }}
-                              >
-                                {data.considerPoint ||
-                                  "작성한 리뷰가 없습니다."}
-                              </div>
-                            )}
-                          </div>
-                          <div className="mt-12">
-                            <div className="font-weight-bold">
-                              {name === "Final" ? 2 : 3}. Consider Point
-                              (개선점)
-                            </div>
-                            {data.editable ? (
-                              <textarea
-                                className="form-control resize-none mt-3"
-                                placeholder="텍스트를 입력하세요."
-                                rows={6}
                                 value={editData?.continuePoint || ""}
                                 onChange={({ target }) =>
                                   data.editable &&
@@ -459,6 +430,35 @@ export default function TeamReviewModal() {
                                 style={{ whiteSpace: "pre-wrap" }}
                               >
                                 {data.continuePoint ||
+                                  "작성한 리뷰가 없습니다."}
+                              </div>
+                            )}
+                          </div>
+                          <div className="mt-12">
+                            <div className="font-weight-bold">
+                              {name === "Final" ? 2 : 3}. Consider Point
+                              (개선점)
+                            </div>
+                            {data.editable ? (
+                              <textarea
+                                className="form-control resize-none mt-3"
+                                placeholder="텍스트를 입력하세요."
+                                rows={6}
+                                value={editData?.considerPoint || ""}
+                                onChange={({ target }) =>
+                                  data.editable &&
+                                  setEditData({
+                                    ...editData,
+                                    considerPoint: target.value,
+                                  })
+                                }
+                              />
+                            ) : (
+                              <div
+                                className="text-dark-75 font-size-sm font-weight-normal pt-3 pl-2"
+                                style={{ whiteSpace: "pre-wrap" }}
+                              >
+                                {data.considerPoint ||
                                   "작성한 리뷰가 없습니다."}
                               </div>
                             )}
