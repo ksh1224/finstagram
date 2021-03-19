@@ -253,7 +253,10 @@ export default function TeamReview() {
               <Scroll className="h-100px flex-grow-1">
                 {findList && findList.length !== 0 ? (
                   findList.map((peer: any) => {
-                    if (!isPosible || peer?.progress === "IN_PROGRESS")
+                    if (
+                      !isPosible ||
+                      (peer?.readyToEvaluate && !peer.finishedEvaluation)
+                    )
                       return (
                         <ReviewCheckItem
                           {...peer}
