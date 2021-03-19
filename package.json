@@ -1,6 +1,6 @@
 {
   "name": "finstagram",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "private": true,
   "dependencies": {
     "@azure/msal-browser": "^2.9.0",
