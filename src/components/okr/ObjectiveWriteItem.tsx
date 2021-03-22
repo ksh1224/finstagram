@@ -15,6 +15,7 @@ type ObjectiveWriteItemType = {
   deleteObjective?: (index: number) => void;
   type?: "write" | "add" | "update";
   keyResults?: KeyResultType[];
+  multiMetaUpdatable?: boolean;
 } & ObjectiveType;
 
 export default function ObjectiveWriteItem({
@@ -30,6 +31,7 @@ export default function ObjectiveWriteItem({
   type,
   keyResults,
   multiMetaDuration,
+  multiMetaUpdatable,
 }: ObjectiveWriteItemType) {
   const { data } = useMyOKR();
   // eslint-disable-next-line consistent-return
@@ -109,7 +111,7 @@ export default function ObjectiveWriteItem({
           </OverlayTrigger>
         </div>
         <div className="d-flex justify-content-between mt-2 align-items-center">
-          {type === "update" ? (
+          {type === "update" && !multiMetaUpdatable ? (
             <div className="font-size-sm">
               {`${((multiMetaDuration || 0) + 1) * 3}개월`}
             </div>

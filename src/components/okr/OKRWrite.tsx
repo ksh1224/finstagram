@@ -31,6 +31,7 @@ export default function OKRWrite({
   const { data: responseData = {} } = useMyOKR();
   const [objectives, setObjectives] = useState<ObjectiveType[]>([]);
   const [keyResults, setKeyResults] = useState<KeyResultType[]>([]);
+  const [multiMetaUpdatable, setMultiMetaUpdatable] = useState(false);
   const [prevOKR, setPrevOKR] = useState<ObjectiveType>();
   const [isClick, setIsClick] = useState(false);
 
@@ -120,7 +121,7 @@ export default function OKRWrite({
                 },
                 index: objectiveIndex,
               };
-
+              setMultiMetaUpdatable(res.data.multiMetaUpdatable);
               const kesultArray = res.data.keyResult.map((kr: any) => ({
                 ...kr,
                 updateValues: {
@@ -374,6 +375,7 @@ export default function OKRWrite({
                     deleteObjective={deleteObjective}
                     type={type}
                     keyResults={keyResults}
+                    multiMetaUpdatable={multiMetaUpdatable}
                   />
                   {keyResults
                     .filter(
