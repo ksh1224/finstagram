@@ -57,7 +57,8 @@ const barConfig = (
   totalScore?: { average: number; positive: number; negative: number }
 ): any => {
   const data = {
-    labels: ["평균점수", "긍정응답율", "부정응답율"],
+    // labels: ["평균점수", "긍정응답율", "부정응답율"],
+    labels: ["평균점수"],
     datasets: [
       {
         label: "My Score",
@@ -66,8 +67,8 @@ const barConfig = (
         borderWidth: 1,
         data: [
           myScore?.average.toFixed(1),
-          myScore?.positive.toFixed(1),
-          myScore?.negative.toFixed(1),
+          // myScore?.positive.toFixed(1),
+          // myScore?.negative.toFixed(1),
         ],
       },
       {
@@ -157,8 +158,7 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
       contributionBarRef.current &&
       collaborationBarRef.current &&
       collaboration &&
-      contribution &&
-      !modalPeer
+      contribution
     ) {
       const bar1 = new Chart(
         collaborationBarRef.current,
@@ -209,7 +209,7 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
             </div>
             <canvas ref={contributionPieRef} className="max-w-300px" />
           </div>
-          {!modalPeer && contribution?.myScore ? (
+          {contribution?.myScore ? (
             <div className="col-6">
               <div className="d-flex">
                 <div
@@ -227,14 +227,14 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
                     </li>
                   </ul>
                 </div>
-                <div className="col-8 p-0">
+                {/* <div className="col-8 p-0">
                   <span className="d-block font-size-sm text-muted mb-4">
                     *긍정응답률: 5.6점을 준 동료의 비율
                   </span>
                   <span className="d-block font-size-sm text-muted mb-4">
                     *부정응답률: 1.2점을 준 동료의 비율
                   </span>
-                </div>
+                </div> */}
               </div>
               <canvas ref={contributionBarRef} className="max-w-300px" />
             </div>
@@ -307,7 +307,7 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
             </div>
             <canvas ref={collaborationPieRef} className="max-w-300px" />
           </div>
-          {!modalPeer && collaboration?.myScore ? (
+          {collaboration?.myScore ? (
             <div className="col-6">
               <div className="d-flex">
                 <div
@@ -325,14 +325,14 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
                     </li>
                   </ul>
                 </div>
-                <div className="col-8 p-0">
+                {/* <div className="col-8 p-0">
                   <span className="d-block font-size-sm text-muted mb-4">
                     *긍정응답률: 5.6점을 준 동료의 비율
                   </span>
                   <span className="d-block font-size-sm text-muted mb-4">
                     *부정응답률: 1.2점을 준 동료의 비율
                   </span>
-                </div>
+                </div> */}
               </div>
               <canvas ref={collaborationBarRef} className="max-w-300px" />
             </div>
