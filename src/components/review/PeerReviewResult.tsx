@@ -62,8 +62,8 @@ const barConfig = (
     datasets: [
       {
         label: "My Score",
-        backgroundColor: "#1bc5bd",
-        borderColor: "#1bc5bd",
+        backgroundColor: "#3699FF",
+        borderColor: "#3699FF",
         borderWidth: 1,
         data: [
           myScore?.average.toFixed(1),
@@ -73,8 +73,8 @@ const barConfig = (
       },
       {
         label: "사업부 평균",
-        backgroundColor: "#ffa800",
-        borderColor: "#ffa800",
+        backgroundColor: "#D1D3E0",
+        borderColor: "#D1D3E0",
         borderWidth: 1,
         data: [
           totalScore?.average.toFixed(1),
@@ -85,7 +85,7 @@ const barConfig = (
     ],
   };
   return {
-    type: "horizontalBar",
+    type: "bar",
     data,
     options: {
       layout: {
@@ -103,6 +103,20 @@ const barConfig = (
         xAxes: [
           {
             display: false,
+            categoryPercentage: 0.7,
+            barPercentage: 0.7,
+          },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              fontColor: "#0000",
+            },
+            gridLines: {
+              lineWidth: 0,
+              zeroLineColor: "#555",
+              zeroLineWidth: 1,
+            },
           },
         ],
       },
@@ -216,13 +230,13 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
                   id="bar-result-legend"
                   className="col-4 chart-reivew-legend p-0"
                 >
-                  <ul className="3-legend">
+                  <ul className="3-legend" style={{ width: "100px" }}>
                     <li>
-                      <span style={{ backgroundColor: "#1bc5bd" }} />
+                      <span style={{ backgroundColor: "#3699FF" }} />
                       My Score
                     </li>
                     <li>
-                      <span style={{ backgroundColor: "#ffa800" }} />
+                      <span style={{ backgroundColor: "#D1D3E0" }} />
                       사업부 평균
                     </li>
                   </ul>
@@ -314,13 +328,13 @@ export default function PeerReviewResult({ modalPeer }: { modalPeer?: any }) {
                   id="bar-collabo-legend"
                   className="col-4 chart-reivew-legend p-0"
                 >
-                  <ul className="3-legend">
+                  <ul className="3-legend" style={{ width: "100px" }}>
                     <li>
-                      <span style={{ backgroundColor: "#1bc5bd" }} />
+                      <span style={{ backgroundColor: "#3699FF" }} />
                       My Score
                     </li>
                     <li>
-                      <span style={{ backgroundColor: "#ffa800" }} />
+                      <span style={{ backgroundColor: "#D1D3E0" }} />
                       사업부 평균
                     </li>
                   </ul>
