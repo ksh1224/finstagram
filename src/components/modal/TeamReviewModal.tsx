@@ -398,7 +398,8 @@ export default function TeamReviewModal() {
                                 ))}
                               </div>
                               <span className="d-block font-size-sm text-muted mt-3">
-                                * 성과 Level 부여 시 '도움말'을 참고해주세요.
+                                * 성과 Level 부여시, 메일로 공유드린
+                                '성과Level부여 가이드'를 참고해주세요.
                               </span>
                             </div>
                           )}

@@ -126,18 +126,22 @@ const barConfig = (
       plugins: {
         datalabels: {
           anchor: "end",
-          align(context: any) {
-            const index = context.dataIndex;
-            const value = context.dataset.data[index];
-            let isEnd = false;
-            context.dataset.data.forEach((element: any) => {
-              if (element > value || (value === 0 && element === value))
-                // eslint-disable-next-line no-return-assign
-                return (isEnd = true);
-            });
-            if (isEnd) return "end";
-            return "start";
+          align: "end",
+          font: {
+            size: "16",
           },
+          // align(context: any) {
+          //   const index = context.dataIndex;
+          //   const value = context.dataset.data[index];
+          //   let isEnd = false;
+          //   context.dataset.data.forEach((element: any) => {
+          //     if (element > value || (value === 0 && element === value))
+          //       // eslint-disable-next-line no-return-assign
+          //       return (isEnd = true);
+          //   });
+          //   if (isEnd) return "end";
+          //   return "start";
+          // },
         },
       },
     },
