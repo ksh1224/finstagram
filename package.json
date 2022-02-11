@@ -22,7 +22,7 @@
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^0.7.0",
     "hangul-js": "^0.2.6",
-    "node-sass": "^4.0.0",
+    "node-sass": "^7.0.0",
     "rc-tree": "^4.1.1",
     "react": "17",
     "react-bootstrap": "^1.4.0",
